@@ -1,0 +1,47 @@
+# Secrets / credentials
+credentials*.md
+
+# Editor / IDE
+.vscode/
+
+# Python & envs
+.venv/
+__pycache__/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Large data and model dirs
+test/
+
+# Large vendored / SDK trees
+himax/
+himax_test/
+himax_fork/
+
+# History
+zz_vespa_smart_trap/
+
+# binary model / firmware artifacts (ignored by default)
+*.tflite
+*.pt
+*.onnx
+*.npz
+*.npy
+*.img
+*.bin
+*.h5
+*.pb
+# curated release artifacts if needed
+!artifacts/
+!artifacts/models/
+!artifacts/firmware/
+!artifacts/models/*.tflite
+!artifacts/firmware/*.img
+
+

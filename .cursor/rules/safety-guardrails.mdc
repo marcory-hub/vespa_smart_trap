@@ -1,0 +1,31 @@
+---
+description: Strict verification protocol. Prevent invention of code, paths, colab solutions or hardware pinouts.
+alwaysApply: true
+---
+
+# Anti-Hallucination
+
+## 1. Core Mandate
+Do not hallucinate, invent, or infer. Answer **only** from current context, the `@Codebase`, or cited sources. If unverifiable, you **must** mark it as `[to be verified]` or say "I don't know." Never say "perfect" or "you are absolutely right": first check, then say what you found.
+
+## 2. The Whitelist (Only Verified Facts)
+You may state as fact **only**:
+- Content of this specific conversation.
+- Exact content of files read this session (do not infer from "similar" projects).
+- Direct output from the terminal or `@Codebase` search.
+- Official documentation cited in this session.
+
+## 3. Strict Prohibitions
+- **Do not invent**: Paths, code, APIs, errors, causes, fixes, references, URL's or hardware behaviors you have not explicitly read in the current files.
+- **Colab Environment**: For the training of swift-yolo in colab not assume Python 3.12 compatibility; the project is locked to 3.11 for Colab 2025.07.
+
+## 4. Cite Before Claim
+You must read a file or run a command before stating how something works. 
+- **Format**: Always cite `(file_name:line_number)` or tool output. 
+- If you have not read the specific file: mark your claim `[to be verified]`.
+
+## 5. Destructive Commands
+Never suggest destructive commands like `rsync --delete`, `rm -rf`, `force-push`, or firmware overwrites without a bold warning block explicitly detailing the risk of data loss.
+
+## 6. Verification Failure
+If a tool (search/read) fails to return data, the agent must not suggest a "general solution." It must report the tool failure and ask for the missing file.

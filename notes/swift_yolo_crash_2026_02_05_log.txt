@@ -1,0 +1,1427 @@
+
+/content/ModelAssistant
+Disabling PyTorch because PyTorch >= 2.1 is required but found 2.0.0
+Using automatically generated input shape (from config 'swift_yolo_tiny_1xb16_300e_coco.py'): [1, 3, 192, 192]
+02/05 13:39:19 - mmengine - INFO - 
+------------------------------------------------------------
+System environment:
+    sys.platform: linux
+    Python: 3.11.13 (main, Jun  4 2025, 08:57:29) [GCC 11.4.0]
+    CUDA available: True
+    MUSA available: False
+    numpy_random_seed: 83240587
+    GPU 0: NVIDIA A100-SXM4-80GB
+    CUDA_HOME: /usr/local/cuda
+    NVCC: Cuda compilation tools, release 12.5, V12.5.82
+    GCC: x86_64-linux-gnu-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    PyTorch: 2.0.0+cu117
+    PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2022.2-Product Build 20220804 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v2.7.3 (Git Hash 6dbeffbae1f23cbbeae17adb7b5b13f1f37c080e)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 11.7
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86
+  - CuDNN 8.5
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=11.7, CUDNN_VERSION=8.5.0, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -Wno-deprecated -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wunused-local-typedefs -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Werror=cast-function-type -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_DISABLE_GPU_ASSERTS=ON, TORCH_VERSION=2.0.0, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=1, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, 
+
+    TorchVision: 0.15.1+cu117
+    OpenCV: 4.11.0
+    MMEngine: 0.10.7
+
+Runtime environment:
+    cudnn_benchmark: True
+    mp_cfg: {'mp_start_method': 'fork', 'opencv_num_threads': 0}
+    dist_cfg: {'backend': 'nccl'}
+    seed: 83240587
+    Distributed launcher: none
+    Distributed training: False
+    GPU number: 1
+------------------------------------------------------------
+
+02/05 13:39:20 - mmengine - INFO - Config:
+affine_scale = 0.5
+albu_train_transforms = [
+    dict(p=0.01, type='Blur'),
+    dict(p=0.01, type='MedianBlur'),
+    dict(p=0.01, type='ToGray'),
+    dict(p=0.01, type='CLAHE'),
+]
+anchors = [
+    [
+        (
+            10,
+            13,
+        ),
+        (
+            16,
+            30,
+        ),
+        (
+            33,
+            23,
+        ),
+    ],
+    [
+        (
+            30,
+            61,
+        ),
+        (
+            62,
+            45,
+        ),
+        (
+            59,
+            119,
+        ),
+    ],
+    [
+        (
+            116,
+            90,
+        ),
+        (
+            156,
+            198,
+        ),
+        (
+            373,
+            326,
+        ),
+    ],
+]
+batch = 256
+batch_shapes_cfg = dict(
+    batch_size=1,
+    extra_pad_ratio=0.5,
+    img_size=192,
+    size_divisor=32,
+    type='BatchShapePolicy')
+custom_hooks = [
+    dict(
+        ema_type='ExpMomentumEMA',
+        momentum=0.0001,
+        priority=49,
+        strict_load=False,
+        type='EMAHook',
+        update_buffers=True),
+]
+data_root = '/content/ModelAssistant/Swift-YOLO_192/dataset/'
+dataset_type = 'sscma.CustomYOLOv5CocoDataset'
+deepen_factor = 0.33
+default_hooks = dict(
+    checkpoint=dict(
+        interval=5, max_keep_ckpts=3, save_best='auto', type='CheckpointHook'),
+    logger=dict(interval=100, type='sscma.TextLoggerHook'),
+    param_scheduler=dict(
+        lr_factor=0.01,
+        max_epochs=100,
+        scheduler_type='linear',
+        type='YOLOv5ParamSchedulerHook'),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    timer=dict(type='IterTimerHook'),
+    visualization=dict(type='mmdet.DetVisualizationHook'))
+default_scope = 'sscma'
+env_cfg = dict(
+    cudnn_benchmark=True,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
+epochs = 100
+height = 192
+imgsz = (
+    192,
+    192,
+)
+input_type = 'image'
+launcher = 'none'
+load_from = '/content/ModelAssistant/Swift-YOLO_192/pretrain.pth'
+log_level = 'INFO'
+log_processor = dict(by_epoch=True, type='LogProcessor', window_size=50)
+loss_bbox_weight = 0.05
+loss_cls_weight = 0.5
+loss_obj_weight = 1.0
+lr = 0.16
+lr_factor = 0.01
+max_keep_ckpts = 3
+model = dict(
+    backbone=dict(
+        act_cfg=dict(inplace=True, type='ReLU'),
+        deepen_factor=0.33,
+        norm_cfg=dict(eps=0.001, momentum=0.03, type='BN'),
+        type='YOLOv5CSPDarknet',
+        widen_factor=0.15),
+    bbox_head=dict(
+        head_module=dict(
+            featmap_strides=[
+                8,
+                16,
+                32,
+            ],
+            in_channels=[
+                256,
+                512,
+                1024,
+            ],
+            num_base_priors=3,
+            num_classes=4,
+            type='sscma.DetHead',
+            widen_factor=0.15),
+        loss_bbox=dict(
+            bbox_format='xywh',
+            eps=1e-07,
+            iou_mode='ciou',
+            loss_weight=0.05,
+            reduction='mean',
+            return_iou=True,
+            type='IoULoss'),
+        loss_cls=dict(
+            loss_weight=0.025000000000000005,
+            reduction='mean',
+            type='mmdet.CrossEntropyLoss',
+            use_sigmoid=True),
+        loss_obj=dict(
+            loss_weight=0.09000000000000001,
+            reduction='mean',
+            type='mmdet.CrossEntropyLoss',
+            use_sigmoid=True),
+        obj_level_weights=[
+            4.0,
+            1.0,
+            0.4,
+        ],
+        prior_generator=dict(
+            base_sizes=[
+                [
+                    (
+                        10,
+                        13,
+                    ),
+                    (
+                        16,
+                        30,
+                    ),
+                    (
+                        33,
+                        23,
+                    ),
+                ],
+                [
+                    (
+                        30,
+                        61,
+                    ),
+                    (
+                        62,
+                        45,
+                    ),
+                    (
+                        59,
+                        119,
+                    ),
+                ],
+                [
+                    (
+                        116,
+                        90,
+                    ),
+                    (
+                        156,
+                        198,
+                    ),
+                    (
+                        373,
+                        326,
+                    ),
+                ],
+            ],
+            strides=[
+                8,
+                16,
+                32,
+            ],
+            type='mmdet.YOLOAnchorGenerator'),
+        prior_match_thr=4.0,
+        type='sscma.YOLOV5Head'),
+    data_preprocessor=dict(
+        bgr_to_rgb=True,
+        mean=[
+            0.0,
+            0.0,
+            0.0,
+        ],
+        std=[
+            255.0,
+            255.0,
+            255.0,
+        ],
+        type='mmdet.DetDataPreprocessor'),
+    neck=dict(
+        act_cfg=dict(inplace=True, type='ReLU'),
+        deepen_factor=0.33,
+        in_channels=[
+            256,
+            512,
+            1024,
+        ],
+        norm_cfg=dict(eps=0.001, momentum=0.03, type='BN'),
+        num_csp_blocks=3,
+        out_channels=[
+            256,
+            512,
+            1024,
+        ],
+        type='YOLOv5PAFPN',
+        widen_factor=0.15),
+    test_cfg=dict(
+        max_per_img=300,
+        multi_label=True,
+        nms=dict(iou_threshold=0.65, type='nms'),
+        nms_pre=30000,
+        score_thr=0.001),
+    type='sscma.YOLODetector')
+model_test_cfg = dict(
+    max_per_img=300,
+    multi_label=True,
+    nms=dict(iou_threshold=0.65, type='nms'),
+    nms_pre=30000,
+    score_thr=0.001)
+momentum = 0.937
+norm_cfg = dict(eps=0.001, momentum=0.03, type='BN')
+num_classes = 4
+num_det_layers = 3
+obj_level_weights = [
+    4.0,
+    1.0,
+    0.4,
+]
+optim_wrapper = dict(
+    constructor='YOLOv5OptimizerConstructor',
+    optimizer=dict(
+        batch_size_per_gpu=256,
+        lr=0.16,
+        momentum=0.937,
+        nesterov=True,
+        type='SGD',
+        weight_decay=0.0005),
+    type='OptimWrapper')
+param_scheduler = None
+persistent_workers = True
+pre_transform = [
+    dict(file_client_args=dict(backend='disk'), type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', with_bbox=True),
+]
+prior_match_thr = 4.0
+resume = False
+save_interval = 5
+strides = [
+    8,
+    16,
+    32,
+]
+test_cfg = dict(type='TestLoop')
+test_dataloader = dict(
+    batch_size=256,
+    dataset=dict(
+        ann_file='valid/_annotations.coco.json',
+        batch_shapes_cfg=dict(
+            batch_size=1,
+            extra_pad_ratio=0.5,
+            img_size=192,
+            size_divisor=32,
+            type='BatchShapePolicy'),
+        data_prefix=dict(img='valid/'),
+        data_root='/content/ModelAssistant/Swift-YOLO_192/dataset/',
+        pipeline=[
+            dict(
+                file_client_args=dict(backend='disk'),
+                type='LoadImageFromFile'),
+            dict(scale=(
+                192,
+                192,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    192,
+                    192,
+                ),
+                type='sscma.LetterResize'),
+            dict(type='LoadAnnotations', with_bbox=True),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'scale_factor',
+                    'pad_param',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        test_mode=True,
+        type='sscma.CustomYOLOv5CocoDataset'),
+    drop_last=False,
+    num_workers=2,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+test_evaluator = dict(
+    ann_file=
+    '/content/ModelAssistant/Swift-YOLO_192/dataset/valid/_annotations.coco.json',
+    metric='bbox',
+    proposal_nums=(
+        100,
+        1,
+        10,
+    ),
+    type='mmdet.CocoMetric')
+test_pipeline = [
+    dict(file_client_args=dict(backend='disk'), type='LoadImageFromFile'),
+    dict(scale=(
+        192,
+        192,
+    ), type='YOLOv5KeepRatioResize'),
+    dict(
+        allow_scale_up=False,
+        pad_val=dict(img=114),
+        scale=(
+            192,
+            192,
+        ),
+        type='sscma.LetterResize'),
+    dict(type='LoadAnnotations', with_bbox=True),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'scale_factor',
+            'pad_param',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+train_ann = 'train/_annotations.coco.json'
+train_cfg = dict(max_epochs=100, type='EpochBasedTrainLoop', val_interval=5)
+train_data = 'train/'
+train_dataloader = dict(
+    batch_size=256,
+    dataset=dict(
+        ann_file='train/_annotations.coco.json',
+        data_prefix=dict(img='train/'),
+        data_root='/content/ModelAssistant/Swift-YOLO_192/dataset/',
+        filter_cfg=dict(filter_empty_gt=False, min_size=32),
+        pipeline=[
+            dict(
+                file_client_args=dict(backend='disk'),
+                type='LoadImageFromFile'),
+            dict(type='LoadAnnotations', with_bbox=True),
+            dict(
+                _scope_='sscma',
+                img_scale=(
+                    192,
+                    192,
+                ),
+                pad_val=114.0,
+                pre_transform=[
+                    dict(
+                        file_client_args=dict(backend='disk'),
+                        type='LoadImageFromFile'),
+                    dict(type='LoadAnnotations', with_bbox=True),
+                ],
+                type='Mosaic'),
+            dict(
+                border=(
+                    -96,
+                    -96,
+                ),
+                border_val=(
+                    114,
+                    114,
+                    114,
+                ),
+                max_rotate_degree=0.0,
+                max_shear_degree=0.0,
+                scaling_ratio_range=(
+                    0.5,
+                    1.5,
+                ),
+                type='YOLOv5RandomAffine'),
+            dict(
+                bbox_params=dict(
+                    format='pascal_voc',
+                    label_fields=[
+                        'gt_bboxes_labels',
+                        'gt_ignore_flags',
+                    ],
+                    type='BboxParams'),
+                keymap=dict(gt_bboxes='bboxes', img='image'),
+                transforms=[
+                    dict(p=0.01, type='Blur'),
+                    dict(p=0.01, type='MedianBlur'),
+                    dict(p=0.01, type='ToGray'),
+                    dict(p=0.01, type='CLAHE'),
+                ],
+                type='mmdet.Albu'),
+            dict(type='YOLOv5HSVRandomAug'),
+            dict(prob=0.5, type='mmdet.RandomFlip'),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'flip',
+                    'flip_direction',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        type='sscma.CustomYOLOv5CocoDataset'),
+    num_workers=2,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+train_pipeline = [
+    dict(file_client_args=dict(backend='disk'), type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', with_bbox=True),
+    dict(
+        _scope_='sscma',
+        img_scale=(
+            192,
+            192,
+        ),
+        pad_val=114.0,
+        pre_transform=[
+            dict(
+                file_client_args=dict(backend='disk'),
+                type='LoadImageFromFile'),
+            dict(type='LoadAnnotations', with_bbox=True),
+        ],
+        type='Mosaic'),
+    dict(
+        border=(
+            -96,
+            -96,
+        ),
+        border_val=(
+            114,
+            114,
+            114,
+        ),
+        max_rotate_degree=0.0,
+        max_shear_degree=0.0,
+        scaling_ratio_range=(
+            0.5,
+            1.5,
+        ),
+        type='YOLOv5RandomAffine'),
+    dict(
+        bbox_params=dict(
+            format='pascal_voc',
+            label_fields=[
+                'gt_bboxes_labels',
+                'gt_ignore_flags',
+            ],
+            type='BboxParams'),
+        keymap=dict(gt_bboxes='bboxes', img='image'),
+        transforms=[
+            dict(p=0.01, type='Blur'),
+            dict(p=0.01, type='MedianBlur'),
+            dict(p=0.01, type='ToGray'),
+            dict(p=0.01, type='CLAHE'),
+        ],
+        type='mmdet.Albu'),
+    dict(type='YOLOv5HSVRandomAug'),
+    dict(prob=0.5, type='mmdet.RandomFlip'),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'flip',
+            'flip_direction',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+val_ann = 'valid/_annotations.coco.json'
+val_batch = 256
+val_cfg = dict(type='ValLoop')
+val_data = 'valid/'
+val_dataloader = dict(
+    batch_size=256,
+    dataset=dict(
+        ann_file='valid/_annotations.coco.json',
+        batch_shapes_cfg=dict(
+            batch_size=1,
+            extra_pad_ratio=0.5,
+            img_size=192,
+            size_divisor=32,
+            type='BatchShapePolicy'),
+        data_prefix=dict(img='valid/'),
+        data_root='/content/ModelAssistant/Swift-YOLO_192/dataset/',
+        pipeline=[
+            dict(
+                file_client_args=dict(backend='disk'),
+                type='LoadImageFromFile'),
+            dict(scale=(
+                192,
+                192,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    192,
+                    192,
+                ),
+                type='sscma.LetterResize'),
+            dict(type='LoadAnnotations', with_bbox=True),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'scale_factor',
+                    'pad_param',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        test_mode=True,
+        type='sscma.CustomYOLOv5CocoDataset'),
+    drop_last=False,
+    num_workers=2,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+val_evaluator = dict(
+    ann_file=
+    '/content/ModelAssistant/Swift-YOLO_192/dataset/valid/_annotations.coco.json',
+    metric='bbox',
+    proposal_nums=(
+        100,
+        1,
+        10,
+    ),
+    type='mmdet.CocoMetric')
+val_interval = 5
+val_workers = 2
+vis_backends = [
+    dict(type='LocalVisBackend'),
+    dict(type='TensorboardVisBackend'),
+]
+visualizer = dict(
+    name='visualizer',
+    type='sscma.FomoLocalVisualizer',
+    vis_backends=[
+        dict(type='LocalVisBackend'),
+        dict(type='TensorboardVisBackend'),
+    ])
+weight_decay = 0.0005
+widen_factor = 0.15
+width = 192
+work_dir = '/content/ModelAssistant/Swift-YOLO_192'
+workers = 2
+
+()
+{'vis_backends': [{'type': 'LocalVisBackend'}, {'type': 'TensorboardVisBackend'}], 'save_dir': '/content/ModelAssistant/Swift-YOLO_192/20260205_133918'}
+2026-02-05 13:39:21.138277: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-02-05 13:39:21.205429: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+02/05 13:39:26 - mmengine - INFO - Distributed training is not used, all SyncBatchNorm (SyncBN) layers in the model will be automatically reverted to BatchNormXd layers if they are used.
+02/05 13:39:26 - mmengine - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(BELOW_NORMAL) TextLoggerHook                     
+ -------------------- 
+after_load_checkpoint:
+(49          ) EMAHook                            
+ -------------------- 
+before_train:
+(9           ) YOLOv5ParamSchedulerHook           
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DistSamplerSeedHook                
+(BELOW_NORMAL) TextLoggerHook                     
+ -------------------- 
+before_train_iter:
+(9           ) YOLOv5ParamSchedulerHook           
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_train_iter:
+(9           ) YOLOv5ParamSchedulerHook           
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) TextLoggerHook                     
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_train_epoch:
+(9           ) YOLOv5ParamSchedulerHook           
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) TextLoggerHook                     
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_val_epoch:
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) TextLoggerHook                     
+ -------------------- 
+before_val_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DetVisualizationHook               
+(BELOW_NORMAL) TextLoggerHook                     
+ -------------------- 
+after_val_epoch:
+(9           ) YOLOv5ParamSchedulerHook           
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) TextLoggerHook                     
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_save_checkpoint:
+(49          ) EMAHook                            
+ -------------------- 
+after_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_test_epoch:
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) TextLoggerHook                     
+ -------------------- 
+before_test_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_test_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DetVisualizationHook               
+(BELOW_NORMAL) TextLoggerHook                     
+ -------------------- 
+after_test_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(49          ) EMAHook                            
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) TextLoggerHook                     
+ -------------------- 
+after_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_run:
+(BELOW_NORMAL) TextLoggerHook                     
+ -------------------- 
+loading annotations into memory...
+Done (t=0.03s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=0.03s)
+creating index...
+index created!
+[1, 3, 192, 192]
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::add encountered 24 time(s)
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::max_pool2d encountered 3 time(s)
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::sigmoid encountered 3 time(s)
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::mul encountered 18 time(s)
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::meshgrid encountered 3 time(s)
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::clone encountered 3 time(s)
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::sub encountered 3 time(s)
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::mul_ encountered 6 time(s)
+02/05 13:39:29 - mmengine - WARNING - The following submodules of the model were never called during the trace of the graph. They may be unused, or they were accessed by direct calls to .forward() or via other python methods. In the latter case they will have zeros for statistics, though their statistics will still contribute to their parent calling module.
+bbox_head.head_module.data_preprocessor, bbox_head.loss_bbox, bbox_head.loss_cls, bbox_head.loss_obj, data_preprocessor
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::batch_norm encountered 85 time(s)
+02/05 13:39:29 - mmengine - WARNING - Unsupported operator aten::upsample_nearest2d encountered 2 time(s)
+
++---------------------------+----------------------+------------+--------------+
+| module                    | #parameters or shape | #flops     | #activations |
++---------------------------+----------------------+------------+--------------+
+| model                     | 0.946M               | 0.126G     | 1.061M       |
+|  backbone                 |  0.66M               |  0.101G    |  0.868M      |
+|   backbone.stem.conv      |   1.76K              |   16.22M   |   0.147M     |
+|    backbone.stem.conv.co… |    1.728K            |    15.925M |    0.147M    |
+|    backbone.stem.conv.no… |    32                |    0.295M  |    0         |
+|   backbone.stage1         |   9.216K             |   21.234M  |   0.332M     |
+|    backbone.stage1.0.conv |    3.504K            |    8.073M  |    55.296K   |
+|    backbone.stage1.1      |    5.712K            |    13.16M  |    0.276M    |
+|   backbone.stage2         |   36.56K             |   21.059M  |   0.207M     |
+|    backbone.stage2.0.conv |    8.72K             |    5.023M  |    23.04K    |
+|    backbone.stage2.1      |    27.84K            |    16.036M |    0.184M    |
+|   backbone.stage3         |   0.188M             |   27.003M  |   0.138M     |
+|    backbone.stage3.0.conv |    28.96K            |    4.17M   |    11.52K    |
+|    backbone.stage3.1      |    0.159M            |    22.833M |    0.127M    |
+|   backbone.stage4         |   0.425M             |   15.293M  |   43.2K      |
+|    backbone.stage4.0.conv |    0.116M            |    4.159M  |    5.76K     |
+|    backbone.stage4.1      |    0.245M            |    8.813M  |    28.8K     |
+|    backbone.stage4.2      |    64.48K            |    2.321M  |    8.64K     |
+|  neck                     |  0.279M              |  23.881M   |  0.173M      |
+|   neck.reduce_layers.2.c… |   12.96K             |   0.467M   |   2.88K      |
+|    neck.reduce_layers.2.… |    12.8K             |    0.461M  |    2.88K     |
+|    neck.reduce_layers.2.… |    0.16K             |    5.76K   |    0         |
+|   neck.top_down_layers    |   48K                |   10.817M  |   0.109M     |
+|    neck.top_down_layers.0 |    38.96K            |    5.61M   |    40.32K    |
+|    neck.top_down_layers.1 |    9.04K             |    5.207M  |    69.12K    |
+|   neck.downsample_layers  |   72.24K             |   4.164M   |   8.64K      |
+|    neck.downsample_layer… |    14.48K            |    2.085M  |    5.76K     |
+|    neck.downsample_layer… |    57.76K            |    2.079M  |    2.88K     |
+|   neck.bottom_up_layers   |   0.145M             |   8.398M   |   51.84K     |
+|    neck.bottom_up_layers… |    29.28K            |    4.216M  |    34.56K    |
+|    neck.bottom_up_layers… |    0.116M            |    4.182M  |    17.28K    |
+|   neck.upsample_layers    |                      |   34.56K   |   0          |
+|    neck.upsample_layers.0 |                      |    11.52K  |    0         |
+|    neck.upsample_layers.1 |                      |    23.04K  |    0         |
+|  bbox_head.head_module.c… |  7.641K              |  1.089M    |  20.412K     |
+|   bbox_head.head_module.… |   1.107K             |   0.622M   |   15.552K    |
+|    bbox_head.head_module… |    (27, 40, 1, 1)    |            |              |
+|    bbox_head.head_module… |    (27,)             |            |              |
+|   bbox_head.head_module.… |   2.187K             |   0.311M   |   3.888K     |
+|    bbox_head.head_module… |    (27, 80, 1, 1)    |            |              |
+|    bbox_head.head_module… |    (27,)             |            |              |
+|   bbox_head.head_module.… |   4.347K             |   0.156M   |   0.972K     |
+|    bbox_head.head_module… |    (27, 160, 1, 1)   |            |              |
+|    bbox_head.head_module… |    (27,)             |            |              |
++---------------------------+----------------------+------------+--------------+
+
+========================================
+    Input Shape     :  [1, 3, 192, 192]  
+    Model Flops     :       0.126G       
+  Model Parameters  :       0.946M       
+========================================
+loading annotations into memory...
+Done (t=0.17s)
+creating index...
+index created!
+02/05 13:39:31 - mmengine - INFO - Scaled weight_decay to 0.002
+02/05 13:39:31 - mmengine - INFO - Optimizer groups: 88 .bias, 88 conv.weight, 85 other
+Loads checkpoint by local backend from path: /content/ModelAssistant/Swift-YOLO_192/pretrain.pth
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     1/100     25.705    4.5837    3.2746   17.8467   4:52:56  : 100%|█████████| 121/121 [02:50<00:00,  1.41s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     2/100     27.354    5.9405    3.5238   17.8897   4:47:59  : 100%|█████████| 121/121 [02:51<00:00,  1.42s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     3/100     27.166    5.8444    3.5079   17.8136   4:44:31  : 100%|█████████| 121/121 [02:51<00:00,  1.42s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     4/100    26.8692    5.7325    3.4929   17.6438   4:41:04  : 100%|█████████| 121/121 [02:50<00:00,  1.41s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     5/100    26.9903    5.7463    3.4474   17.7965   4:38:19  : 100%|█████████| 121/121 [02:52<00:00,  1.43s/it]
+
+
+   Mode     Epoch   data_time    time      eta    
+   val      5/100     0.466     1.4445   0:00:00  : 100%|███████████████████████████████| 22/22 [00:18<00:00,  1.18it/s]
+Loading and preparing results...
+DONE (t=2.86s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=17.52s).
+Accumulating evaluation results...
+DONE (t=10.09s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.117
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.322
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.046
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.087
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.129
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.258
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.462
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.523
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.433
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.546
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     6/100    27.0946    5.8056    3.4724   17.8166   4:35:15  : 100%|█████████| 121/121 [02:51<00:00,  1.42s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     7/100    27.5147    5.9258    3.4869    18.102   4:32:25  : 100%|█████████| 121/121 [02:51<00:00,  1.42s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     8/100    27.8056    6.0955    3.5235   18.1866   4:29:16  : 100%|█████████| 121/121 [02:51<00:00,  1.41s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     9/100     28.043    6.1913    3.5476   18.3041   4:26:29  : 100%|█████████| 121/121 [02:52<00:00,  1.42s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     10/100   28.0305    6.2048    3.5388   18.2869   4:23:40  : 100%|█████████| 121/121 [02:52<00:00,  1.42s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      10/100    0.1472    1.0477    0.117     0.322     0.046      -1.0     0.087     0.129    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=3.49s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=22.76s).
+Accumulating evaluation results...
+DONE (t=10.68s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.118
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.322
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.049
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.078
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.130
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.246
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.442
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.522
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.460
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.539
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     11/100    27.885    6.1631    3.5549    18.167   4:20:38  : 100%|█████████| 121/121 [02:51<00:00,  1.42s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     12/100   27.4558    5.9962    3.5436    17.916   4:17:43  : 100%|█████████| 121/121 [02:52<00:00,  1.42s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     13/100   27.5965    6.0411    3.5174    18.038   4:14:29  : 100%|█████████| 121/121 [02:49<00:00,  1.40s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     14/100   27.2896    5.9622     3.51    17.8174   4:09:53  : 100%|█████████| 121/121 [02:35<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     15/100   27.3783    6.0351    3.5586   17.7846   4:05:31  : 100%|█████████| 121/121 [02:35<00:00,  1.29s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      15/100    0.0938    0.9466    0.118     0.322     0.049      -1.0     0.078      0.13    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=1.75s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=10.35s).
+Accumulating evaluation results...
+DONE (t=4.40s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.213
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.563
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.095
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.132
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.234
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.303
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.501
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.534
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.448
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.556
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     16/100   27.1931    5.9645    3.5383   17.6902   4:01:16  : 100%|█████████| 121/121 [02:34<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     17/100   27.2291    5.8752    3.5038   17.8501   3:57:16  : 100%|█████████| 121/121 [02:34<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     18/100   26.9322    5.869     3.5264   17.5367   3:53:29  : 100%|█████████| 121/121 [02:35<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     19/100   26.7802    5.7749    3.5301   17.4753   3:49:44  : 100%|█████████| 121/121 [02:34<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     20/100   26.8313    5.8134    3.5454   17.4725   3:46:08  : 100%|█████████| 121/121 [02:35<00:00,  1.28s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      20/100    0.0898    0.9012    0.213     0.563     0.095      -1.0     0.132     0.234    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=2.46s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=16.98s).
+Accumulating evaluation results...
+DONE (t=7.14s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.211
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.509
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.114
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.138
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.231
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.315
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.477
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.534
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.494
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.544
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     21/100   26.4638    5.6974    3.5206   17.2459   3:42:36  : 100%|█████████| 121/121 [02:35<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     22/100   26.4739    5.7654    3.5176   17.1909   3:39:17  : 100%|█████████| 121/121 [02:36<00:00,  1.30s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     23/100   26.4055    5.7333    3.5143   17.1578   3:35:59  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     24/100   26.3902    5.7059    3.5053    17.179   3:32:36  : 100%|█████████| 121/121 [02:34<00:00,  1.27s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     25/100    26.114    5.5675    3.5165   17.0301   3:29:22  : 100%|█████████| 121/121 [02:35<00:00,  1.29s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      25/100    0.0914    0.8913    0.211     0.509     0.114      -1.0     0.138     0.231    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=1.84s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.14s).
+Accumulating evaluation results...
+DONE (t=4.68s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.265
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.618
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.159
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.163
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.294
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.383
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.532
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.563
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.482
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.584
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     26/100   26.2487    5.6305    3.4988   17.1194   3:26:12  : 100%|█████████| 121/121 [02:35<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     27/100   25.9906    5.5169    3.4908   16.9829   3:23:01  : 100%|█████████| 121/121 [02:35<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     28/100   25.9577    5.6036    3.5041   16.8499   3:19:52  : 100%|█████████| 121/121 [02:34<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     29/100   25.8102    5.5498    3.4898   16.7706   3:16:53  : 100%|█████████| 121/121 [02:38<00:00,  1.31s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     30/100   25.7166    5.5314    3.5078   16.6775   3:13:48  : 100%|█████████| 121/121 [02:34<00:00,  1.28s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      30/100    0.0912    0.8946    0.265     0.618     0.159      -1.0     0.163     0.294    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=2.67s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=18.45s).
+Accumulating evaluation results...
+DONE (t=7.28s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.306
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.696
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.198
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.191
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.336
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.405
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.538
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.573
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.483
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.596
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     31/100   25.6147    5.4622    3.4988   16.6537   3:10:45  : 100%|█████████| 121/121 [02:35<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     32/100   25.5736    5.4747    3.4992   16.5997   3:07:44  : 100%|█████████| 121/121 [02:35<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     33/100   25.3994    5.3975    3.5038    16.498   3:04:48  : 100%|█████████| 121/121 [02:37<00:00,  1.30s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     34/100   25.3581    5.4013    3.5054   16.4515   3:01:51  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     35/100   25.2256    5.3718    3.5012   16.3527   2:58:54  : 100%|█████████| 121/121 [02:35<00:00,  1.28s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      35/100    0.0922    0.8846    0.306     0.696     0.198      -1.0     0.191     0.336    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=1.54s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.10s).
+Accumulating evaluation results...
+DONE (t=3.96s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.349
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.758
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.238
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.238
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.378
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.439
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.553
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.578
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.495
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.599
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     36/100   25.1493    5.3085    3.4919   16.3489   2:55:54  : 100%|█████████| 121/121 [02:33<00:00,  1.27s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     37/100    24.949    5.2693    3.4914   16.1883   2:52:57  : 100%|█████████| 121/121 [02:34<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     38/100   25.0712    5.3611    3.4891    16.221   2:50:00  : 100%|█████████| 121/121 [02:33<00:00,  1.27s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     39/100   25.0715    5.3452    3.5051   16.2212   2:47:05  : 100%|█████████| 121/121 [02:34<00:00,  1.27s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     40/100   24.7404    5.2695    3.4877   15.9832   2:44:08  : 100%|█████████| 121/121 [02:32<00:00,  1.26s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      40/100    0.0925    0.8753    0.349     0.758     0.238      -1.0     0.238     0.378    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=2.15s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=15.74s).
+Accumulating evaluation results...
+DONE (t=5.55s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.337
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.759
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.220
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.229
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.365
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.421
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.537
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.573
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.510
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.589
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     41/100   24.6487    5.1423    3.4738   16.0327   2:41:14  : 100%|█████████| 121/121 [02:33<00:00,  1.27s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     42/100    24.698    5.1857    3.505    16.0072   2:38:20  : 100%|█████████| 121/121 [02:32<00:00,  1.26s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     43/100   24.5867    5.1849    3.5038    15.898   2:35:27  : 100%|█████████| 121/121 [02:33<00:00,  1.27s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     44/100   24.2399    5.1144    3.4819   15.6436   2:32:36  : 100%|█████████| 121/121 [02:34<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     45/100   24.3746    5.1598    3.5018   15.7129   2:29:46  : 100%|█████████| 121/121 [02:34<00:00,  1.28s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      45/100    0.0896    0.8704    0.337     0.759      0.22      -1.0     0.229     0.365    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=1.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=11.07s).
+Accumulating evaluation results...
+DONE (t=3.78s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.394
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.826
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.308
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.264
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.428
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.470
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.569
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.592
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.501
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.615
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     46/100   24.1659    5.0566    3.4939   15.6154   2:26:58  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     47/100   23.9374    5.0267    3.4704   15.4403   2:24:09  : 100%|█████████| 121/121 [02:34<00:00,  1.27s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     48/100    24.038    5.0296    3.4833   15.5251   2:21:22  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     49/100   23.8323    4.9594    3.4637   15.4091   2:18:34  : 100%|█████████| 121/121 [02:35<00:00,  1.28s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     50/100    23.729    4.9241    3.4825   15.3224   2:15:48  : 100%|█████████| 121/121 [02:36<00:00,  1.30s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      50/100    0.0945    0.8759    0.394     0.826     0.308      -1.0     0.264     0.428    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=0.82s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=9.26s).
+Accumulating evaluation results...
+DONE (t=3.08s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.416
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.851
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.333
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.275
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.450
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.483
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.579
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.597
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.513
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.618
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     51/100   23.6118    4.9007    3.4708   15.2404   2:13:02  : 100%|█████████| 121/121 [02:36<00:00,  1.30s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     52/100   23.4222    4.8905    3.4655   15.0662   2:10:18  : 100%|█████████| 121/121 [02:37<00:00,  1.30s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     53/100    23.405    4.8805    3.4627   15.0619   2:07:32  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     54/100   23.4826    4.9093    3.4878   15.0855   2:04:47  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     55/100   23.1474    4.8192    3.4721    14.856   2:02:02  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      55/100    0.0959    0.8784    0.416     0.851     0.333      -1.0     0.275      0.45    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=1.36s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=9.18s).
+Accumulating evaluation results...
+DONE (t=3.02s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.433
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.865
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.371
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.292
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.467
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.502
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.589
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.607
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.515
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.631
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     56/100   23.1422    4.7911    3.458    14.8931   1:59:16  : 100%|█████████| 121/121 [02:35<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     57/100   23.0844    4.8385    3.4752   14.7706   1:56:31  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     58/100   23.0176    4.8006    3.463    14.7539   1:53:46  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     59/100    22.723    4.7037    3.4714   14.5479   1:51:02  : 100%|█████████| 121/121 [02:36<00:00,  1.29s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     60/100   22.8117    4.7366    3.4646   14.6105   1:48:17  : 100%|█████████| 121/121 [02:35<00:00,  1.29s/it]
+
+
+   Mode     Epoch   data_time    time   coco/bbox_mAPcoco/bbox_mAP_50coco/bbox_mAP_75coco/bbox_mAP_scoco/bbox_mAP_mcoco/bbox_mAP_l   eta    
+   val      60/100    0.0914    0.8797    0.433     0.865     0.371      -1.0     0.292     0.467    0:00:00  : 100%|█| 
+Loading and preparing results...
+DONE (t=0.86s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=9.47s).
+Accumulating evaluation results...
+DONE (t=3.22s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.454
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.882
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.403
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.311
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.488
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.518
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.599
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.615
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.524
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.638
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     61/100   22.6935    4.7133    3.4713   14.5089   1:45:33  : 100%|█████████| 121/121 [02:36<00:00,  1.30s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     62/100   22.6683    4.6586    3.4659   14.5438   1:42:50  : 100%|█████████| 121/121 [02:37<00:00,  1.30s/it]
+
+------------------------------------------------------------------------------------------------------------------------
+
+   Mode     Epoch      loss    loss_cls  loss_obj loss_bbox    eta    
+  train     63/100   22.1735    4.6666    3.4764   14.0305   1:42:26  :  15%|█▍        | 18/121 [00:21<01:57,  1.14s/it]

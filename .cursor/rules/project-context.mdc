@@ -1,0 +1,50 @@
+---
+description: Repository Map & Context Orchestration. Defines which files contain the "Source of Truth" for specific topics.
+alwaysApply: true
+---
+# PROJECT CONTEXT: vespa_smart_trap
+**Focus:** Multi-model YOLO development (v8/11/25/26), Swift-YOLO Colab training, and hardware deployment (GV2 + T-SIM) for Asian hornet detection.
+
+## 1. Mandatory Context Loading
+Before proposing logic or answering architectural questions:
+- **Always check** `notes/_plan.md` for the current active sprint (e.g., YOLOv26_on_we).
+- **Reference** `notes/_hardware_stack.md` for pinouts/UART configs before suggesting embedded code.
+- **Consult** `.cursor/rules/` to ensure consistency with pedagogical and technical standards.
+- **For hardware/pinout/UART questions** read `notes/_hardware_stack.md` first. For next steps / roadmap questions, read `notes/_plan.md` first. For model versioning, read `notes/_model.md` first.
+
+## 2. Source of Truth Matrix
+
+| Topic / Task | Primary Source of Truth (Read These First) |
+| :--- | :--- |
+| **Active Roadmap** | `notes/_plan.md`, `notes/_timeline.md` |
+| **Pedagogical Workflow** | `.cursor/rules/agent-persona.mdc`, `.cursor/rules/global-rules.mdc` |
+| **Hardware / GPIO / PCB** | `notes/_hardware_stack.md` (Verifying < 2.4MB SRAM limits) |
+| **Data & YOLO Pipeline** | `notes/_datasets.md`, `notes/_swift-yolo.md` |
+| **Model Evolution** | `notes/_model.md` (Track v8 through v26 performance) |
+| **Meeting / Decision Logs** | `notes/_meetings.md`, `notes/meeting_*.md` |
+| **Knowledge Capture** | `notes/` (All architecture plans and theory) |
+
+## 3. Knowledge Synchronization Protocol
+- **Pedagogical Sync**: After a teaching moment where logic is confirmed, the agent must ask: "Should I update the theory in `notes/` or propose an update to the pedagogical standards in `.cursor/rules/agent-persona.mdc` / `.cursor/rules/global-rules.mdc`?"
+- **Agreed Changes**: Once a plan is finalized, update `notes/_plan.md`. Use `[to be verified]` for any assumptions about YOLOv26 performance until benchmarks are run.
+- **Precedence**: `.cursor/rules/` (The "How") > `notes/` (The "What").
+
+## 4. Hardware & Vision Pipeline
+- **Vision-to-Cloud Chain**: GV2 (Inference) → UART (Packetization) → T-SIM (LTE Logic).
+- **UART Default**: Assume 115200 baud unless `_hardware_stack.md` specifies otherwise. 
+- **Constraint Check**: For all deployment tasks, cross-reference the model size against the **< 2.4MB** limit cited in hardware notes.
+
+
+
+## 5. Directory & File Integrity
+- **Notes Directory**: All theory, logic, and planning reside here. Agents suggest Markdown; user creates/updates files unless "Show me the code/Update file" is invoked.
+- **Notes workflow**: The user takes and makes notes in Obsidian. Sync between the Obsidian vault and `notes/` is done by the user via the commands in `notes/_cli_commands.md` (do not run sync commands for the user unless asked).
+- **Scripts Directory**: Scripts must be in task-specific subfolders (e.g., `scripts/v26_export/`).
+- **Dataset Safety**: NEVER rename `.jpg` or `.txt` label files. Filenames are unique identifiers; modification causes dataset corruption.
+- **Destructive Actions**: For any `rm`, `flash`, `rsync --delete`, or firmware overwrite suggestions, use the destructive-command warning format defined in `.cursor/rules/safety-guardrails.mdc` and `.cursor/rules/global-rules.mdc`.
+
+## 6. Conflict Resolution
+If documentation conflicts with current context:
+1. Prioritize .cursor/rules/safety-guardrails.mdc **Hallucination Prevention**.
+2. Flag the discrepancy to the user with a `[to be verified]` tag.
+3. Defer to the user's current intent over outdated `_plan.md` entries.

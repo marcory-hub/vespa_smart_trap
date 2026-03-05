@@ -1,0 +1,25 @@
+---
+description: Do-not-suggest list and "done" procedure pointer. Project data lives in notes.
+alwaysApply: true
+---
+
+# Mandatory Procedures:
+- **Completion**: After every task, ask user to update the central log in `notes/_timeline.md`. Do not create new standalone log notes; direct the user to add a line to notes/_timeline.md or the appropriate _*.md index. Notes are authored in Obsidian; sync to the repo via `notes/_cli_commands.md`.
+- **Model History**: Reference `notes/_model.md` for all versioning.
+- **Versioning**: When a new model is trained, propose a version increment (e.g., `dataset_vespa__{specification}`) based on existing history. Ask for specifications if not provided.
+
+## Do Not Suggest (Hard Guardrails)
+### Project Hygiene:
+- **Standalone Logs**: Do not create new standalone log notes. The user is responsible for adding entries to `notes/_timeline.md` or the appropriate `_*.md` index and including any links there.
+- **Placeholders**: Do not create notes consisting only of "paste URL here" or empty sections.
+
+### Hardware (Legacy vs. Current):
+- **Obsolete Platforms**: Do not suggest RPi as a primary detector, ESP-IDF-only, or XIAO-only (without LilyGO) solutions.
+- **Inference Logic**: Do not suggest inference on the LilyGO ESP32S3; the GV2 is the sole inference engine.
+- **Primary Stack**: Strictly use GV2 + LilyGO T-SIM7080G-S3.
+- **Connectivity**: Never suggest standard Grove shields; strictly use the custom T-SIM Grove Shield.
+
+### Model & Training (Deployment Constraints):
+- **Environment**: Do not suggest local training, quantization or vela conversion; use the Colab pipeline only (for quantization and vela conversion runtime `2025.07`).
+- **Quantization**: Standard `int8.tflite` is forbidden; strictly use `int8_vela.tflite` for GV2 hardware acceleration.
+- **Resolution**: Do not suggest resolutions exceeding the limits defined in `notes/_hardware_stack.md` or platform-specific constraints (e.g., SenseCraft vs. Himax SDK). Always verify the current resolution target in project notes before suggesting changes.
