@@ -45,3 +45,23 @@ git config --global user.email "marcory-hub@users.noreply.github.com"
 git config --global user.name "marcory-hub"
 git config --global user.email "marcory-hub@users.noreply.github.com"
 ```
+
+---
+
+After sync from himax main
+Add the upstream (himax) repo once, then fetch and merge to origin (my fork)
+```sh
+cd /Users/md/Developer/vespa_smart_trap/himax_fork
+git remote add upstream https://github.com/HimaxWiseEyePlus/Seeed_Grove_Vision_AI_Module_V2.git
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main
+```
+then bring it to working branch
+```sh
+git checkout yolo11-vespa
+git merge main
+# fix conflicts if any, then:
+git push origin yolo11-vespa
+```

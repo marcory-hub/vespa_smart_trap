@@ -1,5 +1,5 @@
 **One-line purpose:** CLI commands
-**Short summary:** all subindexes and quick access links.
+**Short summary:** sync obsidian, git workflow
 **Agent:** CLI commands for user
 **Main Index:** [[__vespa_smart_trap]]
 
@@ -8,6 +8,28 @@
 ```bash
 rsync -av --delete "/Users/md/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/400 computer vision/vespa_smart_trap/" "/Users/md/Developer/vespa_smart_trap/notes/"
 ```
+
+---
+**Before git add ask agent:**
+- Run a security audit for this project following @security-audit
+- from the root
+```sh
+pip-audit
+```
+
+
+git add .
+
+git status 
+
+git commit -m ""
+first push to the branch
+-u: sets the upstream (original repo) so Git remembers “this branch tracks `origin/yolo11-vespa`”.
+```sh
+git push -u origin yolo11-vespa
+```
+
+---
 
 **Source of truth for project notes:** Obsidian vault. User edits in Obsidian; sync to repo via these commands (see `project-context.mdc`).
 
@@ -26,8 +48,7 @@ Updates changed files and adds new ones, but **never removes** any existing file
 
 ---
 
-**Before git add ask agent:**
-- Run a security audit for this project following @security-audit
+
 
 ---
 

@@ -1,7 +1,7 @@
 **One-line purpose:** index of camera's used on gv2 and lilygo's
 **Key info:** camera features and wiring
 **Agent:** OV2640, OV7670, and OV7675 camera modules are compatible with the LilyGO T-SIM7080G-S3 board. Other camera's are inactive.
-**Main Index:** [[__vespa_smart_trap]]
+**Main Index:** [[_hardware]]
 
 ---
 

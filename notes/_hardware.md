@@ -9,7 +9,7 @@ Versions of the vespa smart trap
 [[vespa smart trap - BASE]]
 [[vespa smart trap - PRO]]
 # Hardware Stack
-- [[_camera]]
+- [[camera]]
 - [[_grove vision ai v2]]
 - [[_lilygo boards]]
 ##### Hardware archive

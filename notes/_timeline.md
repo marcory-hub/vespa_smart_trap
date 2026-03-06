@@ -3,13 +3,16 @@
 **Agent:** 
 
 ---
-
-2026-03-05
-- test yolo11 model and image--> to sharepoint
-- to do: fix confidence levels that are close, not to give vvel for vcra
-- fix yolo26 [[temp next session]]
+ -[[temp next session]]
 - [[temp 388_test]]
 - [[temp gv2 conf ratio]]
+
+2026-03-05
+- cleanup of git history
+- private repo vespa_smart_trap
+- checked forks of HimaxWiseEyePlus/Seeed_Grove_Vision_AI_Module_V2: some have yolo11 fixes
+- [[clone HimaxWiseEyePlus-Seeed_Grove_Vision_AI_Module_V2]]
+- [[himax fork and himax test comparison]]
 
 2026-03-04
 - new install of himax
