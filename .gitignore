@@ -15,6 +15,16 @@ __pycache__/
 ._*
 .Spotlight-V100
 .Trashes
+.fseventsd
+.TemporaryItems
+.VolumesIcon.icns
+.com.apple.timemachine.donotpresent
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
 
 # Large data and model dirs
 test/
