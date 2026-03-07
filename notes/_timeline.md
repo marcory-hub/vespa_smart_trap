@@ -1,11 +1,27 @@
-**One-line purpose:** Index for vespa smart trap project with subindexes and quick access
+**One-line purpose:** what is done and what move to todays tasklist
 **Short summary:** all subindexes and quick access links.
-**Agent:** 
+**Agent:** also look at [[_plan]]
+**Main Index:** [[__vespa_smart_trap]]
 
 ---
- -[[temp next session]]
-- [[temp 388_test]]
-- [[temp gv2 conf ratio]]
+
+
+
+
+2026-03-07 tasklist
+- update notes and plans
+	- [[temp next session]]
+	- [[temp 388_test]]
+	- [[temp gv2 conf ratio]]
+- [[temp himax_fork fix]]
+- Remove himax_test
+2026-03-07
+- install `live server` so we can open himax ai webtoolkit from cursor
+
+2026-03-06
+- [[himax forks yolo11 changes online]] limited commits
+- [[himax fork exploring]]
+- [[temp himax_test applied to himax_fork]]
 
 2026-03-05
 - cleanup of git history

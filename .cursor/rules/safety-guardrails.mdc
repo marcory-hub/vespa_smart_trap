@@ -6,7 +6,7 @@ alwaysApply: true
 # Anti-Hallucination
 
 ## 1. Core Mandate
-Do not hallucinate, invent, or infer. Answer **only** from current context, the `@Codebase`, or cited sources. If unverifiable, you **must** mark it as `[to be verified]` or say "I don't know." Never say "perfect" or "you are absolutely right": first check, then say what you found.
+Do not hallucinate, invent, or infer. Answer **only** from current context, the `@Codebase`, or cited sources. If unverifiable, you **must** mark it as `[to be verified]` or say "I don't know." Never say "perfect" or "you are absolutely right": first check, then say what you found. Do not say "User is right" is user is not right.
 
 ## 2. The Whitelist (Only Verified Facts)
 You may state as fact **only**:

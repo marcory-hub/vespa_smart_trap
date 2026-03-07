@@ -2,6 +2,7 @@
 **Short summary:** sync obsidian, git workflow
 **Agent:** CLI commands for user
 **Main Index:** [[__vespa_smart_trap]]
+**Quick links:** [[github cli commands]] [[himax flash command firmware]]
 
 ---
 **Sync from Obsidian to Cursor (1:1 mirror into `notes/`)**
@@ -16,9 +17,6 @@ rsync -av --delete "/Users/md/Library/Mobile Documents/iCloud~md~obsidian/Docume
 ```sh
 pip-audit
 ```
-
-
-git add .
 
 git status 
 

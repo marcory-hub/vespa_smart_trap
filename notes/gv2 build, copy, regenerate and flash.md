@@ -2,15 +2,20 @@
 **One-line purpose:** use himax sdk to flash the model
 **Short summary:** connect gv2 via usb-c, check flash without model, flash model
 **Agent:** current stack, himax sdk
+**Main Index:** [[_himax sdk]]
 
 ---
-
+[[himax flash command firmware]]
 
 Verbindt gv2 met usb-c
 CD naar S
 ```sh
 cd Himax_gv2_esp32/Seeed_Grove_Vision_AI_Module_V2/
 source .venv/bin/activate
+```
+for first install
+```sh
+pip install pyserial
 ```
 
 ```bash

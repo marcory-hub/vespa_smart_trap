@@ -4,8 +4,17 @@
 **Index:** [[himax from pt to flash]]
 
 ---
-[[himax flash firmware]]
+
 # flash command
+
+```sh
+python3 xmodem/xmodem_send.py \
+  --port=/dev/cu.usbmodem58FA1047631 \
+  --baudrate=921600 \
+  --protocol=xmodem \
+  --file=we2_image_gen_local/output_case1_sec_wlcsp/output.img \
+  --model="/Users/md/Developer/vespa_smart_trap/himax_test/Seeed_Grove_Vision_AI_Module_V2/model_zoo/tflm_yolo11_od/yolo11n_vespa_2026-02v1_allpx_full_integer_quant_vela_nopost.tflite 0xB7B000 0x00000"
+```
 
 ```sh
 python xmodem/xmodem_send.py --port=/dev/tty.usbmodem58FA1047631 --baudrate=921600 --protocol=xmodem --file=we2_image_gen_local/output_case1_sec_wlcsp/output.img --model="/Users/md/Developer/vespa_smart_trap/himax/Seeed_Grove_Vision_AI_Module_V2/model_zoo/tflm_yolo11_od/yolo26n_vespa_2026-02v1_allpx_imgsz224_full_integer_quant_vela.tflite 0xB7B000 0x00000"
