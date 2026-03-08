@@ -1,0 +1,33 @@
+---
+description: Protocol for updating README.md files (add-only, index, style, no existing-text changes)
+globs: "**/README.md"
+alwaysApply: false
+---
+
+# README.md update protocol
+
+When the user asks to update or add to a README.md:
+
+1. **Target**  
+   Use only the README path the user specified. Do not create a new README or assume a different path.
+
+2. **Preserve existing content**  
+   Do not change, rephrase, or remove existing text unless the user explicitly requests it. Add new content only where specified (e.g. “at the top”, “after section X”).
+
+3. **Index**  
+   If adding new sections, add or update a Contents/Outline at the top linking to both new and existing sections.
+
+4. **Style**  
+   Short sentences; easy-to-understand language; GitHub-appropriate tone. Prefer “quick” / “quick start” over “beginner”.
+
+5. **References**  
+   Prefer linking to existing sections (e.g. “follow [How to flash…](#how-to-flash-the-firmware) below”) over duplicating long procedures.
+
+6. **Links**  
+   Use the URLs the user provides. For GitHub binary/download links use the **raw** URL when the file is meant to be downloaded.
+
+7. **Clarify**  
+   If the request is ambiguous (headings, whether to include technical examples like `--model` and addresses, which README), ask briefly before generating.
+
+8. **Prompt template**  
+   For plan-mode runs, the user can use the prompt in `notes/_readme_update_prompt.md` to brief the agent.

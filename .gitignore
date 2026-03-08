@@ -33,6 +33,7 @@ test/
 himax/
 himax_test/
 himax_fork/
+himax_fork_backup/
 
 # History
 zz_vespa_smart_trap/
