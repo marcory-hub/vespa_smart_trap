@@ -35,6 +35,8 @@ himax/
 himax_test/
 himax_fork/
 himax_fork_backup/
+himax_fork_yolo26/
+himax_ai_web_toolkit/
 
 # History
 zz_vespa_smart_trap/
@@ -56,7 +58,7 @@ zz_vespa_smart_trap/
 !artifacts/models/*.tflite
 !artifacts/firmware/*.img
 
-# Himax AI web toolkit
-himax_ai_web_toolkit/
+
+
 
 
