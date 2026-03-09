@@ -56,4 +56,7 @@ zz_vespa_smart_trap/
 !artifacts/models/*.tflite
 !artifacts/firmware/*.img
 
+# Himax AI web toolkit
+himax_ai_web_toolkit/
+
 
