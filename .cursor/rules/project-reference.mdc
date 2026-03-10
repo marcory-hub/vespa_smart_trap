@@ -7,6 +7,7 @@ alwaysApply: true
 - **Completion**: After every task, ask user to update the central log in `notes/_timeline.md`. Do not create new standalone log notes; direct the user to add a line to notes/_timeline.md or the appropriate _*.md index. Notes are authored in Obsidian; sync to the repo via `notes/_cli_commands.md`.
 - **Model History**: Reference `notes/_model.md` for all versioning.
 - **Versioning**: When a new model is trained, propose a version increment (e.g., `dataset_vespa__{specification}`) based on existing history. Ask for specifications if not provided.
+- **SoT**: notes with SoT yes on top of the note are safe. Other notes should be regarded [to be verified]
 
 ## Do Not Suggest (Hard Guardrails)
 ### Project Hygiene:
