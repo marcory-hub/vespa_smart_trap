@@ -4,12 +4,13 @@
 - 192x192px or 224x224px max
 - [[vela]] int 8
 - max 2.4 MB 
+**SoT:** yes
 **Agent:** when flashing gv2 with himax is considered, check these
-**Index:** [[himax from pt to flash]]
+**Index:** [[_himax sdk]]
 
 ---
 
-1. The input image size for the model must be square 192x192 pixels
+1. The input image size for the model must be square 192x192 pixels or 224x224 pixels
 2. should not exceed 240x240 pixels. 
 3. yolo makes steps of 32px, so 224px is the max image size when using yolo
 4. quantization: full integer int8 tflite

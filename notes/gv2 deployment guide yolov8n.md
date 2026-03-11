@@ -5,7 +5,6 @@
 
 ---
 
-
 # Grove Vision AI V2 Deployment Guide for YOLOv8n INT8 TFLite
 
 ## Current Status Assessment

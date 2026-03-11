@@ -49,7 +49,7 @@ Sources: [[gv2 modelvoorwaarden]], [[himax cli flash model]], [[himax_2025]].
 - Flash Grove Vision AI v2; timeline and terminal output of flash attempts (Mac + Raspberry). Edge Impulse tested; issues (missing flash script, bootloader).
 
 ### 2025-08-23
-- **Himax environment and model flashing:** [[himax environment]], [[himax build firmware image]], [[himax flash firmware]], [[himax makefile]], [[himax modelzoo readme]]. **Export:** [[yolov8n pt naar int8 vela tflite]] (export snippet + vela command).
+- **Himax environment and model flashing:** [[himax environment]], [[himax build firmware image]], [[himax flash firmware first time]], [[himax makefile]], [[himax modelzoo readme]]. **Export:** [[yolov8n pt naar int8 vela tflite]] (export snippet + vela command).
 
 ### 2025-08-24
 - **Vela / int8:** New/updated: `acc Himax AI web toolkit.md`, `acc Vela.md`, `acc Makefile met tflm_yolov8_od.md`, `acc makefile.md`, `acc modelzoo readme.md`, `acc yolov8n pt naar int8 vela tflite.md`, int8 192 vs 640, QAT, TFLite, Build/Flash firmware, Environment. Acc rules split.
@@ -141,7 +141,7 @@ Compiled model appears in `output/`. Copy to `model_zoo/tflm_yolo11_od/` for fla
 `vela your_int8_model.tflite --config ethos-u55 --outdir ./grove_output`
 
 ### 4. Flash to GV2
-See [[himax cli flash model]], [[himax flash firmware]], [[gv2 build, copy, regenerate and flash]]. Summary:
+See [[himax cli flash model]], [[himax flash firmware first time]], [[gv2 build, copy, regenerate and flash]]. Summary:
 - Build firmware with `APP_TYPE = tflm_yolo11_od`; generate image; use xmodem to send `output.img` and model with address **0xB7B000 0x00000**.
 
 ---

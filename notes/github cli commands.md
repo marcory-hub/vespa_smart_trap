@@ -47,3 +47,15 @@ git push origin yolo11-vespa
 |`git add .`|Stages everything; easy to commit wrong files. Prefer `git add <file>`.|
 |`git reset --hard HEAD~1`|Deletes last commit and uncommitted changes; can’t recover. Only use when you’re sure. Prefer `git revert HEAD` to undo a commit safely.|
 |`git push --force`|Overwrites remote history. Use only when you know why (e.g. after reset and you’re the only one using the branch).|
+
+# Assume unchanged
+to avoid accidentally staging it
+```
+cd /Users/md/Developer/vespa_smart_trap/himax_fork
+git update-index --assume-unchanged EPII_CM55M_APP_S/makefile
+```
+and to undo it
+```
+git update-index --no-assume-unchanged EPII_CM55M_APP_S/makefile
+```
+

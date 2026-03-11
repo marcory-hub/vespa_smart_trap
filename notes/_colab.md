@@ -11,5 +11,4 @@ Future
 - numpy 1.24.4 needed, werkt alleen tot python 3.12
 
 Troubleshooting
-[[colab_crash_prevention]]
 [[z colab bugfix]], miniconda, python 3.8

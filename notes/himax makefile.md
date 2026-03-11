@@ -1,7 +1,8 @@
 
 **One-line purpose:** himax makefile
-**Short summary:** 
-**Agent:** after fresh install check ../EPII_CM55M_APP_S/makefile APP_TYPE=tflm_yolo11_od
+**Short summary:** default APP_TYPE = allon_sensor_tflm should be changed to tflm_yolo11_od 
+**Agent:** after fresh install check ../EPII_CM55M_APP_S/makefile 
+`APP_TYPE = tflm_yolo11_od`
 
 ---
 

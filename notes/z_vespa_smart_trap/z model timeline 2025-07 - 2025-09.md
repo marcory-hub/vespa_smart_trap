@@ -69,7 +69,7 @@
 2025-08-23
 - [[himax environment]]
 - [[himax build firmware image]]
-- [[himax flash firmware]]
+- [[himax flash firmware first time]]
 - [[himax makefile met tflm_yolov8_od]]
 - [[himax ai web toolkit installation]]
 ### ✅ Preformance drop door imgsz

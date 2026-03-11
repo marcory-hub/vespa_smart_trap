@@ -16,7 +16,7 @@ Versions of the vespa smart trap
 - [[z_raspberry_prototype]]
 - [[z_flowchart 2025-06-11]]
 - [[hardware componenten]], november 2025
-	- [[base_station_instruction 2026-01-29]], Step-by-step deployment for the base station build. 
+	- [[zz base_station_instruction 2026-01-29]], Step-by-step deployment for the base station build. 
 
 ---
 # Code env and sdk

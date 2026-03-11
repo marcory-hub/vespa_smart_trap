@@ -2,7 +2,11 @@
 **Short summary:** sync obsidian, git workflow
 **Agent:** CLI commands for user
 **Main Index:** [[__vespa_smart_trap]]
-**Quick links:** [[github cli commands]] [[himax flash command firmware]]
+
+---
+**Quick links:**
+- [[github cli commands]]
+- [[himax flash command firmware]]
 
 ---
 **Sync from Obsidian to Cursor (1:1 mirror into `notes/`)**
@@ -46,9 +50,5 @@ Updates changed files and adds new ones, but **never removes** any existing file
 
 ---
 
-
-
----
-
 - [[zip command on mac zonder metadata en DS_Store]]
-- [[himax flash command firmware]] to flash new model 
+- [[himax flash command firmware]] 

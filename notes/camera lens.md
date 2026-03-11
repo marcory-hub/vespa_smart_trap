@@ -3,7 +3,7 @@
 **Agent:** inactive
 
 
-
+---
 
 ![[acc SSCMA Seeed SenseCraft Model Assistant-2.png]]
 

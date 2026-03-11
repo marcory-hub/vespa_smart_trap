@@ -5,12 +5,8 @@
 **Main-Index:**: [[__vespa_smart_trap]]
 
 ---
-
-
 - [[_himax sdk]]
 - [[gv2 deployment guide yolov8n]]
-
-Do NOT upload a int8.tflt to sensecraft.ai (give and invoke)
 
 Documentation
 - [[gv2 documentation]], wiki, seeedstudio, sensecraft, swift yolo, github, edge impuls, himax, ML Developers Guide for Cortex-M Processors

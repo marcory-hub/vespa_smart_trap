@@ -8,6 +8,7 @@
 - [Teams Link](https://teams.microsoft.com/l/team/19%3a9CKnuD87B-QhKkeltjaa-HPq7MdoHDnjnNztWg0TCw81%40thread.tacv2/conversations?tenantId=22dd9f92-5f36-483e-b49d-2536ec2bb243)  
 
 acc meetings
+[[meeting 2025-03-12]] 15:00
 [[meeting_2026_02_12]] 15:00
 [[mail 2025-02-10 AG BASE hardware stacks]], BASE Lilygo T-Sims with custom PCBs
 [[meeting 2025-12-10 eindhoven]]

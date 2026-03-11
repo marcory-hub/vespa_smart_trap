@@ -108,4 +108,20 @@ echo "int main() { return 0; }" | arm-none-eabi-gcc --specs=nano.specs -x c -c -
 ```
 Geen output of foutmelding als alles goed is
 
+```sh
+cd /Users/md/Developer/vespCVacc/Himax/
+source .venv/bin/activate
+```
+### Himax github project clonen
+dit bevat enkele voorbeelden
+```sh
+git clone --recursive https://github.com/HimaxWiseEyePlus/Seeed_Grove_Vision_AI_Module_V2.git
+cd Seeed_Grove_Vision_AI_Module_V2
+```
+### PATH
+```sh
+export PATH="/Applications/ArmGNUToolchain/14.3.rel1/arm-none-eabi/bin:$PATH" 
+hash -r
+```
+
 dan verder met [[himax build firmware image]]

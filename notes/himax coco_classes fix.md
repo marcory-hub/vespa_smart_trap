@@ -2,7 +2,7 @@
 **One-line purpose:** file name with the COCO classes
 **Short summary:** path to file with the hardcoded COCO classes array
 **Agent:** inactive
-**Main index:** [[himax from pt to flash]]
+**Main index:** [[_himax sdk]]
 
 ---
 

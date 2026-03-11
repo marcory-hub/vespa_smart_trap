@@ -1,4 +1,4 @@
-**One-line purpose:** background and conversion to vela, main index [[himax from pt to flash]]
+**One-line purpose:** background and compilation to vela
 **Short summary:** colab notebook, vela summary
 **SoT:** vela documentation links
 **Agent:** vela information for installation

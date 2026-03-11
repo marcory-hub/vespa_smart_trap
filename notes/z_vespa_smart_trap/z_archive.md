@@ -5,3 +5,5 @@
 [[z_audio]], depricated, database with sound not sufficient for ML training, not tested PMD
 
 [[z_fungi]], inactive, not allowed yet
+
+[[z himax_yolo26]] 
