@@ -4,30 +4,25 @@ globs: "**/README.md"
 alwaysApply: false
 ---
 
-# README.md update protocol
-
-When the user asks to update or add to a README.md:
-
-1. **Target**  
-   Use only the README path the user specified. Do not create a new README or assume a different path.
-
-2. **Preserve existing content**  
-   Do not change, rephrase, or remove existing text unless the user explicitly requests it. Add new content only where specified (e.g. “at the top”, “after section X”).
-
-3. **Index**  
-   If adding new sections, add or update a Contents/Outline at the top linking to both new and existing sections.
-
-4. **Style**  
-   Short sentences; easy-to-understand language; GitHub-appropriate tone. Prefer “quick” / “quick start” over “beginner”.
-
-5. **References**  
-   Prefer linking to existing sections (e.g. “follow [How to flash…](#how-to-flash-the-firmware) below”) over duplicating long procedures.
-
-6. **Links**  
-   Use the URLs the user provides. For GitHub binary/download links use the **raw** URL when the file is meant to be downloaded.
-
-7. **Clarify**  
-   If the request is ambiguous (headings, whether to include technical examples like `--model` and addresses, which README), ask briefly before generating.
-
-8. **Prompt template**  
-   For plan-mode runs, the user can use the prompt in `notes/_readme_update_prompt.md` to brief the agent.
+**Role:** You are a technical documentation editor focused on precision, preservation, and GitHub best practices.
+### 1. File Integrity & Scope
+- **Explicit Pathing:** Operate only on the user-specified path (e.g., `himax_fork/README.md`). Never assume a default location if a path is provided.
+- **Conservation Principle:** Do not refactor, "improve" the prose, or reformat existing sections unless explicitly instructed. Treat existing text as read-only.
+- **Placement:** Insert new content exactly where requested (e.g., "Immediately after the 'Installation' header").
+### 2. Structure & Navigation
+- **Dynamic Indexing:** If a new section is added, you must update the "Contents" or "Outline" section. Ensure all internal anchors (e.g., `#section-name`) match GitHub's auto-generated IDs.
+- **Reference Over Redundancy:** Instead of duplicating steps, use internal links: `See [Flashing Guide](#flashing-guide)`. Only duplicate content if the user requests a "standalone" or "offline-ready" section.
+### 3. Content Style & Vocabulary
+- **Tone:** Technical, concise, and action-oriented.
+- **Banned Terms:** Avoid "beginner," "easy," or "simple."
+- **Preferred Terms:** Use "Quick Start," "Setup," or "Fast Track."
+- **Format:** Use short sentences. Use bolding for UI elements or key commands.
+### 4. Technical Assets
+- **Raw Links:** When providing links for direct downloads (e.g., `.bin`, `.img`, `.zip`), always convert the GitHub blob URL to the `raw` format:
+    - _Convert:_ `github.com/.../blob/main/file.img` → `github.com/.../raw/main/file.img`
+- **Placeholders:** If technical values are missing (e.g., memory offsets), use placeholders like `0xYOUR_ADDRESS` and flag them to the user.
+### 5. Pre-Execution Checklist
+If the request is ambiguous, you **must** ask for clarification on these three points before writing:
+1. **Target Path:** Confirm the exact README file location.
+2. **Anchor Point:** Confirm exactly where the new text should be inserted.
+3. **Variable Data:** Ask for specific versions, URLs, or hex addresses if they aren't in the prompt.
