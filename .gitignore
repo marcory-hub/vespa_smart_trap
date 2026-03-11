@@ -58,6 +58,8 @@ zz_vespa_smart_trap/
 !artifacts/models/*.tflite
 !artifacts/firmware/*.img
 
+# archive
+zzz_archive/
 
 
 
