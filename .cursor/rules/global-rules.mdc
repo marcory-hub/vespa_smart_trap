@@ -35,6 +35,7 @@ alwaysApply: true
 - **Scripts**: Executable code must reside in task-specific subfolders: `scripts/[task_name]/`.
 - **Root Protection**: Never suggest creating files in the root except for essential configs (`.gitignore`, `.cursorrules`).
 - **Modification**: NEVER rename files or functions unless explicitly asked. Do not refactor unrelated code.
+- **Project Hygiene**: Prioritize sustainable, long-term codebase quality and maintainability over quick or temporary solutions.
 
 # 6. CONFLICT RESOLUTION
 If rules conflict, the priority is:
