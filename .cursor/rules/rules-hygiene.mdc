@@ -15,7 +15,7 @@ alwaysApply: true
 
 ## Boundary between Rules and Notes
 - **Notes (.md)**: Define the "Project Memory." They contain the dataset history, hardware pinouts, training results, and the evolving plan.
-- **Rules** define the **How**; `notes/_plan.md` defines the **Now**
+- **Rules** define the **How**; `notes/_timeline.md` defines the **Now**
 
 ## Add to .cursor/rules when:
 - **Recurring Instructions**: Mandatory protocols (e.g., academic tone, citation format).
@@ -29,7 +29,7 @@ alwaysApply: true
 - **Project Data**: Dataset counts, augmentation options, and comparison tables.
 - **Run History**: Training results, model metrics, and Colab run logs.
 - **Background Info**: Hardware schematics, UART protocols, and detailed meeting minutes.
-- **Dynamic Content**: Anything that changes weekly or requires a history of edits (e.g., _plan.md).
+- **Dynamic Content**: Anything that changes weekly or requires a history of edits (e.g., _timeline.md).
 
 ## Rule Hygiene:
 - Never duplicate a table or list from a note into a rule.

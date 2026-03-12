@@ -7,10 +7,10 @@ alwaysApply: true
 
 ## 1. Mandatory Context Loading
 Before proposing logic or answering architectural questions:
-- **Always check** `notes/_plan.md` for the current active sprint (e.g., YOLOv26_on_we).
+- **Always check** `notes/_timeline.md` for the current active sprint (e.g., YOLOv26_on_we).
 - **Reference** `notes/_hardware_stack.md` for pinouts/UART configs before suggesting embedded code.
 - **Consult** `.cursor/rules/` to ensure consistency with pedagogical and technical standards.
-- **For hardware/pinout/UART questions** read `notes/_hardware_stack.md` first. For next steps / roadmap questions, read `notes/_plan.md` first. For model versioning, read `notes/_model.md` first.
+- **For hardware/pinout/UART questions** read `notes/_hardware_stack.md` first. For next steps / roadmap questions, read `notes/_timeline.md` first. For model versioning, read `notes/_model.md` first.
 
 ## 1b. Project layout & notes
 - **Layout SoT:** Top-level directory layout and where code lives is defined in `notes/_project_layout.md`. Agents must treat it as source of truth for folder roles.
@@ -20,7 +20,7 @@ Before proposing logic or answering architectural questions:
 
 | Topic / Task | Primary Source of Truth (Read These First) |
 | :--- | :--- |
-| **Active Roadmap** | `notes/_plan.md`, `notes/_timeline.md` |
+| **Active Roadmap** | `notes/_timeline.md` |
 | **Pedagogical Workflow** | `.cursor/rules/agent-persona.mdc`, `.cursor/rules/global-rules.mdc` |
 | **Hardware / GPIO / PCB** | `notes/_hardware_stack.md` (Verifying < 2.4MB SRAM limits) |
 | **Data & YOLO Pipeline** | `notes/_datasets.md`, `notes/_swift-yolo.md` |
@@ -30,7 +30,7 @@ Before proposing logic or answering architectural questions:
 
 ## 3. Knowledge Synchronization Protocol
 - **Pedagogical Sync**: After a teaching moment where logic is confirmed, the agent must ask: "Should I update the theory in `notes/` or propose an update to the pedagogical standards in `.cursor/rules/agent-persona.mdc` / `.cursor/rules/global-rules.mdc`?"
-- **Agreed Changes**: Once a plan is finalized, update `notes/_plan.md`. Use `[to be verified]` for any assumptions about YOLOv26 performance until benchmarks are run.
+- **Agreed Changes**: Once a plan is finalized, update `notes/_timeline.md`. Use `[to be verified]` for any assumptions about YOLOv26 performance until benchmarks are run.
 - **Precedence**: `.cursor/rules/` (The "How") > `notes/` (The "What").
 
 ## 4. Hardware & Vision Pipeline
@@ -51,4 +51,4 @@ Before proposing logic or answering architectural questions:
 If documentation conflicts with current context:
 1. Prioritize .cursor/rules/safety-guardrails.mdc **Hallucination Prevention**.
 2. Flag the discrepancy to the user with a `[to be verified]` tag.
-3. Defer to the user's current intent over outdated `_plan.md` entries.
+3. Defer to the user's current intent over outdated `_timeline.md` entries.
