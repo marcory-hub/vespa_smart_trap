@@ -1,0 +1,4 @@
+[submodule "gv2_firmware"]
+	path = gv2_firmware
+	url = https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2.git
+	branch = yolo11-vespa
