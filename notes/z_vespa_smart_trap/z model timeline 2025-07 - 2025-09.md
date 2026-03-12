@@ -83,7 +83,7 @@
 - yolo11_192
 - yolo11_224
 - [[acc netron vergelijking modellen seeed vs custom]]
-- [[himax modellen uit modelzoo flashen]]
+- [[himax find flash address]]
 ### ❌ conversion pt to onnx to TFLite to vela
 2025-08-30
 - yolov8n coco 80cls en vespCV

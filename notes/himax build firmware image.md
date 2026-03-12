@@ -3,6 +3,7 @@
 **Short summary:** commands to build the firmware
 **Agent:** for user to copy and paste to terminal
 **Main Index:** [[_himax sdk]]
+[[himax build firmware first install]]
 
 ---
 

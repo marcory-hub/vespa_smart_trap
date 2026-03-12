@@ -11,6 +11,7 @@ Versions of the vespa smart trap
 # Hardware Stack
 - [[camera]]
 - [[_grove vision ai v2]]
+- 2026-03-11: for [[gv2_sd]]GV2 connected via Grove Base for XIAO (Seeed [Grove Shield for XIAO](https://www.seeedstudio.com/Grove-Shield-for-Seeeduino-XIAO-p-4621.html)) UART port; firmware uses Serial1 (UART1).
 - [[_lilygo boards]]
 ##### Hardware archive
 - [[z_raspberry_prototype]]

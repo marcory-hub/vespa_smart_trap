@@ -1,11 +1,26 @@
-**One-line purpose:** index of all model files
+**One-line purpose:** model training, quantization and compiling and an index of all model files
 **Key info:** training configs of yolov8s, yolov10, yolo11n and swift-yolo models
 **Agent:** current swift-yolo model should trained with dataset_2026-2 (4 versions) and put on sensecraft.ai
 **Main Index:** [[__vespa_smart_trap]]
 
 
 ---
+# train, quantize and compile model
+1. Train yolo model
+	1. [YOLO11n Training on Google Colab](https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2#:~:text=1.-,YOLO11n%20Training%20on%20Google%20Colab,-A%20notebook%20to) 2026-02-19
+2. Full integer quantization and vela conversion
+	1. [YOLO11n Full Integer Quantization and VELA Conversion for Grove Vision AI V2](https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2#:~:text=2.-,YOLO11n%20Full%20Integer%20Quantization%20and%20VELA%20Conversion%20for%20Grove%20Vision%20AI%20V2,-This%20notebook%20handles) 2026-02-25
+3. [[gv2 model requirements]]
+- latest yolo11n models for deployment on gv2
+- made with dataset 2026-02v1 (no preprocessing, no augmentation)
+- 30-40-60px object size [[dataset pixelsize raspberry cam 1.3 at 10 cm]]
+## full integer quantization and vela conversion
+- github [yolo11n-on-grove-vision-ai-v2](https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2)
+- colab [yolo11n training](https://colab.research.google.com/drive/1TGsNgTjzIeN_jRtQZf-Y3opKIXQ82djo?usp=sharing)
+- colab [yolo pt to vela](https://colab.research.google.com/drive/1TGsNgTjzIeN_jRtQZf-Y3opKIXQ82djo?usp=sharing)
+- [[vela]] background information, a tool to compile a for TensorFlow Lite  (.tflite) for Microcontrolers
 
+---
 # Current models
 [wandb vespa 2026-02](https://wandb.ai/mvdijk-vespcv/vespa_2026-02?nw=nwusermvdijk)
 - [[yolo11n_vespa_2026-02v1_imgsz224]] slightly better than yolo26n
@@ -17,11 +32,7 @@
 	- mAP50-95
 	- vcra 0.747035
 	- vvel 0.769797
-- [[yolo26n_vespa_2026-02v1_allpx_imgsz192]] no difference on sensecraft.ai between imgsz192 and imgsz224. Seems like 224px are reduced to 192. This is not the case when flashed with himax
 
-- [[yolo26n_vespa_2026-02v1_60px_imgsz224]]
-- [[yolo26n_vespa_2026-02v1_40px_imgsz224]]
-- [[yolo26n_vespa_2026-02v1_30px_imgsz224]]
 
 # Models for test purposes
 - [[swiftyolo_epoch_100_int8_vela.tflite]] 
@@ -30,7 +41,7 @@
 
 - [[_datasets]], workflow, vesp_2026-02, annotation, species, roboflow
 
-- [[_colab]], swift-yolo training
+- [[_colab to do aanvullen]], swift-yolo training
 
 - [[ultralytics yolo documentation]] 
 - [[swift-yolo documentation]]

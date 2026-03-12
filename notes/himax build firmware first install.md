@@ -50,6 +50,7 @@ cd ..
 ```
 
 next
+- [[himax install requirements]]
 - [[himax install xmodem]] (only for first install)
 -  [[himax flash command firmware]] to flash new model 
 - [[himax ai web toolkit installation]]
