@@ -6,6 +6,8 @@
 ---
 
 [[_timeline]] to do's and done
+[[_project_layout]]
+
 
 [[_meetings]], notes, online platforms, funding, mails, media
 

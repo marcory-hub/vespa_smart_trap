@@ -12,6 +12,10 @@ Before proposing logic or answering architectural questions:
 - **Consult** `.cursor/rules/` to ensure consistency with pedagogical and technical standards.
 - **For hardware/pinout/UART questions** read `notes/_hardware_stack.md` first. For next steps / roadmap questions, read `notes/_plan.md` first. For model versioning, read `notes/_model.md` first.
 
+## 1b. Project layout & notes
+- **Layout SoT:** Top-level directory layout and where code lives is defined in `notes/_project_layout.md`. Agents must treat it as source of truth for folder roles.
+- **Notes privacy:** Notes stay private after publication. Do not suggest publishing or moving note content into public repos unless the user asks.
+
 ## 2. Source of Truth Matrix
 
 | Topic / Task | Primary Source of Truth (Read These First) |

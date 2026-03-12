@@ -5,6 +5,7 @@
 
 ---
 
+[[_inbox]]
 
 
 - [[temp next session]]

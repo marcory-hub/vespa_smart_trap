@@ -28,19 +28,7 @@ __main__.py
 .Trashes
 
 # Large data and model dirs
-test/
-
-# Large vendored / SDK trees
-himax/
-himax_test/
-himax_fork/
-himax_fork_old/
-himax_fork_backup/
-himax_fork_yolo26/
-himax_ai_web_toolkit/
-
-# History
-zz_vespa_smart_trap/
+data/
 
 # binary model / firmware artifacts (ignored by default)
 *.tflite
@@ -52,17 +40,14 @@ zz_vespa_smart_trap/
 *.bin
 *.h5
 *.pb
-# curated release artifacts if needed
-!artifacts/
+
+# Release .tflite and .img live in gv2_firmware/model_zoo (firmware repo), not here.!artifacts/
 !artifacts/models/
 !artifacts/firmware/
 !artifacts/models/*.tflite
 !artifacts/firmware/*.img
 
 # archive
-zzz_archive/
+z_archive/
+z_third_party/
 
-
-# workspace
-/vespa_smart_trap.code-workspace
-/gv2_sd/*.code-workspace

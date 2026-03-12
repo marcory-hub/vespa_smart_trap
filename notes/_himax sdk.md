@@ -31,7 +31,6 @@ flash model
 ## himax installation
 - [[himax installation on MacOS environment]]
 - [[himax build firmware first install]]
-- [[himax install xmodem]]
 ## himax build firmware image
 - [[himax makefile]] **APP_TYPE** tflm_yolo11_od  
 - [[himax restore gv2 factory settings]]
