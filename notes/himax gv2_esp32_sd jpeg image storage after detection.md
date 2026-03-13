@@ -78,7 +78,7 @@ Do not write code until the plan is approved.
 4. **Concise structure:** Use a high-level table or short bullets, no filler.
 5. **Context-driven only:** Do not invent tools, commands, or hardware behavior.
 6. **Do not touch old experiments:** Never modify anything in `zzz_archive/cv_vespcv_grovevisionaiv2`.
-7. **New work location:** Create and use a new folder: `gv2_sd`.
+7. **New work location:** Create and use a new folder: `gv2_esp32_sd`.
 8. **Target storage:** JPEG files must be saved on the **GV2 SD card** (not ESP32 SD).
 
 ## Source Links
@@ -94,7 +94,7 @@ Do not write code until the plan is approved.
 - Development environment: VSCode/Cursor with PlatformIO.
 
 ## Objective
-Implement ESP32-S3 firmware (in `gv2_sd`) that validates incoming GV2 detection data and triggers GV2 JPEG saves to GV2 SD card with per-class object-aware rate-limited capture.
+Implement ESP32-S3 firmware (in `gv2_esp32_sd`) that validates incoming GV2 detection data and triggers GV2 JPEG saves to GV2 SD card with per-class object-aware rate-limited capture.
 
 ## Required Behavior
 - Only classes `0`, `1`, `2`, `3` are considered.
@@ -114,7 +114,7 @@ Implement ESP32-S3 firmware (in `gv2_sd`) that validates incoming GV2 detection 
 
 ## Implementation Expectations
 When plan is approved, implement:
-- PlatformIO project in `gv2_sd`.
+- PlatformIO project in `gv2_esp32_sd`.
 - Clear state machine for:
   - input validation
   - per-class/per-object tracking
@@ -142,7 +142,7 @@ Return exactly:
 - Include explicit “what to test first on hardware”.
 
 ## Output format (After Plan Approval / Code Phase)
-- Files to create/modify (only under `gv2_sd`).
+- Files to create/modify (only under `gv2_esp32_sd`).
 - Short explanation per file.
 - Test procedure with expected serial output.
 - Known limits and open `[to be verified]` items.
@@ -156,17 +156,17 @@ Return exactly:
 
 ### Objective
 
-Implement ESP32-S3 code in `gv2_sd` that listens to Grove Vision AI V2 detection messages and triggers JPEG saves to the GV2 SD card with per-class, per-object limits and timing rules.
+Implement ESP32-S3 code in `gv2_esp32_sd` that listens to Grove Vision AI V2 detection messages and triggers JPEG saves to the GV2 SD card with per-class, per-object limits and timing rules.
 
 ### The Plan
 
 |   |   |   |   |
 |---|---|---|---|
 |Step|Action|Why|Evidence/Verification|
-|1|Create a fresh PlatformIO project in `gv2_sd` for ESP32-S3 (no changes to `zzz_archive/cv_vespcv_grovevisionaiv2`).|Keeps new work clean and avoids breaking old experiments.|Check that a new `gv2_sd` folder exists with a `platformio.ini` targeting ESP32-S3.|
+|1|Create a fresh PlatformIO project in `gv2_esp32_sd` for ESP32-S3 (no changes to `zzz_archive/cv_vespcv_grovevisionaiv2`).|Keeps new work clean and avoids breaking old experiments.|Check that a new `gv2_esp32_sd` folder exists with a `platformio.ini` targeting ESP32-S3.|
 |2|From the Seeed wiki and forum links, confirm the Grove UART speed, frame format, and JPEG save command syntax for Grove Vision AI V2.|We must match the real wire format and command words to avoid silent errors.|Read the two Seeed links and note baud rate, serial settings, detection message layout, and SD snapshot command names. Mark unclear parts as `[to be verified]`.|
 |3|Read old code in `zzz_archive/cv_vespcv_grovevisionaiv2` **read-only** to recover any known-good UART parsing and GV2 control patterns.|Reusing proven ideas reduces trial and error.|Open prior sketches or sources there and identify how class id, score, and box values were parsed, without editing those files.|
-|4|In `gv2_sd`, add a small UART monitor program that only prints raw GV2 messages from Grove UART to the serial console on the Mac.|Confirms that data actually arrives and matches the expected format before adding logic.|Flash this simple program, open the serial monitor, and watch for lines when objects appear; confirm baud and framing or mark deviations as `[to be verified]`.|
+|4|In `gv2_esp32_sd`, add a small UART monitor program that only prints raw GV2 messages from Grove UART to the serial console on the Mac.|Confirms that data actually arrives and matches the expected format before adding logic.|Flash this simple program, open the serial monitor, and watch for lines when objects appear; confirm baud and framing or mark deviations as `[to be verified]`.|
 |5|Design and implement a clear message parser that turns each GV2 UART frame into a simple detection record: timestamp, class id, confidence, and box coordinates.|Structured records make later logic and testing easier to understand.|Use the format from docs and archive; log both the raw line and parsed fields, and handle bad or partial lines with safe fallbacks.|
 |6|Filter detections so that only classes 0, 1, 2, and 3 are passed into the tracking logic.|Other classes should not trigger saves and would only add noise.|Add a simple check on class id; confirm in logs that other class ids are ignored.|
 |7|Define a per-class, per-object tracking structure that keeps for each active object: class id, current box, last seen time, last save time, and image count.|This structure holds all information needed for continuity, limits, and timing rules.|Inspect code to see that each tracked item stores these fields; log this state at debug level for a few cycles.|
@@ -216,14 +216,14 @@ Implement ESP32-S3 code in `gv2_sd` that listens to Grove Vision AI V2 detection
 -   
     New PlatformIO project
     
-    - File: `gv2_sd/platformio.ini`
+    - File: `gv2_esp32_sd/platformio.ini`
     - Content: Environment `esp32s3-gv2` using:
         - `platform = espressif32@6.3.0` and `board = esp32s3box` (from LilyGO T-SIM7080G-S3 reference `platformio.ini` `[env:lilygo-t-sim7080x-s3]`).
         - `framework = arduino`, `monitor_speed = 115200`, `upload_speed = 921600`.
         - `lib_deps` points to the official SSCMA library: `https://github.com/Seeed-Studio/Seeed_Arduino_SSCMA.git`.
 - Main firmware logic
     
-    - File: `gv2_sd/src/main.cpp`
+    - File: `gv2_esp32_sd/src/main.cpp`
     - Uses: `Seeed_Arduino_SSCMA` with `HardwareSerial atSerial(0)` (ESP32) as in Seeed docs.
     - Core behavior:
         - Calls `AI.begin(&atSerial);` in `setup()` and periodically runs `AI.invoke(1, false, false)` to get detection boxes (no image data).
@@ -251,7 +251,7 @@ Implement ESP32-S3 code in `gv2_sd` that listens to Grove Vision AI V2 detection
             - Main `loop()` calls `process_detections(now_ms);` and then `delay(100);` for a modest polling rate.
 - Plan alignment
     
-    - Steps 1–2: New `gv2_sd` PlatformIO project created, using SSCMA and 921600 baud as per Seeed wiki (`Serial Baudrate` section and SSCMA examples).
+    - Steps 1–2: New `gv2_esp32_sd` PlatformIO project created, using SSCMA and 921600 baud as per Seeed wiki (`Serial Baudrate` section and SSCMA examples).
     - Step 4 (UART monitor): The current `main.cpp` includes detailed serial logging of raw detections and key decisions; you can initially treat it as a monitor by watching only the `[det]` lines.
     - Steps 5–10 (parsing, filtering, tracking, timing): Implemented via:
         - `process_detections(...)` (parsing SSCMA `boxes()` into a simple struct).

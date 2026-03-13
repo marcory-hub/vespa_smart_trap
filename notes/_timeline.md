@@ -8,12 +8,21 @@
 [[_inbox]]
 
 
+### Todo for tomorrow
+
+- .gitignore– In line 44, delete`!artifacts/`so it reads:  
+    `# Release .tflite and .img live in gv2_firmware/model_zoo (firmware repo), not here.`
+- notes/_project_layout.md– In the workflow block at the top, change “gv2_sd” to “gv2_esp32_sd” (e.g. “workflow for gv2_esp32_sd”, “open gv2_esp32_sd in new window”).
+- notes/_timeline.md– Add a short line for today: e.g. “Layout: gv2_esp32_sd rename, project layout SoT, notes privacy, model_zoo; submodule gv2_firmware; experiments added.”
+- Next project step– Pick one from`notes/_plan.md`or from the gv2 SD flow (e.g. UART monitor in gv2_esp32_sd, or next firmware branch in gv2_firmware) and do the first concrete task.
+- 
+
 - [[temp next session]]
 	- [[temp 388_test]]
 	- [[temp gv2 conf ratio]]
 - [[zz himax_yolo26 plan mode]]
 2026-03-11
-- [[himax gv2 sd jpeg image storage after detection]]
+- [[himax gv2_esp32_sd jpeg image storage after detection]]
 
 2026-03-10
 - **ZIPPED HIMAX_YOLO26** (not on git, deployment failed)
