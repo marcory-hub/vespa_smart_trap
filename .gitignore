@@ -42,10 +42,6 @@ data/
 *.pb
 
 # Release .tflite and .img live in gv2_firmware/model_zoo (firmware repo), not here.!artifacts/
-!artifacts/models/
-!artifacts/firmware/
-!artifacts/models/*.tflite
-!artifacts/firmware/*.img
 
 # archive
 z_archive/
