@@ -42,4 +42,3 @@ If rules conflict, the priority is:
 1. **Safety & Data-Loss Prevention** .cursor/rules/safety-guardrails.mdc
 2. **Hardware Constraints** (GV2 < 2.4MB SRAM, UART timing).
 3. **Pedagogical Integrity** (Teacher-First: Explanation before Execution).
-4. **Style & Brevity**.

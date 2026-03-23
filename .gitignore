@@ -28,7 +28,7 @@ __main__.py
 .Trashes
 
 # Large data and model dirs
-data/
+data/labels/
 
 # binary model / firmware artifacts (ignored by default)
 *.tflite
