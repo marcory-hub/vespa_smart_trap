@@ -1,5 +1,5 @@
 
-**One-line purpose:** example vespa detection with ai, main index [[example]]
+**One-line purpose:** example vespa detection with ai, main index [[example_vespatraps]]
 **Short summary:** two publications with yolo model to detect vespa velutina
 **Agent:** archived
 

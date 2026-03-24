@@ -1,5 +1,5 @@
 
-**One-line purpose:** detection of qr code on hornet, main index [[example]]
+**One-line purpose:** detection of qr code on hornet, main index [[example_vespatraps]]
 **Short summary:** Interactive leaflet map to track the location of the nest. Each tag can be individually selected on the map to see the flying distance with a circle for each hornet.
 **Agent:** archived
 

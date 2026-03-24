@@ -1,4 +1,4 @@
-**One-line purpose:** index for dataset_vespa_hornet3000, [[_datasets]]
+**One-line purpose:** index for dataset_vespa_hornet3000, [[_datasets_vst]]
 **Short summary:** published on kaggle
 **Agent:** archived
 

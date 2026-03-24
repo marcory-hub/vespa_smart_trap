@@ -1,5 +1,5 @@
 
-**One-line purpose:** selection criteria of null images [[_datasets]]
+**One-line purpose:** selection criteria of null images [[_datasets_vst]]
 **Key info:** 
 **Agent:**
 

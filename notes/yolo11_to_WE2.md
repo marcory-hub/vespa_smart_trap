@@ -1,7 +1,7 @@
 **One-line purpose:** see if all quantified and conversion to vela have the same tensor
 **Short summary:** 
 **Agent:** 
-**Index:** [[himax from pt to flash]][[_model]]
+**Index:** [[himax from pt to flash]][[_model_vst]]
 
 ---
 yolo11n_full_integer_quant_vela_imgz_224_kris_nopost_241230.tflite --> model works on GV2

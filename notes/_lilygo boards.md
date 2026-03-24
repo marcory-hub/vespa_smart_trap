@@ -6,7 +6,5 @@
 
 ---
 
-
-
 [[lilygo t-sim7080g pinout]]
 

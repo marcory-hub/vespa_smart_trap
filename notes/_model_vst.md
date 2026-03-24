@@ -3,7 +3,6 @@
 **Agent:** current swift-yolo model should trained with dataset_2026-2 (4 versions) and put on sensecraft.ai
 **Main Index:** [[__vespa_smart_trap]]
 
-
 ---
 # train, quantize and compile model
 1. Train yolo model
@@ -22,6 +21,14 @@
 
 ---
 # Current models
+#### Models with NULL images
+(Quantized and compiled 2026-03-24)
+- yolo11n_vespa_2026v1_allpx_imgsz224
+- yolo11n_vespa_2026v1_30px_imgsz224
+- yolo11n_vespa_2026v1_40px_imgsz224
+- yolo11n_vespa_2026v1_60px_imgsz224
+
+#### Models without NULL images
 [wandb vespa 2026-02](https://wandb.ai/mvdijk-vespcv/vespa_2026-02?nw=nwusermvdijk)
 - [[yolo11n_vespa_2026-02v1_imgsz224]] slightly better than yolo26n
 	- mAP50           | 0.9779  | 0.9731  | -0.0047
@@ -39,7 +46,7 @@
 
 ---
 
-- [[_datasets]], workflow, vesp_2026-02, annotation, species, roboflow
+- [[_datasets_vst]], workflow, vesp_2026-02, annotation, species, roboflow
 
 - [[_colab to do aanvullen]], swift-yolo training
 

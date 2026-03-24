@@ -3,6 +3,12 @@ credentials*.md
 
 # Editor / IDE
 .vscode/
+.history/
+
+# Cursor rules
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/*
 
 # Python & envs
 .venv/
@@ -28,10 +34,10 @@ __main__.py
 .Trashes
 
 # Large data and model dirs
-data/labels/
+data/test/labels/
 
 # binary model / firmware artifacts (ignored by default)
-*.tflite
+# *.tflite
 *.pt
 *.onnx
 *.npz

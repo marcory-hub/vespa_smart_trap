@@ -1,6 +1,7 @@
 **One-line purpose**: index of types of traps and hardware components
 **Key info:** hardware features and documentation
 **Agent:** current hardware stack: grove vision AI v2, liligo's (4 versions). This is used in different combination to assemble the vespa smart trap ONE, BASE and PRO
+**SoT**: yes
 **Main Index:** [[__vespa_smart_trap]]
 
 ---

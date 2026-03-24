@@ -1,16 +1,14 @@
 **One-line purpose:** Single place that explains how my Vespa / GV2 / ESP32 projects fit together, for me and for agents. Only my own repos are listed.
 **Short summary:** 
-**Agent:** SoT - this is where code lives and dies, keep monorepo
+**Agent:** this is where code lives and dies, keep monorepo
+**SoT:** yes
 **Main Index:** [[__vespa_smart_trap]]
 **User:** start new task with @folder_name
 
 ---
-workflow for gv2_sd
+workflow for gv2_esp32_sd
 - use repo for code changes
 - open gv2_sd in new window for platformIO build upload monitor
-
-gv2 firmware fork [[submodule]]
-[[submodule update]]
 
 ---
 
@@ -18,6 +16,8 @@ gv2 firmware fork [[submodule]]
 
 **Top-level layout**
 - **gv2_firmware**: builds GV2 image (Himax output.img). Only writable Himax forks; dead-end prototypes move to archive as read-only.
+	- gv2 firmware fork [[submodule]]
+[[submodule update]]
 - **gv2_esp32_sd**: GV2 image adaptation + ESP32-S3 firmware for saving images to SD. Two parts: (1) adapted GV2 output.img, (2) ESP32-S3 (e.g. PlatformIO) firmware. Formerly gv2_sd.
 - **data**: dataset, test images and labels. No production code here.
 - **scripts**: small utilities, per prototype in one subfolder.

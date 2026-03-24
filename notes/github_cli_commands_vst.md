@@ -2,7 +2,7 @@
 **Short summary:** branch workflow and safety
 **SoT:** never suggest items under #avoid
 **Agent:** ask user to update after user aske a question about github, explain the how, why and risks
-**Main Index:**[[_cli_commands]]
+**Main Index:**[[_cli_commands_vst]]
 
 ---
 # Remotes

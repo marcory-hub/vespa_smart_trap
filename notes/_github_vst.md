@@ -5,6 +5,11 @@
 **Main Index:** [[__vespa_smart_trap]]
 
 ---
+# github commands
+[[submodule]]
+
+---
+
 # Project Repositories
 - https://github.com/vespCV
 - [VSTPlus GitHub](https://github.com/aggerritsen/VSTPlus)

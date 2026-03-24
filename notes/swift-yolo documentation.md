@@ -2,7 +2,7 @@
 **Short summary:** 
 **SoT:** 
 **Agent:** link to seeed modelzoo
-**Main Index:** [[_model]]
+**Main Index:** [[_model_vst]]
 
 ---
 

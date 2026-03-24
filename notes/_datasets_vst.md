@@ -1,6 +1,7 @@
 **One-line purpose:** subindex with current dataset, dataset archive, annotation guidelines, general dataset workflow
 **Key info:** all informations about datasets
 **Agent:** here you find information about current dataset
+**SoT:** yes
 **Main Index:** [[__vespa_smart_trap]]
 
 ---

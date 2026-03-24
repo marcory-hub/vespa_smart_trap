@@ -5,7 +5,7 @@
 
 ---
 # quick links
-- [[_model]] train, quantize, compile model, model index
+- [[_model_vst]] train, quantize, compile model, model index
 - [[himax build firmware image]]
 - [[himax flash command firmware]]
 

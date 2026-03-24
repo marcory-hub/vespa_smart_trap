@@ -8,7 +8,7 @@
 
 # Size-filtered datasets (30px / 40px / 60px)
 
-**One-line purpose:** Pipeline and naming for YOLO datasets filtered by minimum object size (for 192x192 training). [[_datasets]]
+**One-line purpose:** Pipeline and naming for YOLO datasets filtered by minimum object size (for 192x192 training). [[_datasets_vst]]
 
 **Percentages (relative to 192 px):**
 - 30 px -> 15.6% -> **16%** -> merged_30px -> dataset_vespa_2026-02v1_30px_nopre_aug_train_valid_test_yolo

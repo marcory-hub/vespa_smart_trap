@@ -6,7 +6,12 @@
 ---
 
 **online information**
-(https://forum.seeedstudio.com/t/grove-vision-ai-v2-save-image-to-sd-card/294907)
+[SeeedStudio # [Grove Vision AI V2 - Save Image to SD CARD](https://forum.seeedstudio.com/t/grove-vision-ai-v2-save-image-to-sd-card/294907)](https://forum.seeedstudio.com/t/grove-vision-ai-v2-save-image-to-sd-card/294907)
+- SSCMA-Micro **does support saving JPEGs to the module’s SD card**
+- every INVOKE will save a JPEG
+- **exFAT** (Seeed recommendation)
+- Firmware needs to be **new enough** (Seeed calls out later than **2024-04-18**)
+- The command you need is `AT+ACTION="save_jpeg()"`, followed by your standard `AT+INVOKE` command. This is not done with `AT+SAMPLE` or `AT+TRIGGER` alone .
 
 [Seeed studio - Saving JPEG Images to SD Card](https://wiki.seeedstudio.com/grove_vision_ai_v2_at/#example-3-saving-jpeg-images-to-sd-card)
 - SD card: format the SD card as _**FAT32**_ with a cluster size of `8192` or use the **exFAT** file system

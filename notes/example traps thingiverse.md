@@ -1,4 +1,4 @@
-**One-line purpose:** 3D print examples of insect traps, main index [[example]]
+**One-line purpose:** 3D print examples of insect traps, main index [[example_vespatraps]]
 **Short summary:** thingiverse links to 3D prints
 **Agent:** archived
 

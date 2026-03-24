@@ -9,7 +9,7 @@ Next: [[himax ai web toolkit installation]], [[himax gv2 troubleshooting]]
 ---
 # flash command
 ```sh
-python xmodem/xmodem_send.py --port=/dev/cu.usbmodem58FA1047631 --baudrate=921600 --protocol=xmodem --file=we2_image_gen_local/output_case1_sec_wlcsp/output.img --model="/Users/md/Developer/vespa_smart_trap/himax_fork/model_zoo/tflm_yolo11_od/yolo11n_vespa_2026-02_imgsz224_full_integer_quant_vela_nopost.tflite 0xB7B000 0x00000"
+python xmodem/xmodem_send.py --port=/dev/cu.usbmodem58FA1047631 --baudrate=921600 --protocol=xmodem --file=we2_image_gen_local/output_case1_sec_wlcsp/output.img --model="/Users/md/Developer/vespa_smart_trap/gv2_firmware/model_zoo/tflm_yolo11_od/yolo11n_vespa_2026-02_imgsz224_full_integer_quant_vela_nopost.tflite 0xB7B000 0x00000"
 ```
 - no such file? then cd ..
  - xmodem is located in /Users/md/Developer/vespa_smart_trap/himax/Seeed_Grove_Vision_AI_Module_V2

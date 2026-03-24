@@ -5,7 +5,7 @@
 
 ---
 **Quick links:**
-- [[github cli commands]]
+- [[github_cli_commands_vst]]
 - [[himax flash command firmware]]
 
 ---

@@ -14,26 +14,26 @@
 # Literature search
 1. [[mavf research questions]]
 2. [[mavv example meta analysis]] update 20251030 > zotero > lezen
-3. [[400 computer vision/meta-analysis vespa velutina/mavv database searches]] update 20251030
+3. [[mavv database searches]] update 20251030
 4. [[mavv publish or perish]] niet gebruikt voor narrow search 20251030
-5. [[400 computer vision/meta-analysis vespa velutina/mavv citations and references in reviews]]
-6. [[400 computer vision/meta-analysis vespa velutina/mavv Rayyan deduplicate]] 951 > 612
-7. [[400 computer vision/meta-analysis vespa velutina/mavv ASReview screening studies]]
-	1. [[400 computer vision/meta-analysis vespa velutina/mavv inclusie criteria]] 
-	2. [[400 computer vision/meta-analysis vespa velutina/mavv exclusie criteria]]
+5. [[mavv citations and references in reviews]]
+6. [[mavv Rayyan deduplicate]] 951 > 612
+7. [[mavv ASReview screening studies]]
+	1. [[mavv inclusie criteria]] 
+	2. [[mavv exclusie criteria]]
 8. [[mavv ASReview API]] todo
-9. [[400 computer vision/meta-analysis vespa velutina/mavv PDF included]]
-10. [[400 computer vision/meta-analysis vespa velutina/mavv PDF requested]] 2 requested
+9. [[mavv PDF included]]
+10. [[mavv PDF requested]] 2 requested
 
 11. [[mavf research questions]]
 12. [[mavv example meta analysis]] update 20251030 > zotero > lezen
-13. [[400 computer vision/meta-analysis vespa velutina/mavv database searches]] update 20251030
+13. [[mavv database searches]] update 20251030
 14. [[mavv publish or perish]] niet gebruikt voor narrow search 20251030
-15. [[400 computer vision/meta-analysis vespa velutina/mavv citations and references in reviews]]
-16. [[400 computer vision/meta-analysis vespa velutina/mavv Rayyan deduplicate]] 951 > 612
-17. [[400 computer vision/meta-analysis vespa velutina/mavv ASReview screening studies]]
-	1. [[400 computer vision/meta-analysis vespa velutina/mavv inclusie criteria]] 
-	2. [[400 computer vision/meta-analysis vespa velutina/mavv exclusie criteria]]
+15. [[mavv citations and references in reviews]]
+16. [[mavv Rayyan deduplicate]] 951 > 612
+17. [[mavv ASReview screening studies]]
+	1. [[mavv inclusie criteria]] 
+	2. [[mavv exclusie criteria]]
 18. [[mavv ASReview API]] todo
-19. [[400 computer vision/meta-analysis vespa velutina/mavv PDF included]]
-20. [[400 computer vision/meta-analysis vespa velutina/mavv PDF requested]] 2 requested
+19. [[mavv PDF included]]
+20. [[mavv PDF requested]] 2 requested

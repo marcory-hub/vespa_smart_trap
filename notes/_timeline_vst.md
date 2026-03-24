@@ -1,21 +1,40 @@
-**One-line purpose:** what is done and what move to todays tasklist
+**One-line purpose:** what is done and what move to todays task list
 **Short summary:** 
 **Agent:** 
+**SoT:** yes
 **Main Index:** [[__vespa_smart_trap]]
 
 ---
 
 [[_inbox]]
 
+TODO 
+- test gv2 workflow on m5
+- Validate unresolved items: physical 10cm calibration, confidence threshold default, serial invocation mode
+- test performance of all, 30px, 40px, 60px and swift-yolo
 
-### Todo for tomorrow
+2026-03-24
+- solved merge conflict in gv2_firmware README
+- removed modelzoo/yolo11_od.tflite from gitignore to work remote with
+- ```
+  *.tflite
+!model_zoo/
+!model_zoo/tflm_yolo11_od/
+!model_zoo/tflm_yolo11_od/*.tflite
+  ```
+- quantize and compile to vela of the all, 30px, 40px and 60px yolo11n models (incl null images)
 
-- .gitignore– In line 44, delete`!artifacts/`so it reads:  
-    `# Release .tflite and .img live in gv2_firmware/model_zoo (firmware repo), not here.`
-- notes/_project_layout.md– In the workflow block at the top, change “gv2_sd” to “gv2_esp32_sd” (e.g. “workflow for gv2_esp32_sd”, “open gv2_esp32_sd in new window”).
-- notes/_timeline.md– Add a short line for today: e.g. “Layout: gv2_esp32_sd rename, project layout SoT, notes privacy, model_zoo; submodule gv2_firmware; experiments added.”
-- Next project step– Pick one from`notes/_plan.md`or from the gv2 SD flow (e.g. UART monitor in gv2_esp32_sd, or next firmware branch in gv2_firmware) and do the first concrete task.
-- 
+2026-03-20
+- yolo11n models 60px and allpx with null
+
+2026-03-19
+- successful test [swift-yolo on sensecraft.ai](https://sensecraft.seeed.cc/ai/view-model/62599-vespasmarttrap2025?tab=custom)
+- train yolo11n 30px 40px  with null images
+- [[cursor plan test yolo models with gv2]] update
+- [[gv2 yolo model test plan]] first 
+
+2026-03-18
+- plan mode prompt for yolo benchmark [[cursor plan test yolo models with gv2]]
 
 - [[temp next session]]
 	- [[temp 388_test]]

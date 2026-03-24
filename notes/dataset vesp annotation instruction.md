@@ -1,4 +1,4 @@
-**One-line purpose:** guidelines for image selection and annotation. [[_datasets]]
+**One-line purpose:** guidelines for image selection and annotation. [[_datasets_vst]]
 **Key info:** how to annotate
 **Agent:** instructions for user
 

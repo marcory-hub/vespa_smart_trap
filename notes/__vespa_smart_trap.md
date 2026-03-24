@@ -5,31 +5,30 @@
 
 ---
 
-[[_timeline]] to do's and done
-[[_project_layout]]
+[[_timeline_vst]] to do's and done
 
+[[_project_layout_vst]]
 
-[[_meetings]], notes, online platforms, funding, mails, media
+[[_experiment_vst]] 
 
-[[_datasets]], current dataset_vesp_2026-02 and earlier subsets
+[[_meetings_vst]], notes, online platforms, funding, mails, media
 
-[[_model]], yolo8s, yolo11n, swift-yolo models (training config, results)
+[[_datasets_vst]], current dataset_vesp_2026-02 and earlier subsets
 
-[[_hardware]], current stack gv2, lilygo-tsim7080-4g, and other tested hardware
+[[_model_vst]], yolo8s, yolo11n, swift-yolo models (training config, results)
+
+[[_hardware_vst]], current stack gv2, lilygo-tsim7080-4g, and other tested hardware
 
 [[_himax sdk]], Himax SDK for the Grove Vision AI platform. Inactive because flashing grove vision ai v2 is not as easy as flashing swift-yolo model from sensecraft.ai
 
-[[_github]]
+[[_github_vst]]
 # Quick Access
 - [[sharepoint]] - [sharepoint](https://imkersleiden.sharepoint.com/Gedeelde%20documenten/Forms/AllItems.aspx?id=%2FGedeelde%20documenten%2FHornet%20Trap%2FOntwerp%2FDraft%20system&p=true&ct=1750781064250&or=Teams%2DHL&ga=1&LOF=1) design, funding, rza login
-- [[_cli_commands]] and  [[github cli commands]]
-
-[[mails]] - ai authors, wallabiek, artez
-[[example]]  -  trap designs, 3D printable examples
-
-[[z_archive]]  -  Archive and deprecated notes 
+- [[_cli_commands_vst]] and  [[github_cli_commands_vst]]
+- [[mails_vst]] - ai authors, wallabiek, artez
+- [[example_vespatraps]]  -  trap designs, 3D printable examples
+- [[z_archive_vst]]  -  Archive and deprecated notes 
 ![[vespCV.png]]
-
 ## Vespa Smart Trap: An AI-Powered Detection System for Asian Hornet Management
 
 **Asian hornets are one of the greatest threats facing honeybee colonies today.**
