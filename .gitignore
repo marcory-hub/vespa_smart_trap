@@ -53,3 +53,5 @@ data/test/labels/
 z_archive/
 z_third_party/
 
+# Keep the index.html file in the repo, ignore other contents by default
+!z_third_party/Himax_AI_Web_Toolkit/index.html
