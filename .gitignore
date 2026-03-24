@@ -51,7 +51,8 @@ data/test/labels/
 
 # archive
 z_archive/
-z_third_party/
-
-# Keep the index.html file in the repo, ignore other contents by default
-!z_third_party/Himax_AI_Web_Toolkit/index.html
+# Third-party tree: ignore all top-level entries except the Himax toolkit stub
+z_third_party/*
+!z_third_party/Himax_AI_web_toolkit/
+z_third_party/Himax_AI_web_toolkit/*
+!z_third_party/Himax_AI_web_toolkit/index.html
