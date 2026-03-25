@@ -9,7 +9,9 @@ credentials*.md
 .cursor/*
 !.cursor/rules/
 !.cursor/rules/*
-
+!.cursor/skills/
+!.cursor/skills/grill-me
+!.cursor/skills/grill-me/*
 # Python & envs
 .venv/
 __pycache__/
@@ -52,7 +54,4 @@ data/test/labels/
 # archive
 z_archive/
 # Third-party tree: ignore all top-level entries except the Himax toolkit stub
-z_third_party/*
-!z_third_party/Himax_AI_web_toolkit/
-z_third_party/Himax_AI_web_toolkit/*
-!z_third_party/Himax_AI_web_toolkit/index.html
+
