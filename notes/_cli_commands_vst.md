@@ -4,14 +4,23 @@
 **Main Index:** [[__vespa_smart_trap]]
 
 ---
-**Quick links:**
-- [[github_cli_commands_vst]] submodule commit + push first, then parent commit + push with `git add gv2_firmware`
 - [[himax flash command firmware]]
+
+Start
+- [[github_cli_commands_vst]] pull and submodule update
+- [[#Sync from Obsidian to Cursor]]
+Stop
+- [[github_cli_commands_vst]] 
+	- submodule commit + push first
+	- then parent commit + push with `git add gv2_firmware`.
+
 ---
-**Sync from Obsidian to Cursor (1:1 mirror into `notes/`)**
+##### Sync from Obsidian to Cursor
+(1:1 mirror into `notes/`)
 ```bash
 rsync -av --delete "/Users/md/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes/400 computer vision/vespa_smart_trap/" "/Users/md/Developer/vespa_smart_trap/notes/"
 ```
+[[github_cli_commands_vst]] submodule commit + push first, then parent commit + push with `git add gv2_firmware`
 
 ---
 **Before git add ask agent:**
