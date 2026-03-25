@@ -5,9 +5,8 @@
 
 ---
 **Quick links:**
-- [[github_cli_commands_vst]]
+- [[github_cli_commands_vst]] submodule commit + push first, then parent commit + push with `git add gv2_firmware`
 - [[himax flash command firmware]]
-
 ---
 **Sync from Obsidian to Cursor (1:1 mirror into `notes/`)**
 ```bash

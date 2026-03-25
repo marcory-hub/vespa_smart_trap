@@ -5,6 +5,57 @@
 **Main Index:**[[_cli_commands_vst]]
 
 ---
+
+# quick copy-paste with submodule gv2_firmware
+When start working
+```
+cd ~/Developer/vespa_smart_trap
+git pull origin main
+git submodule update --init --recursive
+```
+if gv2_firmware end up in detached head but will change firmware
+```
+cd ~/Developer/vespa_smart_trap/gv2_firmware
+git checkout yolo11-vespa
+git pull origin yolo11-vespa
+```
+
+- Order matters: 
+- **submodule commit + push first**, 
+- then parent commit + push with `git add gv2_firmware`
+
+end work after changes in **gv2_firmware**
+- submodule commit + push first
+- then parent commit + push with `git add gv2_firmware`.
+```
+cd ~/Developer/vespa_smart_trap/gv2_firmware
+git status
+git checkout yolo11-vespa
+git add -u
+# or: git add <specific files>
+git commit -m "Describe firmware change"
+git push origin yolo11-vespa
+
+cd ~/Developer/vespa_smart_trap
+git status
+git add gv2_firmware
+git commit -m "Bump gv2_firmware submodule"
+git push origin main
+```
+
+
+end work after changes in parent **vespa_smart_trap**
+```
+cd ~/Developer/vespa_smart_trap
+git status
+git add -u
+# or: git add <specific files>
+git commit -m "Describe change"
+git push origin main
+```
+
+
+
 # Remotes
 - origin: my fork
 - upstream: HimaxWiseEyePlus

@@ -12,6 +12,8 @@ TODO
 - test gv2 workflow on m5
 - Validate unresolved items: physical 10cm calibration, confidence threshold default, serial invocation mode
 - test performance of all, 30px, 40px, 60px and swift-yolo
+2026-03-25
+- models yolo11n ALL backup on ssd's
 
 2026-03-24
 - solved merge conflict in gv2_firmware README
