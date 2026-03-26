@@ -9,10 +9,18 @@
 [[_inbox]]
 
 TODO 
-- test gv2 workflow on m5
-- Validate unresolved items: physical 10cm calibration, confidence threshold default, serial invocation mode
 - test performance of all, 30px, 40px, 60px and swift-yolo
+	- slide show with test images random seed 42
+
+2026-03-26
+- 
+- build slider
+- [[prompt plan mode images in random order for test purposes]] 
+
+	- 
 2026-03-25
+- test gv2 workflow on m5
+- fixed [[github_cli_commands_vst]]
 - models yolo11n ALL backup on ssd's
 
 2026-03-24
@@ -39,7 +47,7 @@ TODO
 - plan mode prompt for yolo benchmark [[cursor plan test yolo models with gv2]]
 
 - [[temp next session]]
-	- [[temp 388_test]]
+	- [[prompt plan mode model test w slide show]]
 	- [[temp gv2 conf ratio]]
 - [[zz himax_yolo26 plan mode]]
 2026-03-11

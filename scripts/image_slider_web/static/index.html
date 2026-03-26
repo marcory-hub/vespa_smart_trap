@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Image Slider (seeded)</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main id="root">
+      <div id="stage" class="stage stage--black">
+        <div id="overlay" class="overlay">
+          <div id="overlayTitle" class="overlay__title">Loading…</div>
+          <div id="overlaySubtitle" class="overlay__subtitle"></div>
+          <div id="calibration" class="calibration is-hidden" aria-hidden="true">
+            <div class="calibration__label">10 cm</div>
+            <div class="calibration__bar"></div>
+          </div>
+          <div id="overlayHint" class="overlay__hint"></div>
+        </div>
+        <img id="image" class="image is-hidden" alt="" />
+        <div id="imageLabel" class="imageLabel is-hidden"></div>
+        <div id="pausedBanner" class="pausedBanner is-hidden">Paused</div>
+      </div>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

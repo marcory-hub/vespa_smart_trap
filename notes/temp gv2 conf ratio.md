@@ -25,7 +25,6 @@
 ## 1. Requirements (from user)
 
   
-
 - **Scope:** GV2 firmware only (no “dark” condition in this plan).
 
 - **Uncertainty:** Use **ratio** of second-highest to highest confidence (applies to **all** classes).

@@ -7,6 +7,8 @@
 
 [[_timeline_vst]] to do's and done
 
+[[_cli_vst]]
+
 [[_project_layout_vst]]
 
 [[_experiment_vst]] 
@@ -24,7 +26,7 @@
 [[_github_vst]]
 # Quick Access
 - [[sharepoint]] - [sharepoint](https://imkersleiden.sharepoint.com/Gedeelde%20documenten/Forms/AllItems.aspx?id=%2FGedeelde%20documenten%2FHornet%20Trap%2FOntwerp%2FDraft%20system&p=true&ct=1750781064250&or=Teams%2DHL&ga=1&LOF=1) design, funding, rza login
-- [[_cli_commands_vst]] and  [[github_cli_commands_vst]]
+- [[_cli_vst]] and  [[github_cli_commands_vst]]
 - [[mails_vst]] - ai authors, wallabiek, artez
 - [[example_vespatraps]]  -  trap designs, 3D printable examples
 - [[z_archive_vst]]  -  Archive and deprecated notes 
