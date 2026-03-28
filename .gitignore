@@ -58,3 +58,5 @@ z_archive/
 # log files
 scripts/image_slider_web/outputs/*
 scripts/image_slider_web/outputs/**
+outputs/*
+outputs/**
