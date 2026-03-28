@@ -42,10 +42,13 @@ CLASS_ID_TO_SPECIES_TOKEN: Dict[int, str] = {0: "ame", 1: "vcr", 2: "ves", 3: "v
 SCORING_CLASS_IDS: Tuple[int, ...] = (0, 1, 2, 3)
 CONFIDENCE_THRESHOLD = 0.30  # inclusive (>=); do not change to strict >
 
-FRAME_DURATION_S = 2.0
+FRAME_DURATION_S = 4.0
 GRACE_S = 0.15
 SAMPLING_OFFSETS_S: List[float] = [0.5, 1.0, 1.5]
 SAMPLING_MATCH_WINDOW_S = 0.200  # +/- 200 ms
+SAMPLED_EVENT_START_OFFSET_S = 2.5
+SAMPLED_EVENT_STRIDE = 5
+SAMPLED_EVENT_COUNT = 3
 
 FILENAME_TOKEN_RE = re.compile(r"^(?P<viewpoint>[a-z]{3})_(?P<species>[A-Za-z]{3})")
 VIEWPOINT_TOKENS = {"top", "sid", "oth"}
@@ -354,6 +357,36 @@ def run() -> None:
     parser.add_argument("--serial-baudrate", type=int, default=921600, help="GV2 serial baudrate.")
     parser.add_argument("--serial-read-timeout", type=float, default=0.2, help="GV2 serial read timeout.")
     parser.add_argument("--slider-wait-runlog-seconds", type=float, default=300.0, help="Wait for slider run_log.csv.")
+    parser.add_argument(
+        "--sampled-avg-threshold",
+        type=float,
+        default=CONFIDENCE_THRESHOLD,
+        help="Primary avg-confidence threshold for sampled-event set membership.",
+    )
+    parser.add_argument(
+        "--sampled-avg-threshold-opt",
+        type=float,
+        default=None,
+        help="Optional secondary avg-confidence threshold (e.g., F1-optimal) for transition logging.",
+    )
+    parser.add_argument(
+        "--sampling-start-offset-s",
+        type=float,
+        default=SAMPLED_EVENT_START_OFFSET_S,
+        help="Start sampled-event selection this many seconds after frame start.",
+    )
+    parser.add_argument(
+        "--sampling-event-stride",
+        type=int,
+        default=SAMPLED_EVENT_STRIDE,
+        help="Sample stride in event indices (e.g., 5 picks events 0,5,10...).",
+    )
+    parser.add_argument(
+        "--sampling-event-count",
+        type=int,
+        default=SAMPLED_EVENT_COUNT,
+        help="Number of sampled events to use for avg-confidence scoring.",
+    )
     parser.add_argument("--skip-open-browser", action="store_true", help="Do not open browser.")
     parser.add_argument(
         "--locked-benchmark",
@@ -364,6 +397,12 @@ def run() -> None:
 
     if serial is None:
         raise RuntimeError("pyserial is required (import serial failed).")
+    if args.sampling_event_stride <= 0:
+        raise ValueError("sampling-event-stride must be > 0")
+    if args.sampling_event_count <= 0:
+        raise ValueError("sampling-event-count must be > 0")
+    if args.sampling_start_offset_s < 0:
+        raise ValueError("sampling-start-offset-s must be >= 0")
 
     repo_root = Path(__file__).resolve().parents[2]
     slider_dir = repo_root / "scripts" / "image_slider_web"
@@ -415,11 +454,16 @@ def run() -> None:
         },
         "expected_count": args.expected_count,
         "confidence_threshold": CONFIDENCE_THRESHOLD,
+        "sampled_avg_threshold_primary": args.sampled_avg_threshold,
+        "sampled_avg_threshold_opt": args.sampled_avg_threshold_opt,
         "frame_duration_s": FRAME_DURATION_S,
         "grace_s": GRACE_S,
-        "sampling_offsets_s": SAMPLING_OFFSETS_S,
-        "sampling_match_window_s": SAMPLING_MATCH_WINDOW_S,
-        "frame_rule": "half-open [t0,t0+2.0)",
+        "sampling_start_offset_s": args.sampling_start_offset_s,
+        "sampling_event_stride": args.sampling_event_stride,
+        "sampling_event_count": args.sampling_event_count,
+        "sampling_offsets_legacy_s": SAMPLING_OFFSETS_S,
+        "sampling_match_window_legacy_s": SAMPLING_MATCH_WINDOW_S,
+        "frame_rule": f"half-open [t0,t0+{FRAME_DURATION_S:.1f})",
         "timeout_policy": "timeout_flag=1 iff no accepted INVOKE events were assigned to the frame",
         "serial_port_selection_mode": serial_selection_mode,
         "serial_port_resolved": serial_port,
@@ -688,8 +732,8 @@ def run() -> None:
             assigned_events: List[InvokeEvent] = frame["assigned_invoke_events"]
             timeout_flag = 1 if len(assigned_events) == 0 else 0
 
-            # Predicted set membership: any detection with conf >= 0.30 in the frame window.
-            pred_set: set[str] = set()
+            # Transition logging set #1: any-window membership (legacy behavior).
+            pred_set_any_window: set[str] = set()
             raw_detections_frame: List[Dict[str, Any]] = []
             for ev in assigned_events:
                 raw_detections_frame.append(
@@ -705,50 +749,57 @@ def run() -> None:
                 for class_id in SCORING_CLASS_IDS:
                     max_conf = ev.per_class_max_conf.get(class_id)
                     if max_conf is not None and max_conf >= CONFIDENCE_THRESHOLD:
-                        pred_set.add(CLASS_ID_TO_NAME[class_id])
+                        pred_set_any_window.add(CLASS_ID_TO_NAME[class_id])
 
-            # Sampling diagnostics (not used for scoring).
-            sample_details: Dict[str, Any] = {}
+            # New scoring set: sampled events start at t0+offset, then stride by event index.
+            eligible_events = [ev for ev in assigned_events if ev.receipt_time >= (frame["t0"] + args.sampling_start_offset_s)]
+            sampled_event_indices: List[int] = []
+            sampled_events: List[InvokeEvent] = []
+            next_index = 0
+            for _ in range(args.sampling_event_count):
+                if next_index >= len(eligible_events):
+                    break
+                sampled_event_indices.append(next_index)
+                sampled_events.append(eligible_events[next_index])
+                next_index += args.sampling_event_stride
+
+            sampled_event_debug = [
+                {"eligible_index": idx, "receipt_time_iso": ev.receipt_time_iso}
+                for idx, ev in zip(sampled_event_indices, sampled_events)
+            ]
+
             sample_avg_conf_by_class: Dict[str, Optional[float]] = {}
+            pred_set_sampled_avg_primary: set[str] = set()
+            pred_set_sampled_avg_opt: set[str] = set()
             for class_id in SCORING_CLASS_IDS:
                 class_name = CLASS_ID_TO_NAME[class_id]
                 conf_samples: List[float] = []
-                per_offset: Dict[str, Any] = {}
+                for ev in sampled_events:
+                    conf_val = ev.per_class_max_conf.get(class_id)
+                    if conf_val is not None:
+                        conf_samples.append(conf_val)
 
-                for offset_s in SAMPLING_OFFSETS_S:
-                    sample_time = frame["t0"] + offset_s
-                    nearest = choose_nearest_event_for_sampling(assigned_events, sample_time, class_id)
-                    key = f"t{offset_s:.1f}s"
-                    if nearest is None:
-                        per_offset[key] = {"present": False}
-                        continue
+                avg_conf = (sum(conf_samples) / len(conf_samples)) if conf_samples else None
+                sample_avg_conf_by_class[class_name] = avg_conf
+                if avg_conf is not None and avg_conf >= args.sampled_avg_threshold:
+                    pred_set_sampled_avg_primary.add(class_name)
+                if args.sampled_avg_threshold_opt is not None and avg_conf is not None and avg_conf >= args.sampled_avg_threshold_opt:
+                    pred_set_sampled_avg_opt.add(class_name)
 
-                    nearest_ev, _delta = nearest
-                    conf_val = nearest_ev.per_class_max_conf[class_id]
-                    per_offset[key] = {
-                        "present": True,
-                        "nearest_event_time_iso": nearest_ev.receipt_time_iso,
-                        "confidence": conf_val,
-                    }
-                    conf_samples.append(conf_val)
-
-                sample_details[class_name] = per_offset
-                sample_avg_conf_by_class[class_name] = (sum(conf_samples) / len(conf_samples)) if conf_samples else None
-
-            match_exact = pred_set == gt_set
+            match_exact = pred_set_sampled_avg_primary == gt_set
             if match_exact:
                 exact_set_match_count += 1
                 match_type = "complete"
             else:
-                match_type = "partial" if pred_set.intersection(gt_set) else "no_match"
+                match_type = "partial" if pred_set_sampled_avg_primary.intersection(gt_set) else "no_match"
 
-            multi_species_flag = 1 if (len(gt_set) > 1 or len(pred_set) > 1) else 0
+            multi_species_flag = 1 if (len(gt_set) > 1 or len(pred_set_sampled_avg_primary) > 1) else 0
 
             # Per-class presence-based TP/FP/FN.
             for class_id in SCORING_CLASS_IDS:
                 class_name = CLASS_ID_TO_NAME[class_id]
                 gt_has = class_name in gt_set
-                pred_has = class_name in pred_set
+                pred_has = class_name in pred_set_sampled_avg_primary
                 if gt_has and pred_has:
                     per_class_tp[class_name] += 1
                 elif pred_has and not gt_has:
@@ -762,14 +813,21 @@ def run() -> None:
                 "image_filename": frame["filename"],
                 "gt_is_nul": int(is_nul_gt),
                 "gt_set": json.dumps(sorted(gt_set)),
-                "pred_set": json.dumps(sorted(pred_set)),
+                "pred_set_sampled_avg": json.dumps(sorted(pred_set_sampled_avg_primary)),
+                "pred_set_any_window": json.dumps(sorted(pred_set_any_window)),
+                "pred_set_sampled_avg_opt": json.dumps(sorted(pred_set_sampled_avg_opt)),
                 "exact_match": int(match_exact),
                 "match_type": match_type,
                 "timeout_flag": int(timeout_flag),
                 "multi_species_flag": int(multi_species_flag),
+                "sample_count_used": len(sampled_events),
+                "sampled_event_debug": json.dumps(sampled_event_debug),
                 "raw_detections_frame": json.dumps(raw_detections_frame),
                 "sample_avg_conf_by_class": json.dumps(sample_avg_conf_by_class),
-                "sample_details": json.dumps(sample_details),
+                "sample_rule": (
+                    f"start_offset={args.sampling_start_offset_s}s; "
+                    f"stride={args.sampling_event_stride}; count={args.sampling_event_count}"
+                ),
             }
             per_image_rows.append(row)
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Run a fixed 5-model GV2 experiment session and aggregate per-run summaries.
+Run one-or-more GV2 experiment models and aggregate per-run summaries.
 """
 
 from __future__ import annotations
@@ -66,6 +66,11 @@ def build_run_command(
     slider_wait_runlog_seconds: float,
     skip_open_browser: bool,
     locked_benchmark: bool,
+    sampled_avg_threshold: Optional[float],
+    sampled_f1_threshold: Optional[float],
+    sampling_start_offset_s: Optional[float],
+    sampling_event_stride: Optional[int],
+    sampling_event_count: Optional[int],
 ) -> list[str]:
     command = [
         sys.executable,
@@ -91,6 +96,16 @@ def build_run_command(
         command.append("--skip-open-browser")
     if locked_benchmark:
         command.append("--locked-benchmark")
+    if sampled_avg_threshold is not None:
+        command.extend(["--sampled-avg-threshold", str(sampled_avg_threshold)])
+    if sampled_f1_threshold is not None:
+        command.extend(["--sampled-avg-threshold-opt", str(sampled_f1_threshold)])
+    if sampling_start_offset_s is not None:
+        command.extend(["--sampling-start-offset-s", str(sampling_start_offset_s)])
+    if sampling_event_stride is not None:
+        command.extend(["--sampling-event-stride", str(sampling_event_stride)])
+    if sampling_event_count is not None:
+        command.extend(["--sampling-event-count", str(sampling_event_count)])
     return command
 
 
@@ -134,13 +149,13 @@ def write_aggregate_csv(path: Path, rows: Iterable[dict[str, str]]) -> None:
 
 
 def run() -> None:
-    parser = argparse.ArgumentParser(description="Run and aggregate a fixed 5-model GV2 session.")
+    parser = argparse.ArgumentParser(description="Run and aggregate one-or-more GV2 model sessions.")
     parser.add_argument(
         "--model-name",
         action="append",
         dest="model_names",
         required=True,
-        help="Model name in fixed execution order. Repeat exactly five times.",
+        help="Model name in execution order. Repeat for multiple models.",
     )
     parser.add_argument("--serial-port", default=None, help="Explicit serial port path.")
     parser.add_argument(
@@ -164,11 +179,46 @@ def run() -> None:
         action="store_true",
         help="Run experiment in strict locked benchmark mode.",
     )
+    parser.add_argument(
+        "--sampled-avg-threshold",
+        type=float,
+        default=None,
+        help="Pass-through primary sampled avg threshold to run_experiment.py.",
+    )
+    parser.add_argument(
+        "--sampled-F1-threshold",
+        type=float,
+        default=None,
+        help="Pass-through optional F1 threshold to run_experiment.py (maps to sampled-avg-threshold-opt).",
+    )
+    parser.add_argument(
+        "--sampling-start-offset-s",
+        type=float,
+        default=None,
+        help="Pass-through sampling start offset seconds.",
+    )
+    parser.add_argument(
+        "--sampling-event-stride",
+        type=int,
+        default=None,
+        help="Pass-through sampling event stride.",
+    )
+    parser.add_argument(
+        "--sampling-event-count",
+        type=int,
+        default=None,
+        help="Pass-through sampling event count.",
+    )
+    parser.add_argument(
+        "--confirm-before-run",
+        action="store_true",
+        help="Always prompt checkpoint before each model run.",
+    )
     args = parser.parse_args()
 
     model_names = args.model_names or []
-    if len(model_names) != 5:
-        raise ValueError(f"Expected exactly 5 --model-name values, got {len(model_names)}.")
+    if len(model_names) < 1:
+        raise ValueError("Expected at least 1 --model-name value.")
 
     repo_root = Path(__file__).resolve().parents[2]
     outputs_root = repo_root / "outputs"
@@ -182,33 +232,35 @@ def run() -> None:
 
     aggregate_rows: list[dict[str, str]] = []
     total = len(model_names)
+    should_prompt_checkpoint = bool(args.confirm_before_run or len(model_names) > 1)
 
     for index, model_name in enumerate(model_names, start=1):
-        operator_action = prompt_operator_for_model(model_name=model_name, index=index, total=total)
-        if operator_action == "quit":
-            print("Session stopped by operator request.")
-            break
-        if operator_action == "skip":
-            aggregate_rows.append(
-                {
-                    "run_index": str(index),
-                    "model_name": model_name,
-                    "status": "skipped_by_operator",
-                    "started_at_iso": "",
-                    "ended_at_iso": "",
-                    "duration_s": "",
-                    "run_output_dir": "",
-                    "exact_set_match_rate": "",
-                    "exact_match_numerator": "",
-                    "exact_match_denominator": "",
-                    "command": "",
-                }
-            )
-            continue
+        if should_prompt_checkpoint:
+            operator_action = prompt_operator_for_model(model_name=model_name, index=index, total=total)
+            if operator_action == "quit":
+                print("Session stopped by operator request.")
+                break
+            if operator_action == "skip":
+                aggregate_rows.append(
+                    {
+                        "run_index": str(index),
+                        "model_name": model_name,
+                        "status": "skipped_by_operator",
+                        "started_at_iso": "",
+                        "ended_at_iso": "",
+                        "duration_s": "",
+                        "run_output_dir": "",
+                        "exact_set_match_rate": "",
+                        "exact_match_numerator": "",
+                        "exact_match_denominator": "",
+                        "command": "",
+                    }
+                )
+                continue
 
-        # Skip marker support.
-        if sys.stdin is not None and sys.stdin.closed:
-            raise RuntimeError("stdin is unavailable for operator checkpoint input.")
+            # Skip marker support.
+            if sys.stdin is not None and sys.stdin.closed:
+                raise RuntimeError("stdin is unavailable for operator checkpoint input.")
 
         started_at = now_iso()
         started_epoch = time.time()
@@ -226,6 +278,11 @@ def run() -> None:
             slider_wait_runlog_seconds=args.slider_wait_runlog_seconds,
             skip_open_browser=args.skip_open_browser,
             locked_benchmark=args.locked_benchmark,
+            sampled_avg_threshold=args.sampled_avg_threshold,
+            sampled_f1_threshold=args.sampled_F1_threshold,
+            sampling_start_offset_s=args.sampling_start_offset_s,
+            sampling_event_stride=args.sampling_event_stride,
+            sampling_event_count=args.sampling_event_count,
         )
         print(f"Running: {' '.join(command)}")
         return_code, combined_output = run_with_live_output(command=command, working_directory=repo_root)

@@ -1,5 +1,5 @@
 (() => {
-  const IMAGE_SECONDS = 2;
+  const IMAGE_SECONDS = 4;
 
   const overlayTitle = document.getElementById("overlayTitle");
   const overlaySubtitle = document.getElementById("overlaySubtitle");

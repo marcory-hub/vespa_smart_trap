@@ -3,7 +3,7 @@
 ### What it does
 - Serves a local webpage that:
   - shows a 20 second calibration screen with a 10 cm reference bar
-  - then shows `data/test/images/*.jpg` for 2 seconds each
+  - then shows `data/test/images/*.jpg` for 4 seconds each
 - Default image order is deterministic (sorted filenames).
 - Browser now requests shuffled order by default for testing (`seed=42` unless overridden).
 - Optional deterministic shuffle control is available via URL query (`?shuffle=1&seed=42`).
