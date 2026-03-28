@@ -55,3 +55,6 @@ data/test/labels/
 z_archive/
 # Third-party tree: ignore all top-level entries except the Himax toolkit stub
 
+# log files
+scripts/image_slider_web/outputs/*
+scripts/image_slider_web/outputs/**
