@@ -12,14 +12,19 @@
         <div id="overlay" class="overlay">
           <div id="overlayTitle" class="overlay__title">Loading…</div>
           <div id="overlaySubtitle" class="overlay__subtitle"></div>
-          <div id="calibration" class="calibration is-hidden" aria-hidden="true">
-            <div class="calibration__label">10 cm</div>
-            <div class="calibration__bar"></div>
-          </div>
           <div id="overlayHint" class="overlay__hint"></div>
         </div>
-        <img id="image" class="image is-hidden" alt="" />
-        <div id="imageLabel" class="imageLabel is-hidden"></div>
+        <div id="contentGrid" class="contentGrid is-hidden">
+          <div class="pane pane--slideshow">
+            <img id="image" class="image" alt="" />
+            <div id="imageLabel" class="imageLabel"></div>
+          </div>
+          <div class="pane pane--camera">
+            <img id="cameraImage" class="cameraImage" alt="GV2 camera preview" />
+            <div id="cameraInferenceLabel" class="cameraInferenceLabel">waiting_for_gv2</div>
+          </div>
+        </div>
+        <div id="setupBanner" class="setupBanner is-hidden"></div>
         <div id="pausedBanner" class="pausedBanner is-hidden">Paused</div>
       </div>
     </main>

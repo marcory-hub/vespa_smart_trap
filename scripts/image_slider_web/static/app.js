@@ -1,22 +1,37 @@
 (() => {
-  const INTRO_SECONDS = 20;
   const IMAGE_SECONDS = 2;
 
   const overlayTitle = document.getElementById("overlayTitle");
   const overlaySubtitle = document.getElementById("overlaySubtitle");
   const overlayHint = document.getElementById("overlayHint");
   const overlay = document.getElementById("overlay");
-  const calibration = document.getElementById("calibration");
+  const contentGrid = document.getElementById("contentGrid");
   const imageEl = document.getElementById("image");
   const imageLabel = document.getElementById("imageLabel");
+  const cameraImage = document.getElementById("cameraImage");
+  const cameraInferenceLabel = document.getElementById("cameraInferenceLabel");
+  const setupBanner = document.getElementById("setupBanner");
   const pausedBanner = document.getElementById("pausedBanner");
+  const pageQuery = new URLSearchParams(window.location.search);
+
+  function isTruthyParam(value) {
+    if (typeof value !== "string") return false;
+    return ["1", "true", "yes", "on"].includes(value.trim().toLowerCase());
+  }
+
+  const queryLockedBenchmark =
+    isTruthyParam(pageQuery.get("locked")) || isTruthyParam(pageQuery.get("benchmark"));
+  const queryShuffle =
+    pageQuery.get("shuffle") == null ? true : isTruthyParam(pageQuery.get("shuffle"));
+  const querySeed = pageQuery.get("seed");
+
+  const IMAGE_WIDTH_MIN_CM = 4.0;
+  const IMAGE_WIDTH_DEFAULT_CM = 8.0;
+  const IMAGE_WIDTH_SETUP_CM = 30.0;
 
   function setHidden(el, hidden) {
     if (!el) return;
     el.classList.toggle("is-hidden", hidden);
-    if (el === calibration) {
-      el.setAttribute("aria-hidden", hidden ? "true" : "false");
-    }
   }
 
   function nowIso() {
@@ -53,12 +68,23 @@
     }
   }
 
+  function logControlEvent(eventName) {
+    if (!state.runStarted) return;
+    postJson("/log/control", {
+      event: eventName,
+      at_iso: nowIso(),
+    }).catch(() => {
+      // Keep slideshow resilient even if control audit logging fails.
+    });
+  }
+
   function showError(title, details) {
     setHidden(imageEl, true);
     setHidden(imageLabel, true);
+    setHidden(contentGrid, true);
     setHidden(pausedBanner, true);
     setHidden(overlay, false);
-    setHidden(calibration, true);
+    setHidden(setupBanner, true);
     overlayTitle.textContent = title;
     overlaySubtitle.textContent = details || "";
     overlayHint.textContent = "";
@@ -68,16 +94,97 @@
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  function normalizeImageWidthCm(rawValue) {
+    const parsed = Number.parseFloat(rawValue);
+    if (!Number.isFinite(parsed)) return IMAGE_WIDTH_DEFAULT_CM;
+    return Math.max(IMAGE_WIDTH_MIN_CM, parsed);
+  }
+
+  function applyImageWidthCm(widthCm) {
+    const normalized = normalizeImageWidthCm(widthCm);
+    document.documentElement.style.setProperty("--image-width-cm", `${normalized.toFixed(1)}cm`);
+  }
+
+  function shortTokenFromFilename(filename) {
+    if (typeof filename !== "string") return "";
+    const stem = filename.replace(/\.[^.]+$/, "");
+    const match = /^([a-zA-Z]{3})_([a-zA-Z]{3})/.exec(stem);
+    if (!match) return stem;
+    return `${match[1].toLowerCase()}_${match[2]}`;
+  }
+
   const state = {
     manifest: null,
     currentIndex: -1,
     paused: false,
     runStarted: false,
     stopping: false,
+    lockedBenchmark: queryLockedBenchmark,
+    currentImageShortToken: "",
+    latestInferenceLabel: "",
+    autoSizeByLabels: true,
+    inSetupPhase: false,
+    setupConfirmed: false,
   };
+
+  applyImageWidthCm(IMAGE_WIDTH_DEFAULT_CM);
 
   function updatePausedUi() {
     setHidden(pausedBanner, !state.paused);
+  }
+
+  function updateImageLabel() {
+    const left = state.currentImageShortToken || "";
+    imageLabel.textContent = left;
+  }
+
+  function updateCameraInferenceLabel() {
+    cameraInferenceLabel.textContent = state.latestInferenceLabel || "waiting_for_gv2";
+  }
+
+  function formatInferenceLabel(payload) {
+    if (!payload || typeof payload !== "object") return "";
+    if (typeof payload.species !== "string" || !payload.species) return "";
+    const confidence = Number.parseFloat(payload.confidence);
+    if (!Number.isFinite(confidence)) return "";
+    return `${payload.species}_${confidence.toFixed(2)}`;
+  }
+
+  async function pollLatestInferenceWhileRunning() {
+    while (state.runStarted && !state.stopping) {
+      try {
+        const response = await fetchJson("/api/latest_inference");
+        const latest = response ? response.latest_inference : null;
+        state.latestInferenceLabel = formatInferenceLabel(latest);
+        updateCameraInferenceLabel();
+      } catch {
+        // Ignore transient poll errors.
+      }
+      await sleep(200);
+    }
+  }
+
+  function applyCameraFrame(payload) {
+    if (!payload || typeof payload !== "object") return;
+    const raw = payload.image_base64;
+    if (typeof raw !== "string" || !raw) return;
+    if (raw.startsWith("data:image/")) {
+      cameraImage.src = raw;
+      return;
+    }
+    cameraImage.src = `data:image/jpeg;base64,${raw}`;
+  }
+
+  async function pollLatestCameraFrameWhileRunning() {
+    while (state.runStarted && !state.stopping) {
+      try {
+        const response = await fetchJson("/api/latest_camera_frame");
+        applyCameraFrame(response ? response.latest_camera_frame : null);
+      } catch {
+        // Ignore transient poll errors.
+      }
+      await sleep(200);
+    }
   }
 
   async function waitWhilePaused() {
@@ -89,44 +196,69 @@
   async function startRun() {
     state.stopping = false;
 
-    overlayTitle.textContent = "Starting…";
+    overlayTitle.textContent = "Preparing…";
     overlaySubtitle.textContent = "";
-    overlayHint.textContent = "Controls: Space pause/resume • Right Arrow next • R restart";
-    setHidden(overlay, false);
-    setHidden(calibration, true);
-    setHidden(imageEl, true);
-    setHidden(imageLabel, true);
+    overlayHint.textContent = "";
+    setHidden(overlay, true);
+    setHidden(contentGrid, true);
+    setHidden(setupBanner, true);
+    setHidden(imageEl, false);
+    setHidden(imageLabel, false);
     updatePausedUi();
 
     const startInfo = await fetchJson("/start");
-    const manifest = await fetchJson("/manifest.json");
+    const manifestQuery = new URLSearchParams();
+    if (queryShuffle) {
+      manifestQuery.set("shuffle", "1");
+      if (querySeed !== null && querySeed !== "") {
+        manifestQuery.set("seed", querySeed);
+      }
+    } else {
+      manifestQuery.set("shuffle", "0");
+    }
+    const manifest = await fetchJson(`/manifest.json?${manifestQuery.toString()}`);
 
     state.manifest = manifest;
     state.currentIndex = -1;
     state.runStarted = true;
+    state.lockedBenchmark = Boolean(startInfo.locked_benchmark) || queryLockedBenchmark;
+    state.latestInferenceLabel = "";
+    updateCameraInferenceLabel();
+    state.autoSizeByLabels = true;
+    pollLatestInferenceWhileRunning().catch(() => {
+      // Ignore poll loop errors.
+    });
+    pollLatestCameraFrameWhileRunning().catch(() => {
+      // Ignore poll loop errors.
+    });
+    if (!Array.isArray(state.manifest.items) || state.manifest.items.length === 0) {
+      throw new Error("Manifest contains no images");
+    }
 
-    // Intro screen
-    overlayTitle.textContent = startInfo.intro_text || "Calibration";
-    overlaySubtitle.textContent =
-      "Resize the browser image so the bar below measures exactly 10 cm (use a ruler). " +
-      "Then place the camera 10 cm from the screen.";
-    setHidden(calibration, false);
-    const introStart = Date.now();
-    while (Date.now() - introStart < INTRO_SECONDS * 1000 && !state.stopping) {
-      await waitWhilePaused();
-      const elapsedSeconds = Math.floor((Date.now() - introStart) / 1000);
-      const remainingSeconds = Math.max(0, INTRO_SECONDS - elapsedSeconds);
-      overlayHint.textContent =
-        `Calibration starts in ${remainingSeconds}s. ` +
-        "Controls: Space pause/resume • Right Arrow next • R restart";
+    // Setup preview screen: example image left (max size), live camera right.
+    state.currentIndex = 0;
+    if (state.manifest.items.length > 0) {
+      await showItem(state.manifest.items[0], false);
+      applyImageWidthCm(IMAGE_WIDTH_SETUP_CM);
+    }
+    setHidden(contentGrid, false);
+    setHidden(setupBanner, false);
+    state.inSetupPhase = true;
+    state.setupConfirmed = false;
+    while (!state.setupConfirmed && !state.stopping) {
+      setupBanner.textContent =
+        "Setup: adjust camera distance so full example image is captured, then press Space to start.";
       await sleep(50);
     }
+    state.inSetupPhase = false;
     if (state.stopping) return;
 
     setHidden(overlay, true);
-    setHidden(calibration, true);
+    setHidden(setupBanner, true);
+    setHidden(contentGrid, false);
     setHidden(imageEl, false);
     setHidden(imageLabel, false);
+    state.currentIndex = -1;
 
     // Slideshow
     while (!state.stopping) {
@@ -148,31 +280,57 @@
       state.currentIndex = 0;
     }
     const item = state.manifest.items[state.currentIndex];
-    const label = `#${String(item.index).padStart(4, "0")} ${item.filename}`;
+    await showItem(item, true);
+  }
 
-    imageLabel.textContent = label;
+  async function showItem(item, logShown) {
+    const label = shortTokenFromFilename(item.filename);
+    state.currentImageShortToken = label;
+    const displayWidthCm = Number.parseFloat(item.display_width_cm);
+    if (Number.isFinite(displayWidthCm)) {
+      applyImageWidthCm(displayWidthCm);
+    }
+
+    updateImageLabel();
     imageEl.src = item.url;
 
-    await postJson("/log", {
-      index: item.index,
-      filename: item.filename,
-      viewpoint: item.viewpoint,
-      species: item.species,
-      shown_at_iso: nowIso(),
-    });
+    if (logShown) {
+      await postJson("/log", {
+        index: item.index,
+        filename: item.filename,
+        viewpoint: item.viewpoint,
+        species: item.species,
+        shown_at_iso: nowIso(),
+      });
+    }
   }
 
   function togglePause() {
+    if (state.lockedBenchmark) {
+      logControlEvent("blocked_pause_toggle");
+      return;
+    }
+    logControlEvent(state.paused ? "resume" : "pause");
     state.paused = !state.paused;
     updatePausedUi();
   }
 
   function requestNext() {
+    if (state.lockedBenchmark) {
+      logControlEvent("blocked_manual_next");
+      return;
+    }
+    logControlEvent("manual_next");
     // Next should work even while paused, so user can step through.
     showNextImage().catch((e) => showError("Error", String(e && e.message ? e.message : e)));
   }
 
   function restart() {
+    if (state.lockedBenchmark) {
+      logControlEvent("blocked_restart");
+      return;
+    }
+    logControlEvent("restart");
     state.stopping = true;
     state.paused = false;
     updatePausedUi();
@@ -183,6 +341,10 @@
   document.addEventListener("keydown", (ev) => {
     if (ev.code === "Space") {
       ev.preventDefault();
+      if (state.inSetupPhase) {
+        state.setupConfirmed = true;
+        return;
+      }
       togglePause();
       return;
     }
