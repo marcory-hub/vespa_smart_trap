@@ -25,6 +25,14 @@ def now_iso() -> str:
     return dt.datetime.now(dt.timezone.utc).isoformat()
 
 
+def to_safe_model_prefix(model_name: str, max_len: int = 32) -> str:
+    cleaned = re.sub(r"[^A-Za-z0-9_-]+", "_", model_name.strip())
+    cleaned = cleaned.strip("_")
+    if not cleaned:
+        return "model"
+    return cleaned[:max_len]
+
+
 def list_output_run_dirs(outputs_root: Path) -> set[str]:
     if not outputs_root.exists():
         return set()
@@ -139,6 +147,7 @@ def write_aggregate_csv(path: Path, rows: Iterable[dict[str, str]]) -> None:
         "exact_set_match_rate",
         "exact_match_numerator",
         "exact_match_denominator",
+        "f1_postprocess",
         "command",
     ]
     with path.open("w", newline="", encoding="utf-8") as file_handle:
@@ -146,6 +155,54 @@ def write_aggregate_csv(path: Path, rows: Iterable[dict[str, str]]) -> None:
         writer.writeheader()
         for row in rows:
             writer.writerow(row)
+
+
+def threshold_suffix(threshold: float) -> str:
+    # 0.34 -> thr_0p34
+    safe = f"{threshold:.6f}".rstrip("0").rstrip(".").replace(".", "p")
+    return f"thr_{safe}"
+
+
+def run_threshold_postprocess(
+    repo_root: Path,
+    run_output_dir: str,
+    thresholds: list[float],
+) -> str:
+    if not run_output_dir:
+        return "skipped_no_output_dir"
+    script_path = repo_root / "scripts" / "experiment_set_match" / "apply_f1_threshold_to_run.py"
+    if not script_path.exists():
+        return "skipped_missing_postprocess_script"
+
+    unique_thresholds: list[float] = []
+    for threshold in thresholds:
+        if threshold not in unique_thresholds:
+            unique_thresholds.append(threshold)
+    if not unique_thresholds:
+        return "skipped_no_thresholds"
+
+    run_dir_abs = (repo_root / run_output_dir).resolve()
+    if not run_dir_abs.exists():
+        return "skipped_missing_run_dir"
+
+    produced: list[str] = []
+    for threshold in unique_thresholds:
+        command = [
+            sys.executable,
+            str(script_path),
+            "--run-dir",
+            str(run_dir_abs),
+            "--threshold",
+            str(threshold),
+            "--suffix",
+            threshold_suffix(threshold),
+        ]
+        try:
+            subprocess.run(command, cwd=str(repo_root), check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as exc:
+            return f"failed_threshold_{threshold}:{exc.stderr.strip()[:120]}"
+        produced.append(f"{threshold:.6f}")
+    return "ok:" + ",".join(produced)
 
 
 def run() -> None:
@@ -170,8 +227,8 @@ def run() -> None:
     parser.add_argument(
         "--slider-wait-runlog-seconds",
         type=float,
-        default=300.0,
-        help="Wait for slider run_log.csv.",
+        default=0.0,
+        help="Wait for slider run_log.csv. <=0 disables timeout.",
     )
     parser.add_argument("--skip-open-browser", action="store_true", help="Do not open browser window.")
     parser.add_argument(
@@ -226,7 +283,8 @@ def run() -> None:
     run_script = Path(__file__).resolve().parent / "run_experiment.py"
 
     session_timestamp = dt.datetime.now().strftime("%Y-%m-%d_%H%M%S")
-    session_dir = outputs_root / f"{session_timestamp}__five_model_session"
+    model_prefix = to_safe_model_prefix(model_names[0])
+    session_dir = outputs_root / f"{session_timestamp}__{model_prefix}_session"
     session_dir.mkdir(parents=False, exist_ok=False)
     aggregate_csv_path = session_dir / "aggregate_summary.csv"
 
@@ -298,6 +356,20 @@ def run() -> None:
 
         rate, numerator, denominator = parse_exact_rate(combined_output)
         status = "ok" if return_code == 0 else f"failed_exit_{return_code}"
+        f1_postprocess = ""
+        if return_code == 0:
+            thresholds_for_post = []
+            if args.sampled_avg_threshold is not None:
+                thresholds_for_post.append(float(args.sampled_avg_threshold))
+            if args.sampled_F1_threshold is not None:
+                thresholds_for_post.append(float(args.sampled_F1_threshold))
+            f1_postprocess = run_threshold_postprocess(
+                repo_root=repo_root,
+                run_output_dir=run_output_dir,
+                thresholds=thresholds_for_post,
+            )
+        else:
+            f1_postprocess = "skipped_run_failed"
         aggregate_rows.append(
             {
                 "run_index": str(index),
@@ -310,6 +382,7 @@ def run() -> None:
                 "exact_set_match_rate": "" if rate is None else f"{rate:.6f}",
                 "exact_match_numerator": "" if numerator is None else str(numerator),
                 "exact_match_denominator": "" if denominator is None else str(denominator),
+                "f1_postprocess": f1_postprocess,
                 "command": " ".join(command),
             }
         )

@@ -24,6 +24,7 @@ import subprocess
 import sys
 import threading
 import time
+import urllib.error
 import urllib.request
 import webbrowser
 from bisect import bisect_right
@@ -41,6 +42,7 @@ CLASS_ID_TO_NAME: Dict[int, str] = {0: "amel", 1: "vcra", 2: "vespsp", 3: "vvel"
 CLASS_ID_TO_SPECIES_TOKEN: Dict[int, str] = {0: "ame", 1: "vcr", 2: "ves", 3: "vve"}
 SCORING_CLASS_IDS: Tuple[int, ...] = (0, 1, 2, 3)
 CONFIDENCE_THRESHOLD = 0.30  # inclusive (>=); do not change to strict >
+DEFAULT_MANIFEST_SEED = 42
 
 FRAME_DURATION_S = 4.0
 GRACE_S = 0.15
@@ -343,6 +345,22 @@ def post_camera_frame(slider_port: int, image_base64: str, at_iso: str) -> None:
         return
 
 
+def wait_for_slider_ready(slider_port: int, timeout_seconds: float = 5.0) -> None:
+    deadline = time.time() + timeout_seconds
+    last_error: Optional[str] = None
+    while time.time() < deadline:
+        try:
+            with urllib.request.urlopen(
+                f"http://127.0.0.1:{slider_port}/manifest.json?shuffle=1&seed={DEFAULT_MANIFEST_SEED}",
+                timeout=0.5,
+            ):
+                return
+        except Exception as exc:
+            last_error = str(exc)
+            time.sleep(0.1)
+    raise TimeoutError(f"Timed out waiting for slider server readiness on port {slider_port}: {last_error}")
+
+
 def run() -> None:
     parser = argparse.ArgumentParser(description="GV2 slideshow serial set-match experiment (class sets only).")
     parser.add_argument("--model-name", default=None, help="Flashed model name string (output folder naming).")
@@ -356,7 +374,12 @@ def run() -> None:
     parser.add_argument("--serial-port-glob", default="/dev/tty.usbmodem*", help="Serial port glob (macOS).")
     parser.add_argument("--serial-baudrate", type=int, default=921600, help="GV2 serial baudrate.")
     parser.add_argument("--serial-read-timeout", type=float, default=0.2, help="GV2 serial read timeout.")
-    parser.add_argument("--slider-wait-runlog-seconds", type=float, default=300.0, help="Wait for slider run_log.csv.")
+    parser.add_argument(
+        "--slider-wait-runlog-seconds",
+        type=float,
+        default=0.0,
+        help="Wait for slider run_log.csv. <=0 disables timeout.",
+    )
     parser.add_argument(
         "--sampled-avg-threshold",
         type=float,
@@ -475,10 +498,13 @@ def run() -> None:
         "nul_handling": "NUL gt derived from filename species token; background scoring uses empty sets",
         "slider": {
             "slider_port": args.slider_port,
-            "default_manifest_order": "sorted",
+            "default_manifest_order": "shuffle",
+            "default_manifest_seed": DEFAULT_MANIFEST_SEED,
             "locked_benchmark_requested": bool(args.locked_benchmark),
         },
     }
+    frame_collection_timeout_seconds: Optional[float] = None
+    run_config["frame_collection_timeout_seconds"] = frame_collection_timeout_seconds
     run_config_path = out_dir / "run_config.json"
     run_config_path.write_text(json.dumps(run_config, indent=2), encoding="utf-8")
 
@@ -501,18 +527,27 @@ def run() -> None:
         stdout=subprocess.DEVNULL,
         stderr=slider_stderr_fh,
     )
+    time.sleep(0.2)
+    if slider_process.poll() is not None:
+        raise RuntimeError(
+            "Failed to start slider server process. "
+            f"See {out_dir / 'slider_server.log'} for details."
+        )
+    wait_for_slider_ready(slider_port=args.slider_port, timeout_seconds=5.0)
 
     try:
         if not args.skip_open_browser:
-            slider_url = f"http://127.0.0.1:{args.slider_port}/"
+            slider_url = f"http://127.0.0.1:{args.slider_port}/?shuffle=1&seed={DEFAULT_MANIFEST_SEED}"
             if args.locked_benchmark:
-                slider_url = f"{slider_url}?benchmark=1"
+                slider_url = f"{slider_url}&benchmark=1"
             webbrowser.open(slider_url)
 
         # Wait for a new run folder with run_log.csv.
         run_dir: Optional[Path] = None
-        deadline = time.time() + args.slider_wait_runlog_seconds
-        while time.time() < deadline and run_dir is None:
+        runlog_deadline: Optional[float] = None
+        if args.slider_wait_runlog_seconds > 0:
+            runlog_deadline = time.time() + args.slider_wait_runlog_seconds
+        while run_dir is None:
             for p in slider_outputs_dir.iterdir():
                 if not p.is_dir():
                     continue
@@ -523,10 +558,9 @@ def run() -> None:
                     run_dir = p
                     break
             if run_dir is None:
+                if runlog_deadline is not None and time.time() >= runlog_deadline:
+                    raise TimeoutError("Timed out waiting for slider run_log.csv.")
                 time.sleep(0.25)
-
-        if run_dir is None:
-            raise TimeoutError("Timed out waiting for slider run_log.csv.")
 
         run_log_path = run_dir / "run_log.csv"
         control_events_path = run_dir / "control_events.jsonl"
@@ -647,8 +681,7 @@ def run() -> None:
 
         # Wait for the first expected_count rows to be written by the slideshow.
         frames_rows: List[Dict[str, str]] = []
-        deadline = time.time() + 1200.0
-        while time.time() < deadline:
+        while True:
             if run_log_path.exists():
                 with run_log_path.open("r", newline="", encoding="utf-8") as f:
                     reader = csv.DictReader(f)
@@ -657,9 +690,6 @@ def run() -> None:
                     frames_rows = rows[: args.expected_count]
                     break
             time.sleep(0.25)
-
-        if len(frames_rows) != args.expected_count:
-            raise TimeoutError(f"Timed out waiting for {args.expected_count} shown images. Got {len(frames_rows)}.")
 
         # Build frames from slider timestamps.
         frames: List[Dict[str, Any]] = []
