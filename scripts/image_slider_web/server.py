@@ -26,7 +26,8 @@ LABELS_DIR = WORKSPACE_ROOT / "data" / "test" / "labels"
 OUTPUTS_DIR = Path(__file__).resolve().parent / "outputs"
 RUNS_LEDGER_PATH = Path(__file__).resolve().parent / "runs_ledger.jsonl"
 
-INTRO_TEXT = "Scale the calibration bar to 6 cm, then keep camera distance fixed."
+INTRO_TEXT = "Setup preview: align camera framing, then press Space to start."
+DEFAULT_MANIFEST_SEED = 42
 
 VIEWPOINT_TOKENS = {"oth", "sid", "top"}
 SPECIES_TOKENS = {"ame", "vcr", "ves", "vve", "NUL"}
@@ -186,6 +187,16 @@ class SliderServerState:
         self._latest_inference: Optional[dict[str, Any]] = None
         self._latest_camera_frame: Optional[dict[str, Any]] = None
 
+    @staticmethod
+    def _run_log_has_image_rows(log_path: Path) -> bool:
+        if not log_path.exists():
+            return False
+        with log_path.open("r", encoding="utf-8") as f:
+            # Header only means run not started yet from scoring perspective.
+            _header = f.readline()
+            second_line = f.readline()
+        return bool(second_line.strip())
+
     def set_locked_benchmark(self, locked_benchmark: bool) -> None:
         self._locked_benchmark = locked_benchmark
 
@@ -193,6 +204,16 @@ class SliderServerState:
         return self._locked_benchmark
 
     def start_new_run(self) -> CurrentRun:
+        # Idempotent behavior for setup/reload race:
+        # if a run already exists but no image rows are logged yet, reuse it.
+        if self._current_run is not None:
+            try:
+                if not self._run_log_has_image_rows(self._current_run.log_path):
+                    return self._current_run
+            except Exception:
+                # Fall through to creating a new run if current run metadata is unreadable.
+                pass
+
         timestamp = dt.datetime.now().strftime("%Y-%m-%d_%H%M%S")
         run_dir = OUTPUTS_DIR / timestamp
         run_dir.mkdir(parents=True, exist_ok=False)
@@ -209,7 +230,8 @@ class SliderServerState:
                     "run_id": timestamp,
                     "started_at_iso": _iso_now(),
                     "locked_benchmark": self._locked_benchmark,
-                    "manifest_default_order": "sorted",
+                    "manifest_default_order": "shuffle",
+                    "manifest_default_seed": DEFAULT_MANIFEST_SEED,
                     "manifest_shuffle_supported": True,
                 },
                 indent=2,
@@ -428,7 +450,7 @@ class SliderRequestHandler(BaseHTTPRequestHandler):
             return
 
         sorted_names = sorted([t[0] for t in parsed])
-        shuffle_seed = 42 if seed_value is None else seed_value
+        shuffle_seed = DEFAULT_MANIFEST_SEED if seed_value is None else seed_value
         ordered_names = _seeded_shuffle(sorted_names, seed=shuffle_seed) if shuffle_enabled else sorted_names
 
         token_map = {name: (viewpoint, species) for (name, viewpoint, species) in parsed}

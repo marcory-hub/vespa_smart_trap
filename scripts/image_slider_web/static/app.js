@@ -21,9 +21,12 @@
 
   const queryLockedBenchmark =
     isTruthyParam(pageQuery.get("locked")) || isTruthyParam(pageQuery.get("benchmark"));
-  const queryShuffle =
-    pageQuery.get("shuffle") == null ? true : isTruthyParam(pageQuery.get("shuffle"));
+  const DEFAULT_MANIFEST_SEED = "42";
   const querySeed = pageQuery.get("seed");
+  const manifestSeed =
+    typeof querySeed === "string" && /^-?\d+$/.test(querySeed.trim())
+      ? querySeed.trim()
+      : DEFAULT_MANIFEST_SEED;
 
   const IMAGE_WIDTH_MIN_CM = 4.0;
   const IMAGE_WIDTH_DEFAULT_CM = 8.0;
@@ -142,6 +145,13 @@
     cameraInferenceLabel.textContent = state.latestInferenceLabel || "waiting_for_gv2";
   }
 
+  function confirmSetupIfActive(source) {
+    if (!state.inSetupPhase || state.setupConfirmed) return false;
+    state.setupConfirmed = true;
+    logControlEvent(`setup_confirmed_${source}`);
+    return true;
+  }
+
   function formatInferenceLabel(payload) {
     if (!payload || typeof payload !== "object") return "";
     if (typeof payload.species !== "string" || !payload.species) return "";
@@ -208,14 +218,8 @@
 
     const startInfo = await fetchJson("/start");
     const manifestQuery = new URLSearchParams();
-    if (queryShuffle) {
-      manifestQuery.set("shuffle", "1");
-      if (querySeed !== null && querySeed !== "") {
-        manifestQuery.set("seed", querySeed);
-      }
-    } else {
-      manifestQuery.set("shuffle", "0");
-    }
+    manifestQuery.set("shuffle", "1");
+    manifestQuery.set("seed", manifestSeed);
     const manifest = await fetchJson(`/manifest.json?${manifestQuery.toString()}`);
 
     state.manifest = manifest;
@@ -247,7 +251,7 @@
     state.setupConfirmed = false;
     while (!state.setupConfirmed && !state.stopping) {
       setupBanner.textContent =
-        "Setup: adjust camera distance so full example image is captured, then press Space to start.";
+        "Setup: adjust camera distance so full example image is captured, then press Space/Enter or click to start.";
       await sleep(50);
     }
     state.inSetupPhase = false;
@@ -341,11 +345,16 @@
   document.addEventListener("keydown", (ev) => {
     if (ev.code === "Space") {
       ev.preventDefault();
-      if (state.inSetupPhase) {
-        state.setupConfirmed = true;
+      if (confirmSetupIfActive("space")) {
         return;
       }
       togglePause();
+      return;
+    }
+    if (ev.code === "Enter" || ev.code === "NumpadEnter") {
+      if (confirmSetupIfActive("enter")) {
+        ev.preventDefault();
+      }
       return;
     }
     if (ev.code === "ArrowRight") {
@@ -358,6 +367,13 @@
       restart();
       return;
     }
+  });
+
+  setupBanner.addEventListener("pointerdown", () => {
+    confirmSetupIfActive("setup_banner_click");
+  });
+  contentGrid.addEventListener("pointerdown", () => {
+    confirmSetupIfActive("content_click");
   });
 
   startRun().catch((e) => {
