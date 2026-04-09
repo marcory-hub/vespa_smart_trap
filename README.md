@@ -54,9 +54,9 @@ python xmodem/xmodem_send.py \
 
 ## Himax AI Web Toolkit
 
-GUI tool for model deployment and board management.
+A visual tool showing live GV2 camera feed with real-time detection boxes.
 
 - **Download:** `wget https://github.com/HimaxWiseEyePlus/Seeed_Grove_Vision_AI_Module_V2/releases/download/v1.1/Himax_AI_web_toolkit.zip`
 - **Extract:** `unzip Himax_AI_web_toolkit.zip`
 - **Open:** Open `index.html` in browser (from the extracted folder)
-- **Connect:** Select "Grove Vision" and click Connect to see xamera image with inference results
+- **Connect:** Select "Grove Vision" and click Connect 
