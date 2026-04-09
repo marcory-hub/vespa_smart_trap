@@ -60,3 +60,6 @@ scripts/image_slider_web/outputs/*
 scripts/image_slider_web/outputs/**
 outputs/*
 outputs/**
+
+# Notes (local Obsidian vault, not versioned)
+notes/
