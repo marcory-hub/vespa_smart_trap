@@ -52,6 +52,17 @@ python xmodem/xmodem_send.py \
   --model="model_zoo/tflm_yolo11_od/yolo11n_vespa_2026-02v1_allpxNULL_full_integer_quant_vela.tflite 0xB7B000 0x00000"
 ```
 
+## I2C LED Protocol (GV2 -> ESP32-S3)
+
+GV2 exposes an I2C slave at `0x63`. ESP32-S3 reads 1 byte:
+- `0x00`: none
+- `0x01`: class 3 (Asian hornet) present → red LED (GPIO2)
+- `0x02`: other class present → green LED (GPIO4)
+
+Firmware locations:
+- GV2: `gv2_firmware/EPII_CM55M_APP_S/app/scenario_app/tflm_yolo11_od/tflm_yolo11_od.c`
+- ESP32-S3: `experiments/gv2_esp32_sd/src/main.cpp`
+
 ## Himax AI Web Toolkit
 
 A visual tool showing live GV2 camera feed with real-time detection boxes.
