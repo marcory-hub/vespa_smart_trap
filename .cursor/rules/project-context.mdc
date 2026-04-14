@@ -7,7 +7,6 @@ alwaysApply: true
 
 ## 1. Mandatory Context Loading
 Before proposing logic or answering architectural questions:
-- **Always check** `notes/_timeline.md` for the current active sprint.
 - **Reference** `notes/_hardware_stack.md` for pinouts/UART configs before suggesting embedded code.
 - **Consult** `.cursor/rules/` to ensure consistency with pedagogical and technical standards.
 - **For hardware/pinout/UART questions** read `notes/_hardware_stack.md` first. For next steps / roadmap questions, read `notes/_timeline.md` first. For model versioning, read `notes/_model.md` first.

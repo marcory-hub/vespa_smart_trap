@@ -6,12 +6,12 @@ alwaysApply: true
 # Rules vs notes (scope)
 
 ## Core Principle: - Rules (.mdc)
-1. The Actor: agent-persona.mdc - Who the agent is and How it speaks 
-2. The Law: global-rules.mdc -  Standards and Formatting
-3. The Map: project-context.mdc - high-level  orchestrator, that essentially acts as the "GPS" for the Agent
-4. The Guardrails: safety-guardrails.mdc - the "Zero-Trust" mandate that marks guesses as `[to be verified]`.
-5. Hygiene: the boundary between Rules and Notes.
-6. Verification: the anti-hallucination mandate.
+1. **The Actor:** agent-persona.mdc - Who the agent is and How it speaks 
+2. **The Law:** global-rules.mdc -  Standards and Formatting
+3. **The Map:** project-context.mdc - high-level  orchestrator, that essentially acts as the "GPS" for the Agent
+4. **The Guardrails:** safety-guardrails.mdc - the "Zero-Trust" mandate that marks guesses as `[to be verified]`.
+5. **Hygiene:** the boundary between Rules and Notes.
+6. **Verification:** the anti-hallucination mandate.
 
 ## Boundary between Rules and Notes
 - **Notes (.md)**: Define the "Project Memory." They contain the dataset history, hardware pinouts, training results, and the evolving plan.

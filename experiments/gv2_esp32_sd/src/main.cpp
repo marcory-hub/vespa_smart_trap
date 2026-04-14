@@ -1,6 +1,11 @@
 // GV2 SD capture control firmware for ESP32-S3
 // Uses Seeed_Arduino_SSCMA to talk to Grove Vision AI V2 over UART.
 
+// Firmware modes:
+// - I2C_LED_CONTROLLER_MODE: Implements the requested I2C->LED behavior (protocol is [to be verified]).
+// - UART_TEST_MODE / default code: Legacy UART-based GV2 SD capture control already in this repo.
+#define I2C_LED_CONTROLLER_MODE 1
+
 // Set to 1 to run UART test only: listen on Grove UART (Serial1) and echo to USB.
 // Use serial monitor at 115200; type AT+ID? and press Enter to ping GV2.
 #define UART_TEST_MODE 1
@@ -8,6 +13,159 @@
 #include <Arduino.h>
 #include <stdint.h>
 
+#if I2C_LED_CONTROLLER_MODE
+#include <Wire.h>
+
+static const int kRedLedGpio = 2;
+static const int kYellowLedGpio = 3;
+static const int kGreenLedGpio = 4;
+
+static const int kI2cSdaGpio = 5;
+static const int kI2cSclGpio = 6;
+
+// GV2 I2C detection-state test address (set by our GV2 firmware build).
+static const uint8_t kGv2I2cAddress = 0x63;
+static const uint32_t kI2cClockHz = 100000;
+
+enum class DetectionState : uint8_t {
+    kNone = 0,
+    kHornet = 1,
+    kOtherClass = 2,
+};
+
+static void set_leds_for_state(DetectionState state) {
+    const bool red_on = (state == DetectionState::kHornet);
+    const bool green_on = (state == DetectionState::kOtherClass);
+
+    digitalWrite(kRedLedGpio, red_on ? HIGH : LOW);
+    digitalWrite(kGreenLedGpio, green_on ? HIGH : LOW);
+}
+
+static void set_all_leds_off() {
+    digitalWrite(kRedLedGpio, LOW);
+    digitalWrite(kYellowLedGpio, LOW);
+    digitalWrite(kGreenLedGpio, LOW);
+}
+
+static void power_on_self_test_yellow_led() {
+    for (int i = 0; i < 3; ++i) {
+        digitalWrite(kYellowLedGpio, HIGH);
+        delay(500);
+        digitalWrite(kYellowLedGpio, LOW);
+        delay(500);
+    }
+}
+
+static void print_i2c_scan_results() {
+    size_t found_count = 0;
+    Serial.println("[i2c] Scanning for devices...");
+    for (uint8_t address = 0x08; address <= 0x77; ++address) {
+        Wire.beginTransmission(address);
+        uint8_t error = Wire.endTransmission();
+        if (error == 0) {
+            Serial.print("[i2c] Found device at 0x");
+            if (address < 16) Serial.print("0");
+            Serial.println(address, HEX);
+            ++found_count;
+        }
+    }
+    if (found_count == 0) {
+        Serial.println("[i2c] No devices found.");
+    }
+}
+
+static bool i2c_device_responds(uint8_t address) {
+    Wire.beginTransmission(address);
+    return (Wire.endTransmission() == 0);
+}
+
+static bool gv2_present_on_i2c_bus() {
+    return i2c_device_responds(kGv2I2cAddress);
+}
+
+static void print_target_address() {
+    Serial.print("[init] Target I2C address: 0x");
+    if (kGv2I2cAddress < 16) Serial.print("0");
+    Serial.println(kGv2I2cAddress, HEX);
+}
+
+static DetectionState read_detection_state_byte() {
+    const uint8_t requested_bytes = 1;
+    uint8_t received = Wire.requestFrom(static_cast<int>(kGv2I2cAddress), static_cast<int>(requested_bytes));
+    if (received < requested_bytes || Wire.available() < 1) {
+        return DetectionState::kNone;
+    }
+    const uint8_t value = Wire.read();
+    static uint32_t last_print_ms = 0;
+    const uint32_t now_ms = millis();
+    if (now_ms - last_print_ms >= 250) {
+        last_print_ms = now_ms;
+        Serial.print("[i2c] Read byte: 0x");
+        if (value < 16) Serial.print("0");
+        Serial.println(value, HEX);
+    }
+    if (value == static_cast<uint8_t>(DetectionState::kHornet)) {
+        return DetectionState::kHornet;
+    }
+    if (value == static_cast<uint8_t>(DetectionState::kOtherClass)) {
+        return DetectionState::kOtherClass;
+    }
+    return DetectionState::kNone;
+}
+
+void setup() {
+    Serial.begin(115200);
+    while (!Serial && millis() < 3000) {
+        delay(10);
+    }
+    Serial.println();
+    Serial.println("[init] I2C LED controller starting...");
+
+    pinMode(kRedLedGpio, OUTPUT);
+    pinMode(kYellowLedGpio, OUTPUT);
+    pinMode(kGreenLedGpio, OUTPUT);
+    set_all_leds_off();
+
+    power_on_self_test_yellow_led();
+
+    Wire.begin(kI2cSdaGpio, kI2cSclGpio);
+    Wire.setClock(kI2cClockHz);
+    print_i2c_scan_results();
+    print_target_address();
+
+    if (!gv2_present_on_i2c_bus()) {
+        Serial.print("[init] ERROR: device not found on target address 0x");
+        if (kGv2I2cAddress < 16) Serial.print("0");
+        Serial.println(kGv2I2cAddress, HEX);
+        Serial.println("[init] GV2 must expose an I2C slave at this address for this to work. [to be verified]");
+    } else {
+        Serial.print("[init] Found device at 0x");
+        if (kGv2I2cAddress < 16) Serial.print("0");
+        Serial.println(kGv2I2cAddress, HEX);
+    }
+}
+
+void loop() {
+    static uint32_t last_scan_ms = 0;
+    const uint32_t now_ms = millis();
+
+    if (now_ms - last_scan_ms >= 5000) {
+        last_scan_ms = now_ms;
+        print_i2c_scan_results();
+    }
+
+    if (!gv2_present_on_i2c_bus()) {
+        set_leds_for_state(DetectionState::kNone);
+        delay(100);
+        return;
+    }
+
+    set_leds_for_state(read_detection_state_byte());
+
+    delay(25);
+}
+
+#else
 #if !UART_TEST_MODE
 // External library from Seeed (Seeed_Arduino_SSCMA).
 #include <Seeed_Arduino_SSCMA.h>
@@ -20,7 +178,7 @@
 #endif
 
 SSCMA AI;
-#endif
+#endif  // !UART_TEST_MODE
 
 #if !UART_TEST_MODE
 // --- Configuration constants ---
@@ -378,4 +536,6 @@ void loop() {
     delay(1);
 }
 #endif
+
+#endif  // I2C_LED_CONTROLLER_MODE
 
