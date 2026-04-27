@@ -52,8 +52,6 @@ data/test/labels/
 *.h5
 *.pb
 
-# Release .tflite and .img live in gv2_firmware/model_zoo (firmware repo), not here.!artifacts/
-
 # archive
 z_archive/
 # Third-party tree: ignore all top-level entries except the Himax toolkit stub
