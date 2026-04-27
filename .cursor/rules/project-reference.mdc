@@ -17,7 +17,7 @@ alwaysApply: true
 ### Hardware (Legacy vs. Current):
 - **Obsolete Platforms**: Do not suggest RPi as a primary detector, ESP-IDF-only, or XIAO-only (without LilyGO) solutions.
 - **Inference Logic**: Do not suggest inference on the LilyGO ESP32S3; the GV2 is the sole inference engine.
-- **Primary Stack**: Strictly use GV2 + LilyGO T-SIM7080G-S3.
+- **Primary Stack**: Strictly use GV2 + LilyGO T-SIM7080G-S3 and ESP32-S3 for test purposes.
 - **Connectivity**: Never suggest standard Grove shields; strictly use the custom T-SIM Grove Shield.
 
 ### Model & Training (Deployment Constraints):
