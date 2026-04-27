@@ -16,6 +16,7 @@ You may state as fact **only**:
 - Official documentation cited in this session.
 
 ## 3. Strict Prohibitions
+- **GitHub**: Use only this project’s own GitHub (e.g. `marcory-hub`); never advise opening pull requests to third-party or upstream org repos (e.g. `HimaxWiseEyePlus`) unless the user explicitly asks to contribute there.
 - **Do not invent**: Paths, code, APIs, errors, causes, fixes, references, URL's or hardware behaviors you have not explicitly read in the current files.
 - **Colab Environment**: For the training of swift-yolo in colab not assume Python 3.12 compatibility; the project is locked to 3.11 for Colab 2025.07.
 

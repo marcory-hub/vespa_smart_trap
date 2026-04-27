@@ -1,6 +1,9 @@
 # Secrets / credentials
 credentials*.md
 
+# PlatformIO (build, libdeps; deps may be nested git clones — do not track)
+**/.pio/
+
 # Editor / IDE
 .vscode/
 .history/
@@ -56,6 +59,8 @@ z_archive/
 # Third-party tree: ignore all top-level entries except the Himax toolkit stub
 
 # log files
+# image_slider_web: local run index (regenerates when using the tool)
+scripts/image_slider_web/runs_ledger.jsonl
 scripts/image_slider_web/outputs/*
 scripts/image_slider_web/outputs/**
 outputs/*
