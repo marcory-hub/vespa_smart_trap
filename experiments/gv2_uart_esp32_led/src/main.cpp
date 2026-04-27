@@ -236,7 +236,7 @@ static void consume_uart(JpegRxState* jpeg_rx,
             }
         }
 
-        // 2) Scan for JPEG magic.
+        // 2) Scan for JPEG magic (needed to detect if a jpg is coming and not some noise)
         shift_magic_window(jpeg_rx, value);
         if (!magic_window_matches(*jpeg_rx)) continue;
 
