@@ -71,6 +71,9 @@ static const uint32_t kStateFrameFailSafeMs = 1000;
 // Not sure if we need a small delay to prevent flickering when signals are dropped for the step motors? If not, comment this out.
 static const uint32_t kLedOffDelayMs = 100;
 
+// USB Serial must be fast enough to forward JPEG payload without stalling UART reads.
+static const uint32_t kUsbSerialBaud = 921600;
+
 static bool read_u32_le_from_uart(uint32_t* out_value) {
     if (!out_value) return false;
     uint8_t b[4];
@@ -101,9 +104,8 @@ struct JpegRxState {
     uint32_t image_counter = 0;
     uint32_t last_saved_ms = 0;
 
-    // Preview (print first N JPEG payload bytes as hex)
-    uint8_t preview_remaining = 0;
-    bool preview_printed_prefix = false;
+    // When true, stream entire JPEG payload to USB Serial (drops consumed only).
+    bool forward_jpeg_usb = false;
 };
 
 struct StateRxState {
@@ -145,8 +147,7 @@ static void on_jpeg_frame_start(JpegRxState* s) {
     if (now - s->last_saved_ms < 500) {
         s->receiving_jpeg = true;
         s->jpeg_remaining = s->frame_len;
-        s->preview_remaining = 0;
-        s->preview_printed_prefix = false;
+        s->forward_jpeg_usb = false;
         Serial.print("[jpeg] drop len=");
         Serial.print(s->frame_len);
         Serial.print(" class=");
@@ -161,7 +162,7 @@ static void on_jpeg_frame_start(JpegRxState* s) {
 
     // NOTE: On XIAO ESP32-S3 we usually don't have SD. For now we just consume bytes.
     // When you move to LilyGO T-SIM7080G-S3, this is where you open an SD file and stream-write.
-    Serial.print("[jpeg] recv #");
+    Serial.print("recv #");
     Serial.print(s->image_counter);
     Serial.print(" len=");
     Serial.print(s->frame_len);
@@ -176,9 +177,7 @@ static void on_jpeg_frame_start(JpegRxState* s) {
 
     s->receiving_jpeg = true;
     s->jpeg_remaining = s->frame_len;
-
-    s->preview_remaining = 16;
-    s->preview_printed_prefix = false;
+    s->forward_jpeg_usb = true;
 }
 
 static void consume_uart(JpegRxState* jpeg_rx,
@@ -191,38 +190,33 @@ static void consume_uart(JpegRxState* jpeg_rx,
     if (out_saw_valid_state) *out_saw_valid_state = false;
 
     while (Serial1.available() > 0) {
+        if (jpeg_rx->receiving_jpeg) {
+            static uint8_t buf[256];
+            const int avail_i = Serial1.available();
+            if (avail_i <= 0) break;
+            uint32_t to_read = static_cast<uint32_t>(avail_i);
+            if (to_read > jpeg_rx->jpeg_remaining) to_read = jpeg_rx->jpeg_remaining;
+            if (to_read > sizeof(buf)) to_read = sizeof(buf);
+
+            const size_t n = Serial1.readBytes(buf, static_cast<size_t>(to_read));
+            if (n == 0) break;
+            if (out_saw_any_byte) *out_saw_any_byte = true;
+
+            if (jpeg_rx->forward_jpeg_usb) {
+                Serial.write(buf, n);
+            }
+            jpeg_rx->jpeg_remaining -= static_cast<uint32_t>(n);
+            if (jpeg_rx->jpeg_remaining == 0) {
+                jpeg_rx->receiving_jpeg = false;
+            }
+            continue;
+        }
+
         const int b = Serial1.read();
         if (b < 0) break;
         if (out_saw_any_byte) *out_saw_any_byte = true;
 
         const uint8_t value = static_cast<uint8_t>(b);
-
-        if (jpeg_rx->receiving_jpeg) {
-            if (jpeg_rx->preview_remaining > 0) {
-                if (!jpeg_rx->preview_printed_prefix) {
-                    jpeg_rx->preview_printed_prefix = true;
-                    Serial.print("[jpeg] head:");
-                }
-                Serial.print(" 0x");
-                if (value < 16) Serial.print("0");
-                Serial.print(value, HEX);
-                jpeg_rx->preview_remaining--;
-                if (jpeg_rx->preview_remaining == 0) {
-                    Serial.println();
-                }
-            }
-            if (jpeg_rx->jpeg_remaining > 0) {
-                jpeg_rx->jpeg_remaining--;
-            }
-            if (jpeg_rx->jpeg_remaining == 0) {
-                jpeg_rx->receiving_jpeg = false;
-                if (jpeg_rx->preview_printed_prefix && jpeg_rx->preview_remaining > 0) {
-                    Serial.println();
-                }
-                Serial.println("[jpeg] done");
-            }
-            continue;
-        }
 
         // 1) Framed state messages: 'V''S''T''S' + state(1)
         shift_magic_window(state_rx->magic_window, &state_rx->magic_filled, value);
@@ -277,7 +271,7 @@ void setup() {
     set_all_leds_off();
     power_on_self_test_yellow_led();
 
-    Serial.begin(115200);
+    Serial.begin(kUsbSerialBaud);
     delay(200);
     // Do not wait for Serial connection: this firmware should behave the same
     // whether powered from USB or from the final power setup.

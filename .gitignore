@@ -58,7 +58,10 @@ z_archive/
 
 # outputs and scripts for yolo model testing 
 outputs/
-scripts/
+# scripts/ contains a few useful utilities; ignore by default but allow specific tracked scripts.
+scripts/*
+!scripts/
+!scripts/capture_gv2_uart_jpeg.py
 
 # Notes (local Obsidian vault, not versioned)
 notes/

@@ -90,3 +90,5 @@ pio run
 pio run -t upload
 pio device monitor -b 115200
 ```
+
+Run python3 `scripts/capture_gv2_uart_jpeg.py /dev/cu.usbmodem1101 921600` to save the next recv #... len=... JPEG from the ESP32 as frame_XXXX.jpg.
