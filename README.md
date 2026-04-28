@@ -196,6 +196,10 @@ SENSORDPLIB_STATUS_XDMA_FRAME_READY 22
   - last value (3) is the class
 5. Optional: **Check jpg** with the capture_gv2_uart_jpeg.py script (replace XXXX with the number of your ESP32 port number)
 `python3 scripts/capture_gv2_uart_jpeg.py /dev/cu.usbmodemXXXX 921600`. This script captures the first detection and saves it to the root after it is started so you can check if the jpg is not corrupt.
+6. Optional: **Check gv2 detection with Himax AI web toolkit:** open `Himax_AI_web_toolkit/index.html` (from vscode you can do it with the Live Server plugin). Select `grove vision ai (v2)` top right, select `connect`, select USB device and click make connection.
+expected output
+
+![Himax output example](images/himax_output.png)
 
 ### Models in model_zoo:
 - Available Models are located here: `gv2_firmware/model_zoo/tflm_yolo11_od/`
