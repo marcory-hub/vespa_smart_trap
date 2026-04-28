@@ -68,3 +68,8 @@ scripts/*
 # Notes (local Obsidian vault, not versioned)
 notes/
 
+# local scripts
+experiments/
+
+# local images
+experiments/gv2_home/images/
