@@ -19,6 +19,7 @@
 
 - **Clone repo with submodules (all-in-one):** `git clone --recurse-submodules https://github.com/marcory-hub/vespa_smart_trap && cd vespa_smart_trap`
 - **Or separately:** Clone first, then init: `git clone https://github.com/marcory-hub/vespa_smart_trap && cd vespa_smart_trap && git submodule update --init --recursive`
+(ignore 'png pathnames too long' this part of the repo is only needed to adjust the gv2 firmware)
 - **Create venv:** 
   - Linux/macOS: `python -m venv .venv`
   - Windows: `.venv\Scripts\Activate.ps1`
@@ -102,9 +103,10 @@ b''
 b'Do you want to end file transmission and reboot system? (y)'
 
 Firmware upgrade completed, restart WE2 ...
+```
 6. Optional: **Check gv2 detection with Himax AI web toolkit:** open `Himax_AI_web_toolkit/index.html` (from vscode you can do it with the Live Server plugin). Select `grove vision ai (v2)` top right, select `connect`, select USB device and click make connection.
 expected output
-```
+
 ![Himax output example](images/himax_output.png)
 
 ## Build and flash the ESP32-S3 
