@@ -11,7 +11,7 @@
 #### Hardware
 - Grove Vision AI V2 (GV2) board
 - ESP32-S3 
-**Important:** only plug ESP32 in the GV2 socket after the GV2 is flashed! (hardware solution is work in progress)
+**Important:** if flashing the GV2 fails unplug ESP32 from the GV2 socket and try again
 - USB-C cable to connect GV2 and ESP32 to the computer
 - Python 3.11+ with virtual environment activated: `source .venv/bin/activate`
 
@@ -23,8 +23,6 @@
 - **Install deps:** `pip install pyserial`
 
 ## Flash the GV2
-
-IMPORTANT: Do not plug another dev board such as ESP32 or Lilygo in the GV2 socket while flashing.
 
 1. **Connect GV2 with USB and identify USB port:** `ls /dev/cu.usbmodem*` (e.g., `/dev/cu.usbmodem58FA1047631`)
 2. **Navigate to gv2_firmware folder:** `cd gv2_firmware`
