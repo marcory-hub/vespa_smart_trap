@@ -6,8 +6,8 @@ Expected stream format (from experiments/gv2_uart_esp32_led):
   recv #<n> len=<bytes> state=<...> class=<...> conf_u8=<...> conf=<...>\n
   <raw JPEG payload bytes, exactly len bytes>
 
-Usage:
-  python3 scripts/capture_gv2_uart_jpeg.py /dev/cu.usbmodem1101 115200
+Usage (replace XXXX with the number of your ESP32 port number, can be found with `ls /dev/cu.usbmodem*`):
+  python3 scripts/capture_gv2_uart_jpeg.py /dev/cu.usbmodemXXXX 115200
 
 Output:
   Writes frame_XXXX.jpg in the current directory.
