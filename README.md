@@ -4,7 +4,7 @@
 - GV2 firmware: I2C detection disabled to avoid conflicts on those pins (UART unchanged)
 - ESP32 code: LED part removed
 
-## Quick reference to flash YOLO11 models to Grove Vision AI V2 (on macOS) and validate the received inference result and jpg on the ESP32
+## Quick reference to flash YOLO11 models to Grove Vision AI V2 and validate the received inference result and jpg on the ESP32
 
 ### Setup
 
@@ -19,14 +19,19 @@
 
 - **Clone repo with submodules (all-in-one):** `git clone --recurse-submodules https://github.com/marcory-hub/vespa_smart_trap && cd vespa_smart_trap`
 - **Or separately:** Clone first, then init: `git clone https://github.com/marcory-hub/vespa_smart_trap && cd vespa_smart_trap && git submodule update --init --recursive`
-- **Create venv:** `python3 -m venv .venv && source .venv/bin/activate`
-- **Install deps:** `pip install pyserial`
+- **Create venv:** 
+  - Linux/macOS: `python -m venv .venv`
+  - Windows: `.venv\Scripts\Activate.ps1`
+- **Install deps:** 
+`python.exe -m pip install --upgrade pip`
+`pip install pyserial xmodem`
 
 ## Flash the GV2
 
 1. **Connect GV2 with USB and identify USB port:** `ls /dev/cu.usbmodem*` (e.g., `/dev/cu.usbmodem58FA1047631`)
 2. **Navigate to gv2_firmware folder:** `cd gv2_firmware`
 3. **Run xmodem flash command:**
+- For Mac:
    ```bash
    python xmodem/xmodem_send.py \
      --port=PORT \
@@ -34,6 +39,16 @@
      --protocol=xmodem \
      --file=we2_image_gen_local/output_case1_sec_wlcsp/output.img \
      --model="model_zoo/tflm_yolo11_od/yolo11n_vespa_2026-02v1_allpxNULL_full_integer_quant_vela.tflite 0xB7B000 0x00000"
+   ```
+- For Windows:
+   ```bash
+   cd gv2_firmware
+   python xmodem\xmodem_send.py `
+  --port PORT `
+  --baudrate 921600 `
+  --protocol xmodem `
+  --file "we2_image_gen_local\output_case1_sec_wlcsp\output.img" `
+  --model="model_zoo/tflm_yolo11_od/yolo11n_vespa_2026-02v1_allpxNULL_full_integer_quant_vela.tflite 0xB7B000 0x00000"
    ```
    Replace `PORT` with the USB port from step 1. Default model is yolo11n_vespa_2026-02v1_allpxNULL_full_integer_quant_vela.tflite, replace this part if an other model is needed.
 
@@ -87,12 +102,25 @@ b''
 b'Do you want to end file transmission and reboot system? (y)'
 
 Firmware upgrade completed, restart WE2 ...
-```
-## Build and flash the ESP32-S3 
-1. **Connect GV2 with USB and identify USB port:** `ls /dev/cu.usbmodem*` (e.g., `/dev/cu.usbmodem1101`)
-2. **Navigate to esp32_firmware folder:** `cd esp_firmware/esp32-s3-gv2-uart-reciever`
-3. **Build and flash the ESP:** `pio run -t upload`
+6. Optional: **Check gv2 detection with Himax AI web toolkit:** open `Himax_AI_web_toolkit/index.html` (from vscode you can do it with the Live Server plugin). Select `grove vision ai (v2)` top right, select `connect`, select USB device and click make connection.
 expected output
+```
+![Himax output example](images/himax_output.png)
+
+## Build and flash the ESP32-S3 
+1. **Start VS Code in esp32_firmware folder:** `cd esp_firmware/esp32-s3-gv2-uart-reciever`
+Let PIO load libraries and dependencies
+2.  **Connect GV2 with USB and identify USB port:** 
+- Linux/macOS: `ls /dev/cu.usbmodem*` (e.g., `/dev/cu.usbmodem1101`)
+- Windows: `pio list device`
+Select the newly added COM port
+3. **Build and flash the ESP:**
+- Linux/macOS: `pio run -t upload --upload-port PORT && pio device monitor -p PORT -b 921600 --filter printable`
+- Windows: `pio run -t upload --upload-port PORT; if ($LASTEXITCODE -eq 0) { pio device monitor -p PORT -b 921600 --filter printable }`
+
+Replace `PORT` with the USB port from step 2.
+
+### Expected output
 ```
 Processing esp32s3-gv2-uart (platform: espressif32@6.3.0; board: seeed_xiao_esp32s3; framework: arduino)
 --------------------------------------------------------------------------------
@@ -178,9 +206,10 @@ Hard resetting via RTS pin...
 
 1. **Plug ESP32 in the GV2**
 2. **Connect the ESP32 (or GV2) with USB-C:** either of them work
-3. Optional: **monitor the inference:** `pio device monitor --filter printable -b 921600`
+3. Optional: **monitor the inference:** `pio device monitor -p PORT -b 921600 --filter `
+Replace `PORT` with the USB port of the ESP32
 
-expected output
+### expected output
 ```
 SENSORDPLIB_STATUS_XDMA_FRAME_READY 22 
 {"type": 0, "name": "NAME?", "code": 0, "data": "kris Grove Vision AI (WE2)"}
@@ -195,10 +224,6 @@ SENSORDPLIB_STATUS_XDMA_FRAME_READY 22
   - last value (3) is the class
 4. Optional: **Check jpg** with the capture_gv2_uart_jpeg.py script (replace XXXX with the number of your ESP32 port number)
 `python3 scripts/capture_gv2_uart_jpeg.py /dev/cu.usbmodemXXXX 921600`. This script captures the first detection and saves it to the root after it is started so you can check if the jpg is not corrupt.
-5. Optional: **Check gv2 detection with Himax AI web toolkit:** open `Himax_AI_web_toolkit/index.html` (from vscode you can do it with the Live Server plugin). Select `grove vision ai (v2)` top right, select `connect`, select USB device and click make connection.
-expected output
-
-![Himax output example](images/himax_output.png)
 
 ### Models in model_zoo:
 - Available Models are located here: `gv2_firmware/model_zoo/tflm_yolo11_od/`
