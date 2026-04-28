@@ -14,7 +14,7 @@ alwaysApply: true
 - **Naming**: Use meaningful, full names; strictly avoid abbreviations (e.g., `detection_threshold` not `thresh`).
 - **Structure**: Small functions, early returns, and grouped logic. Prioritize explicit logic over "clever" one-liners.
 - **Embedded Constraints**: Always consider the **< 2.4MB SRAM** limit of the GV2. If a proposed logic or buffer size risks overflow, flag it immediately.
-- **Comments**: Focus on "Why" (the physics/logic) not "What" (the syntax). Mark gaps with `TODO` or `[to be verified]`.
+- **Comments**: Focus on "Why" (the physics/logic), not "What" (the syntax). Mark gaps with `TODO` or `[to be verified]`. Do not re-add comments that the user has deleted, and do not revert user-modified comments to the agent's previous version.
 - **Error Handling**: Handle `None/Null` explicitly. Validate data types and **YOLO tensor shapes** before processing.
 
 # 3. SECURITY & REPRODUCIBILITY
