@@ -9,8 +9,10 @@
 ### Setup
 
 #### Hardware
-- USB-C cable connected to Grove Vision AI V2 (GV2) board
-- ESP32-S3 (USB-C only needed to flash the ESP32 and monitor the inference result and check the jpg). **Important:** only plug it in the GV2 socket after the GV2 is flashed! (hardware solution is work in progress)
+- Grove Vision AI V2 (GV2) board
+- ESP32-S3 
+**Important:** only plug ESP32 in the GV2 socket after the GV2 is flashed! (hardware solution is work in progress)
+- USB-C cable to connect GV2 and ESP32 to the computer
 - Python 3.11+ with virtual environment activated: `source .venv/bin/activate`
 
 #### Software
@@ -177,9 +179,8 @@ Hard resetting via RTS pin...
 ## Inference validation
 
 1. **Plug ESP32 in the GV2**
-2. **Connect GV2 with USB-C** 
-3. **Connect the ESP32 with USB-C:** only needed for validation of the inference result and the jpg (not needed in the trap)
-4. Optional: **monitor the inference:** `pio device monitor --filter printable -b 921600`
+2. **Connect the ESP32 (or GV2) with USB-C:** either of them work
+3. Optional: **monitor the inference:** `pio device monitor --filter printable -b 921600`
 
 expected output
 ```
@@ -194,9 +195,9 @@ SENSORDPLIB_STATUS_XDMA_FRAME_READY 22
 - "boxes": [[85, 112, 73, 82, 86, 3]] 
   - second value is the confidence scor in conf_u8 format (0-255) (confidence is conf_u8/255)
   - last value (3) is the class
-5. Optional: **Check jpg** with the capture_gv2_uart_jpeg.py script (replace XXXX with the number of your ESP32 port number)
+4. Optional: **Check jpg** with the capture_gv2_uart_jpeg.py script (replace XXXX with the number of your ESP32 port number)
 `python3 scripts/capture_gv2_uart_jpeg.py /dev/cu.usbmodemXXXX 921600`. This script captures the first detection and saves it to the root after it is started so you can check if the jpg is not corrupt.
-6. Optional: **Check gv2 detection with Himax AI web toolkit:** open `Himax_AI_web_toolkit/index.html` (from vscode you can do it with the Live Server plugin). Select `grove vision ai (v2)` top right, select `connect`, select USB device and click make connection.
+5. Optional: **Check gv2 detection with Himax AI web toolkit:** open `Himax_AI_web_toolkit/index.html` (from vscode you can do it with the Live Server plugin). Select `grove vision ai (v2)` top right, select `connect`, select USB device and click make connection.
 expected output
 
 ![Himax output example](images/himax_output.png)
