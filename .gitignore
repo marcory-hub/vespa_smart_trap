@@ -58,6 +58,9 @@ data/test/labels/
 z_archive/
 # Third-party tree: ignore all top-level entries except the Himax toolkit stub
 
+# image files
+data/
+
 # outputs and scripts for yolo model testing 
 outputs/
 # scripts/ contains a few useful utilities; ignore by default but allow specific tracked scripts.
