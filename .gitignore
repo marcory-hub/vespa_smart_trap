@@ -64,6 +64,7 @@ data/
 
 # outputs and scripts for yolo model testing 
 outputs/
+outputs and scripts for yolo model testing/
 # scripts/ contains a few useful utilities; ignore by default but allow specific tracked scripts.
 scripts/*
 !scripts/
