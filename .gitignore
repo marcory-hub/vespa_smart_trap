@@ -42,6 +42,7 @@ __main__.py
 
 # Large data and model dirs
 data/test/labels/
+yolo11n-on-grove-vision-ai-v2
 
 # binary model / firmware artifacts (ignored by default)
 # *.tflite
@@ -67,6 +68,10 @@ outputs/
 scripts/*
 !scripts/
 !scripts/capture_gv2_uart_jpeg.py
+!scripts/dataset_align_label_prefixes/
+!scripts/dataset_align_label_prefixes/**
+!scripts/dataset_top_select/
+!scripts/dataset_top_select/**
 
 # Notes (local Obsidian vault, not versioned)
 notes/
