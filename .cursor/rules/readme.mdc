@@ -1,0 +1,148 @@
+---
+description: README authoring — integrity, voice, GitHub conventions
+globs: "**/README.md"
+alwaysApply: false
+---
+
+# README Authoring
+
+**Role:** Technical documentation editor. Write for humans — clear, direct, no AI slop. This rule is **style only**; never use it as a factual source.
+
+## Audience
+
+Two readers, same README:
+
+1. **Operator** — already knows the stack; needs the command or procedure fast.
+2. **Builder** — non-technical user (beekeeper, ecologist, biologist, field researcher, or similar) assembling the detector; needs enough context to know they are in the right place, then clear steps.
+
+Write for both without dumbing down procedures or burying commands under exposition.
+
+## File integrity & scope
+
+- **Explicit pathing:** Operate only on the user-specified path (e.g. `gv2_firmware/README.md`). Never assume a default location if a path is provided.
+- **Conservation principle:** Do not refactor, "improve" prose, or reformat existing sections unless explicitly instructed. Treat existing text as read-only.
+- **Deliberate user edits:** See `.cursor/rules/global-rules.mdc`.
+- **Rewrite override:** When the user explicitly asks to polish, improve, or rewrite a README, conservation does not apply — apply the voice rules below to the requested scope.
+- **Placement:** Insert new content exactly where requested (e.g. "Immediately after the 'Installation' header").
+
+## Before writing (ambiguous requests)
+
+Ask for clarification on:
+
+1. **Target path** — exact README file location.
+2. **Anchor point** — where new text should be inserted.
+3. **Variable data** — versions, URLs, hex addresses, or other values not in the prompt.
+
+## Intro contract (root & public READMEs)
+
+Mandatory two-line opening after the title:
+
+1. **What** — what this repo or section does (concrete noun, no hype).
+2. **Who** — who it is for (operator repeating a procedure, or a non-technical user building the detector).
+
+Optional on submodule or internal READMEs. Never open with background, a roadmap, or a table of contents.
+
+## Section modes
+
+Apply the correct mode per section. Do not mix modes.
+
+### Prose sections (intro, background, why)
+
+- **Inverted pyramid** — main point first, then detail.
+- **Hook** — create curiosity before exposition; do not start with long background.
+- **5 w's** — who, what, where, when, why (+ often *how*) in explanatory paragraphs.
+- **Rhythm** — vary sentence length; place the strongest word at the sentence end.
+- **Litmus test** — read aloud; if you stumble, rewrite.
+- **No metaphors** — explain directly.
+- Strong openers: a concrete fact, the problem this repo solves, what the reader will have when done.
+- Weak openers: clichés, abstract definitions, table-of-contents-as-intro.
+
+### Procedure sections (Setup, Flash, CLI, Troubleshooting)
+
+- **Inverted pyramid only:** goal → prerequisites → numbered steps → expected output.
+- **No hook, no metaphors, no fascination** — clarity only.
+- One idea per block; cut digressions even if interesting.
+- End with closure: next step, link, or what success looks like.
+
+## Voice (anti-AI)
+
+Write like a colleague leaving clear notes, not a blog post or chatbot.
+
+**Banned patterns:**
+
+- Throat-clearing: "In this section we will…", "It's worth noting that…", "Let's dive in / get started"
+- Empty enthusiasm without specifics
+- Tricolon adjective stacks ("fast, reliable, and scalable")
+- Symmetrical filler under every heading
+- Sentences that could appear in any repository — delete them
+
+**Patronizing patterns** (ban the pattern, not individual words):
+
+- "Simply run…", "Just follow these easy steps", "Don't worry, this is simple"
+- Plain words in context are fine; stiffness is as bad as condescension
+
+**Preferred:**
+
+- Direct, specific, slightly informal where it helps (e.g. a short aside about a known quirk)
+- Concrete nouns over vague adjectives ("921600 baud", not "high-speed connection")
+- Short sentences; bold UI elements and key commands only where they aid scanning
+
+## Word choice
+
+- Assume less jargon knowledge than you think; explain a term on first use, or drop it for a plain word.
+- Tone: neither condescending ("everyone knows…") nor intimidating ("only experts understand this").
+- Watch double meanings (e.g. "significant", "model", "experiment").
+- Cut filler; avoid dated or bureaucratic phrasing ("by means of", "in order to").
+- Prefer active voice; avoid nominalization ("the analyzing of…") — use verbs.
+- **Simplify, don't distort** — never fake data or claims.
+
+## Writing craft
+
+- Outline sections and a rough length budget before drafting sentences.
+- Expect heavy cutting.
+- **Drop-offs:** anything that makes the reader stop — cut or rewrite.
+- After each sentence, ask what the reader wants next.
+- Avoid stacked prepositions — split into two sentences.
+- Keep verb parts together (no split-verb constructions).
+- If a non-expert reader does not understand, the text failed — not them.
+
+## Images & graphs
+
+- Pick concrete, relevant visuals over generic stock; respect copyright; credit sources.
+- Graphs must support one main point; label axes; do not truncate the y-axis to exaggerate.
+- Prefer counts over bare percentages when scale matters.
+- Default charts: line, bar. One clear message per figure.
+
+## GitHub conventions
+
+- **Title + intro contract** at the top (see above).
+- **Badges** (build, version, license) under the title — only if they carry real signal.
+- **Table of contents** for long READMEs; anchors must match GitHub auto-generated IDs.
+- **Quick Start / Setup** early — fastest path from clone to running.
+- **Fenced code blocks** with a language tag; exact, copy-pasteable commands.
+- **Reference over redundancy:** link to a section (`See [Setup](#setup)`) instead of repeating it. Duplicate only for standalone/offline sections.
+- **Dynamic indexing:** when adding a section, update the Contents/Outline and verify anchors.
+- **Raw links** for direct downloads: `github.com/.../blob/main/file.img` → `github.com/.../raw/main/file.img`.
+- **Placeholders** for missing values (`0xYOUR_ADDRESS`) and flag them to the user.
+
+## Human pre-publish test (primary gate)
+
+1. Can a tired operator find the command they need in 30 seconds?
+2. Would you send any paragraph to a colleague without rewriting it?
+3. Delete the first sentence of each section — if nothing is lost, cut the opener.
+
+## Agent checklist (appendix)
+
+Use after the human test when reviewing agent output:
+
+1. **Intro contract** — two lines: what + who (root/public READMEs)?
+2. **Section mode** — prose rules only in intro/background; procedure rules in Setup/Flash/CLI?
+3. **Inverted pyramid** — main point before background?
+4. **Drop-offs** — any sentence you would skip if tired?
+5. **Jargon** — every technical term explained once or replaced?
+6. **Voice** — no banned AI patterns or patronizing phrasing?
+7. **Active voice & rhythm** — read aloud; any stumbles?
+8. **Code & commands** — fenced, language-tagged, copy-pasteable; raw links where needed?
+9. **Graphs/images** — honest axes, labeled, one point, credited?
+10. **Anchors & links** — TOC and internal links resolve?
+11. **Facts** — all claims tied to references, not to this rule.
