@@ -3,12 +3,12 @@ description: Repository Map & Context Orchestration. Defines which files contain
 alwaysApply: true
 ---
 # PROJECT CONTEXT: vespa_smart_trap
-**Focus:** Multi-model YOLO development (v8/11/25/26), Swift-YOLO Colab training, and hardware deployment (GV2 + T-SIM) for Asian hornet detection.
+**Focus:** YOLO11n development and hardware deployment (GV2 + T-SIM) for Asian hornet detection.
 
 ## 1. Mandatory Context Loading
 Before proposing logic or answering architectural questions:
 - **Reference** `notes/_hardware_stack.md` for pinouts/UART configs before suggesting embedded code.
-- **Consult** `.cursor/rules/` to ensure consistency with pedagogical and technical standards.
+- **Consult** `.cursor/rules/` to ensure consistency with technical standards, style, and pedagogical standards.
 - **For hardware/pinout/UART questions** read `notes/_hardware_stack.md` first. For next steps / roadmap questions, read `notes/_timeline.md` first. For model versioning, read `notes/_model.md` first.
 
 ## 1b. Project layout & notes
@@ -20,15 +20,16 @@ Before proposing logic or answering architectural questions:
 | Topic / Task | Primary Source of Truth (Read These First) |
 | :--- | :--- |
 | **Active Roadmap** | `notes/_timeline.md` |
-| **Pedagogical Workflow** | `.cursor/rules/agent-persona.mdc`, `.cursor/rules/global-rules.mdc` |
-| **Hardware / GPIO / PCB** | `notes/_hardware_stack.md` (Verifying < 2.4MB SRAM limits) |
+| **Technical SoT: Hardware / GPIO / PCB** | `notes/_hardware_stack.md` (Verifying < 2.4MB SRAM limits) |
 | **Data & YOLO Pipeline** | `notes/_datasets.md`, `notes/_swift-yolo.md` |
-| **Model Evolution** | `notes/_model.md` (Track v8 through v26 performance) |
+| **Model Evolution** | `notes/_model.md` (YOLO11n on GV2; YOLOv26 cannot run on GV2) |
 | **Meeting / Decision Logs** | `notes/_meetings.md`, `notes/meeting_*.md` |
 | **Knowledge Capture** | `notes/` (All architecture plans and theory) |
+| **Pedagogical Workflow** | `.cursor/rules/agent-persona.mdc`, `.cursor/rules/global-rules.mdc` |
+| **GitHub README voice** | `.cursor/rules/readme.mdc` (when editing `README.md` only) |
 
 ## 3. Knowledge Synchronization Protocol
-- **Pedagogical Sync**: After a teaching moment where logic is confirmed, the agent must ask: "Should I update the theory in `notes/` or propose an update to the pedagogical standards in `.cursor/rules/agent-persona.mdc` / `.cursor/rules/global-rules.mdc`?"
+- **Pedagogical Sync**: After a teaching moment where logic is confirmed, the agent must advice: "Update `notes/` or propose an update to the standards in `.cursor/rules/agent-persona.mdc` / `.cursor/rules/global-rules.mdc`?"
 - **Agreed Changes**: Once a plan is finalized, update `notes/_timeline.md`. Use `[to be verified]` for any assumptions.
 - **Precedence**: `.cursor/rules/` (The "How") > `notes/` (The "What").
 
@@ -37,16 +38,37 @@ Before proposing logic or answering architectural questions:
 - **UART Default**: Assume 115200 baud unless `_hardware_stack.md` specifies otherwise. 
 - **Constraint Check**: For all deployment tasks, cross-reference the model size against the **< 2.4MB** limit cited in hardware notes.
 
-
-
 ## 5. Directory & File Integrity
 - **Notes Directory**: All theory, logic, and planning reside here. Agents suggest Markdown; user creates/updates files unless "Show me the code/Update file" is invoked.
 - **Notes workflow**: The user takes and makes notes in Obsidian. Sync between the Obsidian vault and `notes/` is done by the user via the commands in `notes/_cli_commands.md` (do not run sync commands for the user unless asked).
-- **Scripts Directory**: Scripts must be in task-specific subfolders (e.g., `scripts/v26_export/`).
+- **Scripts Directory**: Scripts must be in task-specific subfolders (e.g., `scripts/[task_name]/`).
 - **Dataset Safety**: NEVER rename `.jpg` or `.txt` label files. Filenames are unique identifiers; modification causes dataset corruption.
-- **Destructive Actions**: For any `rm`, `flash`, `rsync --delete`, or firmware overwrite suggestions, use the destructive-command warning format defined in `.cursor/rules/safety-guardrails.mdc` and `.cursor/rules/global-rules.mdc`.
+- **Destructive Actions**: See `.cursor/rules/safety-guardrails.mdc`.
 
-## 6. Conflict Resolution
+## 6. Mandatory Procedures
+- **Completion**: After every task, ask user to update `notes/_timeline.md`. Do not create standalone log notes.
+- **Model History**: Reference `notes/_model.md` for all versioning.
+- **Versioning**: When a new model is trained, propose a version increment (e.g., `dataset_vespa__{specification}`) based on existing history. Ask for specifications if not provided.
+- **SoT**: Notes with SoT yes on top are safe. Other notes: `[to be verified]`.
+
+## 7. Do Not Suggest (Hard Guardrails)
+### Project Hygiene
+- **Standalone Logs**: Do not create new standalone log notes.
+- **Placeholders**: Do not create notes consisting only of "paste URL here" or empty sections.
+
+### Hardware (Legacy vs. Current)
+- **Obsolete Platforms**: Do not suggest RPi as primary detector, ESP-IDF-only, or XIAO-only (without LilyGO).
+- **Inference Logic**: Do not suggest inference on the LilyGO ESP32S3; GV2 is the sole inference engine.
+- **Primary Stack**: GV2 + LilyGO T-SIM7080G-S3; ESP32-S3 for test purposes only.
+- **Connectivity**: Never suggest standard Grove shields; use the custom T-SIM Grove Shield.
+
+### Model & Training
+- **Environment**: No local training, quantization, or VELA conversion; Colab pipeline only (runtime `2025.07`).
+- **Quantization**: No standard `int8.tflite`; use `int8_vela.tflite` for GV2.
+- **Resolution**: Do not exceed limits in `notes/_hardware_stack.md`; verify current target in notes first.
+- **YOLOv26**: Not an option — cannot run on GV2.
+
+## 8. Conflict Resolution
 If documentation conflicts with current context:
 1. Prioritize .cursor/rules/safety-guardrails.mdc **Hallucination Prevention**.
 2. Flag the discrepancy to the user with a `[to be verified]` tag.

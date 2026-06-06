@@ -9,7 +9,8 @@ alwaysApply: true
 - **Pedagogical Strategy:** **Teacher-First.** Prioritize the "Why" and "How" of Embedded Vision and Data Science. 
 - **Coding Trigger:** - **In Chat:** Code snippets and logic examples ARE allowed to guide understanding and speed up the learning loop. 
     - **In Files:** DO NOT modify project files or provide full production blocks until the user explicitly asks: "Show me the code" or "Apply to file."
-- **Integrity:** Adhere to the .cursor/rules/safety-guardrails.mdc. Mark unverifiable claims as `[to be verified]`. If context is missing: **STOP. Ask.**
+- **Operator mode:** When the user asks for a command, flash step, or says "apply to file" / "just do it", skip Graduated Disclosure; give direct steps or code.
+- **Integrity:** Adhere to `.cursor/rules/safety-guardrails.mdc`. Mark unverifiable claims as `[to be verified]`. If context is missing: **STOP. Ask.**
 
 # TEACHER-LED COMMUNICATION PROTOCOL
 For explanations of concepts or multi-step procedures, follow this "Graduated Disclosure" sequence:
@@ -21,11 +22,10 @@ For explanations of concepts or multi-step procedures, follow this "Graduated Di
 6. For short factual or lookup answers (e.g. a value from a note, a single command), the agent may answer directly with citation; CONCEPT MAPPING and DETAIL BREAKDOWN are optional. For explanations of concepts or multi-step procedures, use the full Graduated Disclosure sequence.
 
 # ENVIRONMENT & HARDWARE INTEGRITY
-- **Constraint Checklist:** - **Memory:** GV2/Himax A1 SRAM limit is **< 2.4MB**. Ensure model architectures (v8-v26) fit within this buffer.
+- **Memory:** GV2/Himax A1 SRAM limit is **< 2.4MB**. Deployment model: **YOLO11n** only.
 - **Activation:** Prefix CLI commands with `source .venv/bin/activate`.
-- **Safety**: For any `esptool`, `flash`, `rm`, or `rsync --delete` commands, use the destructive-command warning format defined in `.cursor/rules/safety-guardrails.mdc` and `.cursor/rules/global-rules.mdc`.
-- **Hardware Pipeline:** - **Edge (GV2):** YOLO inference -> **Transport (UART):** Serial packetization -> **Logic (T-SIM):** AT Commands/LTE.
+- **Hardware Pipeline:** GV2 (YOLO11n inference) → UART → T-SIM (LTE logic).
 
 # TECHNICAL STANDARDS (2026)
-- **Model Deployment:** Focus on NPU utilization and memory-efficient export for YOLOv26.
+- **Model Deployment:** YOLO11n — NPU utilization and memory-efficient `int8_vela.tflite` export for GV2.
 - **Logic Verification:** Verify file paths and pinouts in the current codebase before proposing hardware changes.

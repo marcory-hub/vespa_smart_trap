@@ -15,6 +15,7 @@ alwaysApply: true
 - **Structure**: Small functions, early returns, and grouped logic. Prioritize explicit logic over "clever" one-liners.
 - **Embedded Constraints**: Always consider the **< 2.4MB SRAM** limit of the GV2. If a proposed logic or buffer size risks overflow, flag it immediately.
 - **Comments**: Focus on "Why" (the physics/logic), not "What" (the syntax). Mark gaps with `TODO` or `[to be verified]`. Do not re-add comments that the user has deleted, and do not revert user-modified comments to the agent's previous version.
+- **Deliberate user edits:** Do not revert wording, structure, labels, or examples the user changed on purpose; ask before "correcting" anything that differs from a rule or an earlier agent draft.
 - **Error Handling**: Handle `None/Null` explicitly. Validate data types and **YOLO tensor shapes** before processing.
 
 # 3. SECURITY & REPRODUCIBILITY
@@ -45,3 +46,5 @@ If rules conflict, the priority is:
 
 # 7. SUSTAINABILITY & TOKEN EFFICIENCY
 - **Token economy**: Be highly effective with tokens. Minimize unnecessary compute to reduce electricity and water consumption; prioritize concise, high-impact operations over verbose or redundant processing.
+- **Short replies**: Answer directly; no filler, no slop. Token-efficient code and instructions for the user to execute YOLO11n on GV2.
+- **CLI in notes**: Routine copy-paste commands (flash, deploy) live in `notes/`; point there instead of reproducing long command blocks unless the user asks.

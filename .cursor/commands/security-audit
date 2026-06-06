@@ -1,34 +1,38 @@
-# Security Audit
+# Security Audit (vespa_smart_trap)
 
-## Overview
-Comprehensive security review to identify and fix vulnerabilities in the codebase.
+Scoped to this project: dev repo hygiene + GV2 field device. Skip generic web auth/network checks.
 
-## Steps
-1. **Dependency audit**
-   - Check for known vulnerabilities
-   - Update outdated packages
-   - Review third-party dependencies
+## 1. Repo (run before `git add` / push)
 
-2. **Code security review**
-   - Check for common vulnerabilities
-   - Review authentication/authorization
-   - Audit data handling practices
+- **Dependencies:** from repo root with venv active:
+  ```sh
+  source .venv/bin/activate
+  pip-audit
+  ```
+- **Secrets in code:** grep for hardcoded keys, tokens, passwords in tracked files (not `notes/` unless publishing).
+- **Secrets in notes:** scan `notes/` for leaked credentials before any public push:
+  - `token=`, `colab.dev/api`, `sig=`, `SAS`
+- **`.env` / credentials:** confirm not staged; reference env vars only.
 
-3. **Infrastructure security**
-   - Review environment variables
-   - Check access controls
-   - Audit network security
+## 2. GV2 device (deployment & field use)
 
-## Security Checklist
-- [ ] Dependencies updated and secure
-- [ ] No hardcoded secrets
-- [ ] Input validation implemented
-- [ ] Authentication secure
-- [ ] Authorization properly configured
+Physical access (USB, UART) is the main attack surface. No network hardening replaces that.
 
-## Notes checklist
-- Check for notes/
-   - token=
-   - colab.dev/api
-   - sig=
-   - SAS
+- **Firmware source:** flash only images and `.tflite` models built from this repo or a verified Colab export — not random binaries.
+- **Flash path:** xmodem / `output.img` commands live in `notes/`; do not invent or substitute URLs or model paths.
+- **Secure boot:** Himax `secureboot_tool` exists in `gv2_firmware`; whether it is enabled in your build path is `[to be verified]` in notes. See `notes/himax restore gv2 factory settings.md` if recovery is needed.
+- **UART / I2C:** detection data over UART (921600) and I2C `0x63` are unauthenticated on the wire — acceptable for a local trap; do not treat UART as a trust boundary for remote commands unless you add that in firmware.
+- **Field device:** treat deployed traps as physically accessible; protect USB ports and SD content if traps are unattended in public locations.
+- **LTE (T-SIM):** when enabled, SIM/APN credentials stay out of git; use env or secure provisioning `[to be verified]` per your T-SIM setup.
+
+## Checklist
+
+**Repo**
+- [ ] `pip-audit` clean or accepted exceptions documented
+- [ ] No secrets in staged files
+- [ ] Notes token/SAS scan if publishing
+
+**GV2**
+- [ ] Firmware and model files from known sources only
+- [ ] No credentials in firmware serial logs or README
+- [ ] Physical access risk acknowledged for field deployment
