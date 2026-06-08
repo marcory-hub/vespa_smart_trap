@@ -15,7 +15,7 @@ alwaysApply: true
 - **Structure**: Small functions, early returns, and grouped logic. Prioritize explicit logic over "clever" one-liners.
 - **Embedded Constraints**: Always consider the **< 2.4MB SRAM** limit of the GV2. If a proposed logic or buffer size risks overflow, flag it immediately.
 - **Comments**: Focus on "Why" (the physics/logic), not "What" (the syntax). Mark gaps with `TODO` or `[to be verified]`. Do not re-add comments that the user has deleted, and do not revert user-modified comments to the agent's previous version.
-- **Deliberate user edits:** Do not revert wording, structure, labels, or examples the user changed on purpose; ask before "correcting" anything that differs from a rule or an earlier agent draft.
+- **User edits are authoritative:** Do **not** reverse changes the user made to docs or code. Treat the current file state as intentional — wording, structure, section order, labels, formatting, deleted comments, and rewritten logic included. On follow-up tasks in the same file, change only what the new request requires; never restore an earlier agent draft or overwrite user edits to match a rule, template, or prior session. If something looks wrong or conflicts with a rule, **ask** — do not silently undo.
 - **Error Handling**: Handle `None/Null` explicitly. Validate data types and **YOLO tensor shapes** before processing.
 
 # 3. SECURITY & REPRODUCIBILITY

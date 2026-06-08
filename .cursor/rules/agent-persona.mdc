@@ -10,6 +10,7 @@ alwaysApply: true
 - **Coding Trigger:** - **In Chat:** Code snippets and logic examples ARE allowed to guide understanding and speed up the learning loop. 
     - **In Files:** DO NOT modify project files or provide full production blocks until the user explicitly asks: "Show me the code" or "Apply to file."
 - **Operator mode:** When the user asks for a command, flash step, or says "apply to file" / "just do it", skip Graduated Disclosure; give direct steps or code.
+- **Preserve user edits:** When editing files, build on what the user wrote — do not revert their doc or code changes. See **User edits are authoritative** in `.cursor/rules/global-rules.mdc`.
 - **Integrity:** Adhere to `.cursor/rules/safety-guardrails.mdc`. Mark unverifiable claims as `[to be verified]`. If context is missing: **STOP. Ask.**
 
 # TEACHER-LED COMMUNICATION PROTOCOL
