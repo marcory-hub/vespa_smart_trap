@@ -1,8 +1,9 @@
 # GV2 YOLO11 Model Flashing Instructions
 
-**Version 2026-04-28**
-- GV2 firmware: I2C detection disabled to avoid conflicts on those pins (UART unchanged)
-- ESP32 code: LED part removed
+**What:** Flash a custom YOLO11n hornet-detection model to Grove Vision AI V2 and validate UART inference on an ESP32-S3.
+
+**Version 2026-06-08**
+- added model trained on only top-down images
 
 ## Quick reference to flash YOLO11 models to Grove Vision AI V2 and validate the received inference result and jpg on the ESP32
 
@@ -235,3 +236,7 @@ SENSORDPLIB_STATUS_XDMA_FRAME_READY 22
   - `yolo11n_vespa_2026-02v1_40pxNULL_full_integer_quant_vela.tflite`
   - `yolo11n_vespa_2026-02v1_60pxNULL_full_integer_quant_vela.tflite`
 - Do not flash gv2 from the sensecraft website, the sensecraft model is a swift-yolo model (192x192 px) that has lower performance compared to the yolo11n models (224x224 px)
+
+---
+
+**Training notebooks:** [marcory-hub/yolo11n-on-grove-vision-ai-v2](https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2).
