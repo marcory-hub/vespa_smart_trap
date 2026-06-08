@@ -12,6 +12,7 @@ Before architecture or embedded suggestions, read the relevant note first:
 - Models: `notes/_model.md`
 - Layout: `notes/_project_layout.md`
 - Training notebooks: `https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2`
+- Scripts / utilities: `scripts/script-index.md`, then search `scripts/` before proposing a new tool
 
 ## 2. Source of Truth Matrix
 
@@ -22,6 +23,7 @@ Before architecture or embedded suggestions, read the relevant note first:
 | Data & YOLO pipeline | `notes/_datasets.md`, `notes/_swift-yolo.md` |
 | Model evolution | `notes/_model.md` |
 | Training notebooks (Colab) | `https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2` (SoT for notebook updates) |
+| Scripts / utilities | `scripts/script-index.md`; search `scripts/` before creating a new util |
 | Meetings | `notes/_meetings.md`, `notes/meeting_*.md` (no SoT) |
 | README voice | `readme.mdc` (README edits only) |
 
