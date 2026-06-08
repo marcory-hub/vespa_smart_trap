@@ -49,7 +49,6 @@ yolo11n-on-grove-vision-ai-v2
 
 # archive
 z_archive/
-# Third-party tree: ignore all top-level entries except the Himax toolkit stub
 
 # image files
 data/
