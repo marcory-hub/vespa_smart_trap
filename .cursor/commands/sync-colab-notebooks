@@ -1,0 +1,50 @@
+# Sync Colab notebooks (read-only mirror)
+
+Invoke with `@sync-colab-notebooks`. Run the workflow; do not only describe it.
+
+**Goal:** Refresh the local read-only notebook mirror from GitHub and record the exact synced commit SHA in this repo for agent context.
+
+**Source of truth:** `https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2`
+**Local mirror path:** `yolo11n-on-grove-vision-ai-v2/` (gitignored in this repo)
+
+## Workflow
+
+### 0) Preflight
+- Confirm repo root: `vespa_smart_trap`.
+- Check whether `yolo11n-on-grove-vision-ai-v2/.git` exists.
+
+### 1) Ensure local mirror exists
+If missing, clone it locally (read-only use in this repo):
+```sh
+git clone https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2 yolo11n-on-grove-vision-ai-v2
+```
+
+If present, continue.
+
+### 2) Sync latest notebook changes
+```sh
+git -C yolo11n-on-grove-vision-ai-v2 fetch origin
+git -C yolo11n-on-grove-vision-ai-v2 checkout main
+git -C yolo11n-on-grove-vision-ai-v2 pull --ff-only origin main
+```
+
+If `pull --ff-only` fails: stop and report the error.
+
+### 3) Record synced version for agent visibility
+Write a tracked pointer file:
+```sh
+mkdir -p docs
+printf "repo: https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2\nbranch: main\nsha: %s\ndate: %s\n" \
+"$(git -C yolo11n-on-grove-vision-ai-v2 rev-parse HEAD)" \
+"$(date +%F)" > docs/notebook_source_of_truth.md
+```
+
+### 4) Report result
+Show:
+- `git -C yolo11n-on-grove-vision-ai-v2 rev-parse --short HEAD`
+- `git -C yolo11n-on-grove-vision-ai-v2 log -1 --oneline`
+- `docs/notebook_source_of_truth.md` contents
+
+## Done when
+- Local notebook mirror is up to date with `origin/main`.
+- `docs/notebook_source_of_truth.md` reflects the latest synced SHA and date.
