@@ -1,38 +1,42 @@
 # Security Audit (vespa_smart_trap)
 
-Scoped to this project: dev repo hygiene + GV2 field device. Skip generic web auth/network checks.
+Invoke with `@security-audit`. Run checks; report pass/fail. Skip generic web auth.
 
-## 1. Repo (run before `git add` / push)
+**Scope:** repo hygiene before push + GV2/submodule safety for this project.
 
-- **Dependencies:** from repo root with venv active:
-  ```sh
-  source .venv/bin/activate
-  pip-audit
-  ```
-- **Secrets in code:** grep for hardcoded keys, tokens, passwords in tracked files (not `notes/` unless publishing).
-- **Secrets in notes:** scan `notes/` for leaked credentials before any public push:
-  - `token=`, `colab.dev/api`, `sig=`, `SAS`
-- **`.env` / credentials:** confirm not staged; reference env vars only.
+## Repo (run these)
 
-## 2. GV2 device (deployment & field use)
+```sh
+source .venv/bin/activate && pip-audit
+git diff --cached --name-only
+rg -i 'BEGIN (RSA |OPENSSH |EC )PRIVATE KEY|api[_-]?key|password\s*=' --glob '!notes/**' --glob '!.venv/**' .
+```
 
-Physical access (USB, UART) is the main attack surface. No network hardening replaces that.
+**Staged files must not include:** `notes/`, `data/`, `.env`, `credentials*.md`, `otp.bin`, `*.pem`.
 
-- **Firmware source:** flash only images and `.tflite` models built from this repo or a verified Colab export — not random binaries.
-- **Flash path:** xmodem / `output.img` commands live in `notes/`; do not invent or substitute URLs or model paths.
-- **Secure boot:** Himax `secureboot_tool` exists in `gv2_firmware`; whether it is enabled in your build path is `[to be verified]` in notes. See `notes/himax restore gv2 factory settings.md` if recovery is needed.
-- **UART / I2C:** detection data over UART (921600) and I2C `0x63` are unauthenticated on the wire — acceptable for a local trap; do not treat UART as a trust boundary for remote commands unless you add that in firmware.
-- **Field device:** treat deployed traps as physically accessible; protect USB ports and SD content if traps are unattended in public locations.
-- **LTE (T-SIM):** when enabled, SIM/APN credentials stay out of git; use env or secure provisioning `[to be verified]` per your T-SIM setup.
+If publishing or pushing parent repo: also scan notes:
+```sh
+rg 'token=|colab\.dev/api|sig=|SAS' notes/
+```
 
-## Checklist
+**Submodule (`gv2_firmware/`):** if anything staged, confirm no generated secure-boot artifacts (`we2_image_gen_local/key_gen_tool/` output, private keys).
 
-**Repo**
-- [ ] `pip-audit` clean or accepted exceptions documented
-- [ ] No secrets in staged files
-- [ ] Notes token/SAS scan if publishing
+## GV2 / field (confirm, no shell unless asked)
 
-**GV2**
-- [ ] Firmware and model files from known sources only
-- [ ] No credentials in firmware serial logs or README
-- [ ] Physical access risk acknowledged for field deployment
+- Flash only `.img` / `.tflite` from this repo or verified Colab export; flash commands live in `notes/`.
+- UART (921600) and I2C `0x63` are unauthenticated on the wire (OK for local trap).
+- T-SIM SIM/APN credentials stay out of git.
+- `scripts/copied_pairs_review/server.py`: bind `127.0.0.1` only, not `0.0.0.0`.
+- Deployed traps: physical USB/UART access is the main risk.
+
+## Pass / fail
+
+| Fail | Action |
+|---|---|
+| Secrets in staged or tracked diff | Stop; do not push |
+| `pip-audit` critical unmitigated | Stop or document accepted exception |
+| Notes token/SAS hit when publishing | Stop |
+
+On **pass**, state: *Security audit passed this session.* (Required before `@push-submodule`.)
+
+User may say **skip audit** once to override; log what was skipped.

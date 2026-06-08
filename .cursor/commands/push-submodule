@@ -1,0 +1,54 @@
+# Push submodule (before parent repo)
+
+Invoke with `@push-submodule`. Run the workflow; do not only describe it.
+
+**Goal:** Confirm branch and remote, push `gv2_firmware/` to **origin** (`marcory-hub`), then update and push the parent pointer.
+**Expected branch** (`.gitmodules`): `yolo11-vespa`.
+**Never push to `upstream` (Himax).**
+
+## Commit message rules
+- User must provide the commit message; use it exactly (no edits, no "cursor" in message).
+
+## Workflow
+
+### 0) Security gate
+If this chat has **not** completed `@security-audit` with pass (agent stated *Security audit passed this session*), run `.cursor/commands/security-audit` first.
+- Stop on staged secrets, notes token/SAS hits, or unmitigated critical `pip-audit` findings.
+- User may say **skip audit** once to proceed; note what was skipped.
+
+### 1) Preflight
+Stop if `gv2_firmware/` is missing or not a git repo.
+- Submodule: `git -C gv2_firmware status`, `branch --show-current`, `remote get-url origin`
+- Parent: `git status`, `git diff`
+- **Remote gate:** `origin` URL must contain `marcory-hub/Seeed_Grove_Vision_AI_Module_V2`. If not, stop.
+
+### 2) Branch gate (wait for user)
+Report current branch (or detached HEAD + SHA). Expected: `yolo11-vespa`.
+
+- If branch **is** `yolo11-vespa`: ask *Proceed on `yolo11-vespa`?* (yes / branch name)
+- If branch **≠** `yolo11-vespa`: ask *Current `<branch>`, expected `yolo11-vespa`. Reply **yes push to `<branch>`** to continue here, or give branch to switch to.*
+
+Do not add/commit/push until answered. Detached HEAD: list branches, ask which to checkout first.
+
+**Switch branch:** `git -C gv2_firmware checkout <branch>` (stop on failure; ask before `checkout -b`). Re-confirm once: *On `<branch>`, proceed?*
+
+### 3) Submodule: commit and push to origin only
+```sh
+git -C gv2_firmware add -A
+git -C gv2_firmware commit -m "<message>"
+git -C gv2_firmware push -u origin HEAD
+```
+If push fails: stop; do not commit parent pointer.
+
+### 4) Parent: pointer commit and push
+```sh
+git add gv2_firmware
+git commit -m "<message>"
+git push -u origin HEAD
+```
+
+## Pitfalls
+Skipping security audit, wrong branch, parent before submodule push, commit on detached HEAD.
+
+## Done when
+Audit passed (or skipped with note); confirmed branch clean; parent clean; submodule SHA on GitHub before parent references it.

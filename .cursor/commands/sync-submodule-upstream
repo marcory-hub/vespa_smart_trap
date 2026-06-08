@@ -1,0 +1,42 @@
+# Sync submodule from upstream (Himax)
+
+Invoke with `@sync-submodule-upstream`. Run the workflow; do not only describe it.
+
+**Goal:** Pull vendor SDK changes into the local submodule fork. **Fetch/merge only — never push to Himax.**
+**Default:** branch `yolo11-vespa`, merge `upstream/main`.
+**Push your fork later with `@push-submodule`.**
+
+## Workflow
+
+### 0) Preflight
+Stop if `gv2_firmware/` is missing or not a git repo.
+- `git -C gv2_firmware status`, `branch --show-current`, `remote -v`
+- **Upstream gate:** `upstream` URL must contain `HimaxWiseEyePlus/Seeed_Grove_Vision_AI_Module_V2`. If missing or wrong, stop.
+- **Origin check (read-only):** report `origin` URL; should be `marcory-hub/Seeed_Grove_Vision_AI_Module_V2`.
+
+### 1) Branch gate (wait for user)
+Report current branch. Expected: `yolo11-vespa`.
+
+- If branch **is** `yolo11-vespa`: ask *Merge upstream into `yolo11-vespa`?* (yes / branch name)
+- If branch **≠** `yolo11-vespa`: ask *Current `<branch>`, expected `yolo11-vespa`. Reply **yes merge on `<branch>`** or give branch to switch to.*
+
+Uncommitted changes: warn before merge; stop if merge would overwrite dirty files unless user confirms.
+
+**Switch branch:** `git -C gv2_firmware checkout <branch>` (stop on failure). Re-confirm once: *Merge upstream into `<branch>`?*
+
+### 2) Fetch and merge (no push)
+Ask which upstream branch if not default: `upstream/main`.
+```sh
+git -C gv2_firmware fetch upstream
+git -C gv2_firmware merge upstream/main
+```
+On conflicts: stop, report files, do not push. User resolves, then `@push-submodule` if publishing to marcory-hub.
+
+### 3) Report result
+Show `git -C gv2_firmware log -3 --oneline` and `git status`. Remind: local merge only; use `@push-submodule` to publish to origin.
+
+## Pitfalls
+Merging on wrong branch, dirty tree, pushing to upstream (forbidden), skipping push-submodule after sync.
+
+## Done when
+Merge complete (or conflicts reported); submodule on intended branch; user knows next step is optional `@push-submodule`.
