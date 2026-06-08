@@ -1,0 +1,8 @@
+{
+  "run_id": "2026-04-27_185619",
+  "started_at_iso": "2026-04-27T18:56:19+02:00",
+  "locked_benchmark": false,
+  "manifest_default_order": "shuffle",
+  "manifest_default_seed": 42,
+  "manifest_shuffle_supported": true
+}

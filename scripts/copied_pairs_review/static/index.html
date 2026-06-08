@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Review copied pairs</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="toolbar">
+      <h1>Review copied pairs</h1>
+      <label>Split <select id="splitFilter"><option value="">all</option><option value="train">train</option><option value="val">val</option><option value="test">test</option></select></label>
+      <label>Class <select id="classFilter"><option value="">all</option><option value="vcra">vcra</option><option value="vvel">vvel</option></select></label>
+      <label>Show <select id="showFilter"><option value="">all</option><option value="remove">remove (default)</option><option value="keep">keep only</option></select></label>
+      <button id="applyBtn" type="button" class="danger apply-btn">Delete all except kept</button>
+    </header>
+    <main class="viewer">
+      <div id="counter" class="counter"></div>
+      <div class="image-wrap"><img id="image" alt="" /><canvas id="overlay"></canvas></div>
+      <div id="meta" class="meta"></div>
+      <div class="decision">
+        <button id="keepBtn" type="button" class="keep">Keep (K)</button>
+        <button id="removeBtn" type="button" class="danger">Remove (R)</button>
+      </div>
+      <p class="hint">Default is remove. Press <strong>K</strong> only for top-down images you want to keep. <strong>R</strong> or <strong>→</strong> skips to next (still remove).</p>
+      <div id="status" class="status"></div>
+      <div class="nav"><button id="prevBtn" type="button">←</button><button id="nextBtn" type="button">→</button></div>
+    </main>
+    <script src="/app.js?v=3"></script>
+  </body>
+</html>

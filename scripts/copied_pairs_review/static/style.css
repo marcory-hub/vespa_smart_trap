@@ -1,0 +1,22 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #111; color: #eee; }
+.toolbar { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; border-bottom: 1px solid #333; background: #1a1a1a; flex-wrap: wrap; }
+.toolbar h1 { margin: 0; font-size: 1rem; font-weight: 600; }
+.toolbar label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; }
+.viewer { max-width: 1100px; margin: 0 auto; padding: 0.75rem 1rem 1.5rem; }
+.counter { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.image-wrap { position: relative; height: min(72vh, 820px); display: flex; align-items: center; justify-content: center; background: #0a0a0a; border: 1px solid #333; }
+.image-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.image-wrap canvas { position: absolute; pointer-events: none; }
+.image-wrap.is-keep { border-color: #166534; }
+.image-wrap.is-remove { border-color: #7f1d1d; }
+.meta { padding: 0.6rem 0; font-size: 0.85rem; word-break: break-all; color: #bbb; }
+.decision { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
+.decision button { flex: 1; padding: 1rem; font-size: 1.1rem; font-weight: 600; cursor: pointer; }
+.decision button.keep { background: #14532d; color: #fff; border: 1px solid #166534; }
+.decision button.danger { background: #3f3f3f; color: #ddd; border: 1px solid #555; }
+.hint { color: #888; font-size: 0.85rem; margin: 0.5rem 0 0; }
+.status { min-height: 1.25rem; font-size: 0.85rem; color: #aaa; margin-top: 0.35rem; }
+.nav { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.nav button { padding: 0.5rem 1.2rem; font-size: 1rem; cursor: pointer; }
+.apply-btn { padding: 0.45rem 0.9rem; cursor: pointer; background: #7f1d1d; color: #fff; border: 1px solid #991b1b; margin-left: auto; }
