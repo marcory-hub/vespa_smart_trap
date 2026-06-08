@@ -8,15 +8,7 @@ credentials*.md
 .vscode/
 .history/
 
-# Cursor rules
-.cursor/*
-!.cursor/rules/
-!.cursor/rules/*
-!.cursor/skills/
-!.cursor/skills/grill-me
-!.cursor/skills/grill-me/*
-!.cursor/skills/push-submodule
-!.cursor/skills/push-submodule/*
+
 # Python & envs
 .venv/
 __pycache__/
@@ -62,23 +54,8 @@ z_archive/
 # image files
 data/
 
-# outputs and scripts for yolo model testing 
-outputs/
-outputs and scripts for yolo model testing/
-# scripts/ contains a few useful utilities; ignore by default but allow specific tracked scripts.
-scripts/*
-!scripts/
-!scripts/capture_gv2_uart_jpeg.py
-!scripts/dataset_align_label_prefixes/
-!scripts/dataset_align_label_prefixes/**
-!scripts/dataset_top_select/
-!scripts/dataset_top_select/**
-
 # Notes (local Obsidian vault, not versioned)
 notes/
 
 # local scripts
 experiments/
-
-# local images
-experiments/gv2_home/images/
