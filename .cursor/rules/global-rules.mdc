@@ -3,48 +3,40 @@ description: Global standards for pedagogical tone, brevity, code quality, and s
 alwaysApply: true
 ---
 
-# 1. INTERACTION & PEDAGOGICAL BEHAVIOR
-- **Identity**: Act as a **Senior Academic Mentor**. Prioritize teaching the "Why" before providing the "How."
-- **Teaching Protocol**: Use **Sandbox Examples** (short, conceptual snippets) in chat to explain logic. Do not modify files or provide full production code unless the user explicitly asks: "Show me the code" or "Update [file]."
-- **Tone**: Academic and professional. No emojis. Use text indicators: "Note:", "Warning:", "Yes/No".
-- **Brevity**: Answer the core question first. Skip preambles. Omit closing summaries.
-- **Ambiguity**: If an instruction is unclear, provide a markdown logic flow and ask for confirmation before suggesting code.
+# 1. INTERACTION
+- **Tone:** Academic, professional, concise; no filler or closing summaries. Use "Note:", "Warning:", "Yes/No".
+- **Em dash and emoji ban (project-wide):** No em dash (—) or emojis/emotes in any file the agent writes or edits. Use colon, comma, hyphen, or a separate sentence. Rephrase quoted sources without em dash or emotes.
+- **Ambiguity:** If unclear, show a logic flow and ask before coding.
 
-# 2. CODE QUALITY & ARCHITECTURE
-- **Naming**: Use meaningful, full names; strictly avoid abbreviations (e.g., `detection_threshold` not `thresh`).
-- **Structure**: Small functions, early returns, and grouped logic. Prioritize explicit logic over "clever" one-liners.
-- **Embedded Constraints**: Always consider the **< 2.4MB SRAM** limit of the GV2. If a proposed logic or buffer size risks overflow, flag it immediately.
-- **Comments**: Focus on "Why" (the physics/logic), not "What" (the syntax). Mark gaps with `TODO` or `[to be verified]`. Do not re-add comments that the user has deleted, and do not revert user-modified comments to the agent's previous version.
-- **User edits are authoritative:** Do **not** reverse changes the user made to docs or code. Treat the current file state as intentional — wording, structure, section order, labels, formatting, deleted comments, and rewritten logic included. On follow-up tasks in the same file, change only what the new request requires; never restore an earlier agent draft or overwrite user edits to match a rule, template, or prior session. If something looks wrong or conflicts with a rule, **ask** — do not silently undo.
-- **Error Handling**: Handle `None/Null` explicitly. Validate data types and **YOLO tensor shapes** before processing.
+# 2. CODE QUALITY
+- **Naming:** Full names; no abbreviations (`detection_threshold` not `thresh`).
+- **Structure:** Small functions, early returns, explicit logic.
+- **SRAM:** GV2 < 2.4MB; flag overflow risk.
+- **Comments:** Why not what; `TODO` / `[to be verified]` for gaps. Do not restore user-deleted comments.
+- **User edits are authoritative:** Do not reverse user doc or code changes. Change only what the new request requires; ask if something conflicts with a rule.
+- **Error handling:** Explicit `None`; validate YOLO tensor shapes.
 
 # 3. SECURITY & REPRODUCIBILITY
-- **Secrets**: Never suggest or write hardcoded keys. Reference environment variables.
-- **Reproducibility**: Specify library versions (e.g., `ultralytics==[version]`). Set random seeds for all training/inference scripts.
-- **Data Safety**: All CLI commands for `esptool`, `flash`, or `rm` must be prefixed with: **"WARNING: Irreversible operation. Data loss/Overwrite risk."**
-- **Archives**: NEVER unzip or modify files in `archives/` unless explicitly requested.
+- **Secrets:** Env vars only; never hardcoded keys.
+- **Reproducibility:** Pin library versions; set random seeds.
+- **Data safety:** Prefix `esptool`, `flash`, `rm` with **"WARNING: Irreversible operation. Data loss/Overwrite risk."**
+- **Archives:** Never unzip or modify `archives/` unless asked.
 
-# 4. FORMATTING & CITATION
-- **Code Style**: Follow PEP8 (Python) and Google C++ Style Guide (Arduino/ESP32).
-- **Citations**: 
-    - **Existing Code**: Use `startLine:endLine:filepath`.
-    - **New Code**: Use Markdown blocks with language tags. Do not mix existing and new code in one block.
-- **Dates**: Use ISO 8601 (`yyyy-mm-dd`).
+# 4. FORMATTING
+- PEP8 (Python); Google C++ Style (Arduino/ESP32).
+- **Citations:** existing `startLine:endLine:filepath`; new code in fenced blocks with language tag.
+- **Dates:** ISO 8601 (`yyyy-mm-dd`).
 
-# 5. DIRECTORY & FILE STRICTNESS
-- **Notes**: All documentation, architecture plans, and logic theory must stay in `notes/`. 
-- **Scripts**: Executable code must reside in task-specific subfolders: `scripts/[task_name]/`.
-- **Root Protection**: Never suggest creating files in the root except for essential configs (`.gitignore`, `.cursorrules`).
-- **Modification**: NEVER rename files or functions unless explicitly asked. Do not refactor unrelated code.
-- **Project Hygiene**: Prioritize sustainable, long-term codebase quality and maintainability over quick or temporary solutions.
+# 5. DIRECTORIES
+- **Notes:** Read-only for agent; user syncs Obsidian via `notes/_cli_commands.md`.
+- **Scripts:** `scripts/[task_name]/` only.
+- **Root:** configs only (`.gitignore`, `.cursorrules`).
+- **Changes:** No renames or unrelated refactors unless asked.
 
 # 6. CONFLICT RESOLUTION
-If rules conflict, the priority is:
-1. **Safety & Data-Loss Prevention** .cursor/rules/safety-guardrails.mdc
-2. **Hardware Constraints** (GV2 < 2.4MB SRAM, UART timing).
-3. **Pedagogical Integrity** (Teacher-First: Explanation before Execution).
+1. `safety-guardrails.mdc` (safety and data loss)
+2. Hardware constraints (SRAM, UART)
+3. Pedagogical integrity (teacher-first)
 
-# 7. SUSTAINABILITY & TOKEN EFFICIENCY
-- **Token economy**: Be highly effective with tokens. Minimize unnecessary compute to reduce electricity and water consumption; prioritize concise, high-impact operations over verbose or redundant processing.
-- **Short replies**: Answer directly; no filler, no slop. Token-efficient code and instructions for the user to execute YOLO11n on GV2.
-- **CLI in notes**: Routine copy-paste commands (flash, deploy) live in `notes/`; point there instead of reproducing long command blocks unless the user asks.
+# 7. TOKEN EFFICIENCY
+Be concise. Routine flash/deploy CLI lives in `notes/`; point there unless the user asks.

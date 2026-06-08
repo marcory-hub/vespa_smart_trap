@@ -39,4 +39,3 @@ rg 'token=|colab\.dev/api|sig=|SAS' notes/
 
 On **pass**, state: *Security audit passed this session.* (Required before `@push-submodule`.)
 
-User may say **skip audit** once to override; log what was skipped.

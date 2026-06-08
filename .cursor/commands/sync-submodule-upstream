@@ -2,7 +2,7 @@
 
 Invoke with `@sync-submodule-upstream`. Run the workflow; do not only describe it.
 
-**Goal:** Pull vendor SDK changes into the local submodule fork. **Fetch/merge only — never push to Himax.**
+**Goal:** Pull vendor SDK changes into the local submodule fork. **Fetch/merge only, never push to Himax.**
 **Default:** branch `yolo11-vespa`, merge `upstream/main`.
 **Push your fork later with `@push-submodule`.**
 
