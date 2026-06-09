@@ -30,3 +30,8 @@ Never suggest destructive commands like `rsync --delete`, `rm -rf`, `force-push`
 
 ## 6. Verification Failure
 If a tool (search/read) fails to return data, the agent must not suggest a "general solution." It must report the tool failure and ask for the missing file.
+
+## 7. Missing `notes/` paths
+- `notes/` is gitignored and may not appear in codebase search. Use only paths listed in `project-context.mdc`.
+- If `Read` on a note path fails: tell the user the path is missing or not synced; point to `notes/_cli_vst.md` for Obsidian rsync.
+- **Never** invent, rename, or guess a substitute note path.

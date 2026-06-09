@@ -28,7 +28,7 @@ alwaysApply: true
 - **Dates:** ISO 8601 (`yyyy-mm-dd`).
 
 # 5. DIRECTORIES
-- **Notes:** Read-only for agent; user syncs Obsidian via `notes/_cli_commands.md`.
+- **Notes:** Read-only for agent; user syncs Obsidian via `notes/_cli_vst.md`. If a note path from rules fails `Read`, tell the user; do not invent a substitute path.
 - **Scripts:** `scripts/[task_name]/` only. Before a new util: read `scripts/script-index.md` and search `scripts/`; extend existing script if it fits.
 - **Root:** configs only (`.gitignore`, `.cursorrules`).
 - **Changes:** No renames or unrelated refactors unless asked.

@@ -6,32 +6,38 @@ alwaysApply: true
 **Focus:** YOLO11n on GV2 + T-SIM for Asian hornet detection.
 
 ## 1. Context loading
+`notes/` is gitignored (local Obsidian sync). Use the exact paths below; codebase search may not list them. If `Read` fails, stop and ask the user to sync (`notes/_cli_vst.md`); do not guess or invent a substitute path.
+
 Before architecture or embedded suggestions, read the relevant note first:
-- Hardware / pinouts / UART: `notes/_hardware_stack.md`
-- Roadmap: `notes/_timeline.md`
-- Models: `notes/_model.md`
-- Layout: `notes/_project_layout.md`
-- Training notebooks: `https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2`
+- Index: `notes/__vespa_smart_trap.md`
+- CLI / Obsidian sync: `notes/_cli_vst.md`
+- Hardware / pinouts / UART: `notes/_hardware_vst.md`
+- Roadmap: `notes/_timeline_vst.md`
+- Models: `notes/_model_vst.md`
+- Layout: `notes/_project_layout_vst.md`
+- Training notebooks: `https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2` (branch `main`; sync via `@sync-colab-notebooks`)
 - Scripts / utilities: `scripts/script-index.md`, then search `scripts/` before proposing a new tool
 
 ## 2. Source of Truth Matrix
 
 | Topic | Read first |
 | :--- | :--- |
-| Roadmap | `notes/_timeline.md` |
-| Hardware / GPIO / PCB | `notes/_hardware_stack.md` |
-| Data & YOLO pipeline | `notes/_datasets.md`, `notes/_swift-yolo.md` |
-| Model evolution | `notes/_model.md` |
-| Training notebooks (Colab) | `https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2` (SoT for notebook updates) |
+| Note index | `notes/__vespa_smart_trap.md` |
+| CLI / Obsidian sync | `notes/_cli_vst.md` |
+| Roadmap | `notes/_timeline_vst.md` |
+| Hardware / GPIO / PCB | `notes/_hardware_vst.md` |
+| Data & YOLO pipeline | `notes/_datasets_vst.md`, `notes/swift-yolo documentation.md` |
+| Model evolution | `notes/_model_vst.md` |
+| Training notebooks (Colab) | `https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2` branch `main` (SoT; `@sync-colab-notebooks` → `colab-notebooks/`) |
 | Scripts / utilities | `scripts/script-index.md`; search `scripts/` before creating a new util |
-| Meetings | `notes/_meetings.md`, `notes/meeting_*.md` (no SoT) |
+| Meetings | `notes/_meetings_vst.md`, `notes/meeting *.md` (no SoT) |
 | README voice | `readme.mdc` (README edits only) |
 
 ## 3. Sync
-After confirmed teaching moment: ask user to update `notes/` or rules. Rules (how) > notes (what), unless user intent overrides outdated `_timeline.md`.
+After confirmed teaching moment: ask user to update `notes/` or rules. Rules (how) > notes (what), unless user intent overrides outdated `_timeline_vst.md`.
 
 ## 4. Pipeline
-GV2 inference → UART → T-SIM LTE. Pinouts, baud, SRAM limits: `notes/_hardware_stack.md`.
+GV2 inference → UART → T-SIM LTE. Pinouts, baud, SRAM limits: `notes/_hardware_vst.md`.
 
 ## 5. File integrity
 - Notes: agent suggests; user writes unless "Apply to file." Do not publish note content unless user asks.
@@ -41,5 +47,5 @@ GV2 inference → UART → T-SIM LTE. Pinouts, baud, SRAM limits: `notes/_hardwa
 ## 6. Do not suggest
 - **Platforms:** RPi detector, ESP-IDF-only, XIAO-only (no LilyGO), inference on LilyGO ESP32-S3, standard Grove shields.
 - **Stack:** GV2 + LilyGO T-SIM7080G-S3; ESP32-S3 test only. GV2 sole inference engine.
-- **Training:** No local train/quant/VELA; Colab `2025.07`, Python 3.11. No `int8.tflite`; use `int8_vela.tflite`. No YOLOv26. Resolution per `notes/_hardware_stack.md`.
+- **Training:** No local train/quant/VELA; Colab `2025.07`, Python 3.11. No `int8.tflite`; use `int8_vela.tflite`. No YOLOv26. Resolution per `notes/_hardware_vst.md`.
 - **Hygiene:** No empty/placeholder notes.

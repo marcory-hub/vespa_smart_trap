@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Rules vs notes (scope)
 
-- **Rules** = how; **notes** (`notes/_timeline.md`) = what/now.
+- **Rules** = how; **notes** (`notes/_timeline_vst.md`) = what/now.
 - Never duplicate tables or dynamic counts from notes into rules; point to the note path.
 - Superseded rules: update or remove immediately.
 
