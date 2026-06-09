@@ -38,8 +38,8 @@ Detects V. velutina, catches it and texts the beekeeper
    - On receive, handles: SMS, SD storage, logs
 
 3. **Actuation:**  
-   - If yellowlegged hornet is detected: **door left** (collected in trap, she and eat and stay)  
-   - Otherwise: **door right** (no yellowlegged hornets can eat and fly away)
+   - If yellowlegged hornet is detected: **left entrance opens:** she can eat and stay 
+   - Otherwise: **right entrance** European hornets, wasps, flies can eat and fly away
 
 ![View from camera inside the trap](../images/Cam-180CCW-final.jpg.jpeg)
 
@@ -81,24 +81,19 @@ Detects V. velutina, catches it and texts the beekeeper
 
 ## Cursor challenges
 
-| To solve| Examples |
+| Challenge| Examples |
 | :--- | :--- |
-| Wrong hardware | RPi detector, cloud inference, YOLO on LilyGO ESP32-S3 (inference stays on GV2) |
-| Wrong model | plain `int8.tflite`, YOLO11s (SRAM overflow), SenseCraft swift-yolo, local train instead of Colab |
+| Wrong hardware suggestions | RPi detector, cloud inference, YOLO on LilyGO ESP32-S3 (inference stays on GV2) |
+| Wrong model suggestions | plain `int8.tflite`, YOLO11s (SRAM overflow), SenseCraft swift-yolo, local train instead of Colab |
 | Missing documentation | pinouts, UART baud, flash addresses, boot/reset; agent cannot press buttons |
 | Hallucinated pipeline | training/quant steps not in synced notebooks (`@sync-colab-notebooks`) |
 | Submodule / git | PR or push to upstream Himax instead of fork (`yolo11-vespa`) |
-
-
---> rules are only 'soft guiderails' even with context less than 50% filles they deviate, some models listen better to the rules than others
-- **Gitignored `notes/`:** edit in Obsidian vault, rsync into project `notes/` for Cursor (not on GitHub). Search/Glob still skips gitignored paths; agent needs explicit paths from rules
---> command (works all the time)
 
 ---
 
 ## What I learned when working on edge AI with Cursor
 
-0. Cursor defaults to common tutorials.
+0. Cursor defaults to "common tutorials"
 
 1. **Rules** (`.cursor/rules/`)
    - Block recurring mistakes (stack, model path, Colab 3.11, anti-hallucination)
@@ -106,14 +101,12 @@ Detects V. velutina, catches it and texts the beekeeper
 
 2. **Commands** (`@sync-colab-notebooks`, `@push-submodule`, `@security-audit`)
    - Repeatable runbooks where rules are not enough
+   - Not for coding, problem solving
 
-3. **Notes** (`notes/` via Obsidian)
-   - Glob/search follow .gitignore by default
-   - Read with an exact path or 
-   - add it to .cursorignore 
-```
-!notes/
-!notes/**
-```
+3. **Handling .gitignore and .cursorignore**
+   - By default, Cursor glob and search follow `.gitignore` rules.
+   - To ensure a path (like `notes/`) is indexed, add an explicit line with a `!` prefix in `.cursorignore` (e.g., `!notes/`)
+   - For exact file reading (outside standard search), specify the full path.
+
 
 
