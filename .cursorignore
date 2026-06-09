@@ -2,3 +2,6 @@
 cv_vespcv_raspberry/
 .venv/
 
+# Add .gitignore patterns that should not be ignored by cursor
+!notes/
+!notes/**
