@@ -239,4 +239,4 @@ SENSORDPLIB_STATUS_XDMA_FRAME_READY 22
 
 ---
 
-**Training notebooks:** [marcory-hub/yolo11n-on-grove-vision-ai-v2](https://github.com/marcory-hub/yolo11n-on-grove-vision-ai-v2).
+**Training notebooks:** [marcory-hub/Seeed_Grove_Vision_AI_Module_V2](https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2) (`main`): [YOLO11n_training_2026_02_19.ipynb](https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2/blob/main/YOLO11n_training_2026_02_19.ipynb), [YOLO_pt_to_vela_2026_02_24.ipynb](https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2/blob/main/YOLO_pt_to_vela_2026_02_24.ipynb). Local mirror: `@sync-colab-notebooks` → `colab-notebooks/`.
