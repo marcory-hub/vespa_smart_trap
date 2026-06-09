@@ -2,7 +2,7 @@
 
 Invoke with `@sync-colab-notebooks`. Run the workflow; do not only describe it.
 
-**Goal:** Refresh the local read-only notebook mirror from GitHub and record the exact synced commit SHA in this repo for agent context.
+**Goal:** Refresh the local read-only notebook mirror from GitHub.
 
 **Source of truth:** `https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2` (branch `main`; Colab "Open in Colab" target)
 **Not this repo:** `yolo11n-on-grove-vision-ai-v2` (legacy notebook mirror; stale since 2026-03)
@@ -32,22 +32,10 @@ git -C colab-notebooks pull --ff-only origin main
 
 If `pull --ff-only` fails: stop and report the error.
 
-### 3) Record synced version for agent visibility
-Write a tracked pointer file:
-```sh
-mkdir -p docs
-printf "repo: https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2\nbranch: main\nsha: %s\ndate: %s\n" \
-"$(git -C colab-notebooks rev-parse HEAD)" \
-"$(date +%F)" > docs/notebook_source_of_truth.md
-```
-
-### 4) Report result
+### 3) Report result
 Show:
 - `git -C colab-notebooks rev-parse --short HEAD`
-- `git -C colab-notebooks log -1 --oneline`
 - root notebooks: `YOLO11n_training_2026_02_19.ipynb`, `YOLO_pt_to_vela_2026_02_24.ipynb`
-- `docs/notebook_source_of_truth.md` contents
 
 ## Done when
 - Local notebook mirror is up to date with `origin/main`.
-- `docs/notebook_source_of_truth.md` reflects the latest synced SHA and date.
