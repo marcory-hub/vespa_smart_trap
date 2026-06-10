@@ -95,13 +95,12 @@ Detects V. velutina, catches it and texts the beekeeper
 
 0. Cursor defaults to "common tutorials"
 
-1. **Rules** (`.cursor/rules/`)
+1. **Rules** 
    - Block recurring mistakes (stack, model path, Colab 3.11, anti-hallucination)
    - Soft guardrails: still drift, even with less than 50% of context used
 
-2. **Commands** (`@sync-colab-notebooks`, `@push-submodule`, `@security-audit`)
+2. **Commands and skills**
    - Repeatable runbooks where rules are not enough
-   - Not for coding, problem solving
 
 3. **Handling .gitignore and .cursorignore**
    - By default, Cursor glob and search follow `.gitignore` rules.
