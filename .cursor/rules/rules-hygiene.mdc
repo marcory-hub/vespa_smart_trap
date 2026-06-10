@@ -13,5 +13,5 @@ alwaysApply: true
 | :--- | :--- |
 | `.cursor/rules/` | Recurring protocols, hard guardrails, SoT mapping |
 | `.cursor/skills/` | Auto-discovered workflows (e.g. `grill-me`) |
-| `.cursor/commands/` | `@`-invoked ops runbooks (e.g. `@push-submodule`); git-tracked |
+| `.cursor/commands/` | `@`-invoked ops runbooks (e.g. `@push-submodule`, `@flash-gv2`); git-tracked |
 | `notes/` | Dataset counts, run history, pinouts, daily-changing content |

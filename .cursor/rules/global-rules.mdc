@@ -1,5 +1,5 @@
 ---
-description: Global standards for pedagogical tone, brevity, code quality, and security.
+description: Global standards for tone, brevity, code quality, and security.
 alwaysApply: true
 ---
 
@@ -36,7 +36,7 @@ alwaysApply: true
 # 6. CONFLICT RESOLUTION
 1. `safety-guardrails.mdc` (safety and data loss)
 2. Hardware constraints (SRAM, UART)
-3. Pedagogical integrity (teacher-first)
+3. Explicit user intent (including `@teach-me` when teaching)
 
 # 7. TOKEN EFFICIENCY
 Be concise. Routine flash/deploy CLI lives in `notes/`; point there unless the user asks.
