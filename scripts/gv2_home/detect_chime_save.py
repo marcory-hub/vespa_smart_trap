@@ -172,6 +172,27 @@ def decode_jpeg_image(jpg: bytes) -> Optional[Any]:
     return image
 
 
+def encode_jpeg_image(image: Any) -> Optional[bytes]:
+    import cv2
+
+    ok, encoded = cv2.imencode(".jpg", image)
+    if not ok:
+        return None
+    return encoded.tobytes()
+
+
+def save_jpeg_with_boxes(jpg: bytes, boxes: List[DetectionBox], path: Path) -> bool:
+    image = decode_jpeg_image(jpg)
+    if image is None:
+        return False
+    annotated = draw_detection_boxes(image, boxes)
+    encoded = encode_jpeg_image(annotated)
+    if encoded is None:
+        return False
+    path.write_bytes(encoded)
+    return True
+
+
 def draw_detection_boxes(image: Any, boxes: List[DetectionBox]) -> Any:
     import cv2
 
@@ -448,14 +469,15 @@ def main() -> int:
         print(f"Import error: {e}", file=sys.stderr)
         return 2
 
+    try:
+        import cv2  # noqa: F401
+    except ImportError as e:
+        print("Missing dependency: opencv-python", file=sys.stderr)
+        print("Install with: python3 -m pip install opencv-python", file=sys.stderr)
+        print(f"Import error: {e}", file=sys.stderr)
+        return 2
+
     if args.display:
-        try:
-            import cv2  # noqa: F401
-        except ImportError as e:
-            print("Missing dependency: opencv-python", file=sys.stderr)
-            print("Install with: python3 -m pip install opencv-python", file=sys.stderr)
-            print(f"Import error: {e}", file=sys.stderr)
-            return 2
         init_opencv_window(DISPLAY_WINDOW_NAME)
         print(
             f"Display: OpenCV window '{DISPLAY_WINDOW_NAME}' (press Q in window to quit).",
@@ -638,8 +660,16 @@ def main() -> int:
             last_save_ts = now
             ts = dt.datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
             cname = safe_class_name(class_id)
-            out = save_dir / f"{ts}_{cname}_{score:.3f}.jpg"
+            stem = f"{ts}_{cname}_{score:.3f}"
+            out = save_dir / f"{stem}.jpg"
             out.write_bytes(jpg)
+            boxed_out = save_dir / f"{stem}_boxed.jpg"
+            if not save_jpeg_with_boxes(jpg, detection_boxes, boxed_out):
+                print(
+                    f"GV2 save: failed to write annotated image {boxed_out.name}",
+                    file=sys.stderr,
+                    flush=True,
+                )
 
     def start_worker(name: str, target: Any) -> threading.Thread:
         thread = threading.Thread(target=target, name=name, daemon=True)

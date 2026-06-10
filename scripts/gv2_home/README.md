@@ -1,5 +1,10 @@
 ## GV2 Home (Mac mini)
 
+
+```sh
+source .venv/bin/activate
+python3 scripts/gv2_home/detect_chime_save.py --port /dev/cu.usbmodem58FA1047631 --baudrate 921600
+```
 Runs on macOS with GV2 connected directly over USB serial. Plays a chime when a class is detected and saves JPEGs at 2 images/sec while confidence \u2265 0.3.
 
 ### Setup
