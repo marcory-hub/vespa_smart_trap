@@ -53,6 +53,7 @@ z_archive/
 
 # image files
 data/
+images/
 
 # Notes (local Obsidian vault, not versioned)
 notes/
