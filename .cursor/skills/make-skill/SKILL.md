@@ -1,6 +1,7 @@
 ---
 name: make-skill
 description: Create or update Cursor Agent Skills with proper structure and repo placement. Use when the user asks to make a skill, add a workflow skill, convert repeated prompts into .cursor/skills/, or @make-skill.
+disable-model-invocation: true
 ---
 
 # Make a skill
