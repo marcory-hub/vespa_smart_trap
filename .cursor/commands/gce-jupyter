@@ -1,0 +1,255 @@
+# GCE Jupyter + VELA notebook (full workflow)
+
+Invoke with `@gce-jupyter`. Give the **complete** workflow from step 0; do not jump to the last step only.
+
+**Agent terminal (no Jupyter):** `@gce-run` + `scripts/gce_vela/remote.sh` (preferred; agent sees output directly).
+
+**Goal:** Run `~/vst/YOLO_pt_to_vela_2026_02_24_gce.ipynb` in **Chrome** on the Mac; kernel `~/vst/.venv` (Python 3.11); artifact `best_full_integer_quant_vela.tflite` <= 2.4 MB.
+
+**Judgment:** `.cursor/skills/gce-jupyter/SKILL.md`
+
+**IDs (do not swap):**
+
+| Name | Value |
+| :--- | :--- |
+| Project ID | `pt-vela` |
+| VM instance | `vst-vela-01` |
+| Zone | `europe-west4-a` |
+| Bucket | `pt-vela-gce` |
+
+---
+
+## Unfailable rule: Mac vs VM
+
+| Prompt | Machine | Use for |
+| :--- | :--- | :--- |
+| `md@m2` | **Mac** | `gcloud`, `scp`, SSH **tunnel** |
+| `md@vst-vela-01` | **VM** | `jupyter`, `~/vst/.venv`, notebook cells |
+
+`~/vst/` exists **only on the VM**. Never run `source ~/vst/.venv` on the Mac.
+
+---
+
+## Three terminals (all required)
+
+| # | Machine | Prompt | Role | Keep open? |
+| :--- | :--- | :--- | :--- | :--- |
+| **T1** | VM | `md@vst-vela-01` | Jupyter server | Yes |
+| **T2** | Mac | `md@m2` | SSH tunnel to VM | Yes |
+| **T3** | Mac | `md@m2` | `gcloud`, `scp`, checks | Optional |
+
+**Order:** T1 Jupyter logging URL → T2 tunnel (silent) → Chrome paste URL from T1.
+
+**Never:** Cursor Simple Browser for Jupyter; never open `127.0.0.1:8080` on Mac before T2 is running.
+
+---
+
+## 0) VM running (Mac, T3)
+
+```sh
+gcloud config get-value project
+# expect: pt-vela
+
+gcloud compute instances describe vst-vela-01 --zone=europe-west4-a --format='get(status)'
+# expect: RUNNING
+```
+
+If `TERMINATED`:
+
+```sh
+gcloud compute instances start vst-vela-01 --zone=europe-west4-a
+```
+
+Wait ~1 min; re-check status.
+
+---
+
+## 1) One-time: register venv kernel (VM via SSH)
+
+Skip if kernel **Python 3.11 (vst .venv)** already appears in Jupyter.
+
+Mac:
+
+```sh
+gcloud compute ssh vst-vela-01 --zone=europe-west4-a
+```
+
+VM:
+
+```sh
+source ~/vst/.venv/bin/activate
+pip install ipykernel opencv-python-headless==4.10.0.84
+python -m ipykernel install --user --name=vst-venv --display-name="Python 3.11 (vst .venv)"
+python -c "import cv2; print('cv2', cv2.__version__)"
+# expect: cv2 4.10.0
+```
+
+`exit` to leave SSH if starting T1 in a fresh tab.
+
+---
+
+## 2) Start Jupyter (VM, T1)
+
+Mac (opens SSH session):
+
+```sh
+gcloud compute ssh vst-vela-01 --zone=europe-west4-a
+```
+
+VM (same session):
+
+```sh
+source ~/vst/.venv/bin/activate
+cd ~/vst
+jupyter lab --port=8080 --ip=127.0.0.1 --no-browser
+```
+
+`jupyter notebook` is also fine. Start Jupyter **from** `~/vst/.venv`, not DLVM system Python.
+
+**Checkpoint:** log contains `http://127.0.0.1:8080/...token=...`. Copy full URL. Leave T1 running.
+
+---
+
+## 3) SSH tunnel (Mac, T2)
+
+New Mac tab (**not** inside SSH):
+
+```sh
+lsof -i :8080
+```
+
+If **empty**:
+
+```sh
+gcloud compute ssh vst-vela-01 --zone=europe-west4-a -- -L 8080:127.0.0.1:8080 -N
+```
+
+If **busy**, use 8888 and change port in browser URL:
+
+```sh
+gcloud compute ssh vst-vela-01 --zone=europe-west4-a -- -L 8888:127.0.0.1:8080 -N
+```
+
+**Checkpoint:** tab silent (no error). Leave T2 running.
+
+---
+
+## 4) Browser (Mac, Chrome)
+
+Paste URL from **T1** into **Chrome** or Safari.
+
+**Pass:** file tree under `/home/md/vst` with `YOLO_pt_to_vela_2026_02_24_gce.ipynb`, `best.pt`, `dataset.zip`.
+
+---
+
+## 5) Push notebook from Mac (when local copy changed)
+
+```sh
+gcloud compute scp \
+  /Users/md/Developer/vespa_smart_trap/notebooks/YOLO_pt_to_vela_2026_02_24_gce.ipynb \
+  vst-vela-01:~/vst/YOLO_pt_to_vela_2026_02_24_gce.ipynb \
+  --zone=europe-west4-a
+```
+
+In Jupyter: close notebook tab and reopen.
+
+---
+
+## 6) Kernel + notebook run order
+
+1. Open `YOLO_pt_to_vela_2026_02_24_gce.ipynb`
+2. **Kernel → Change Kernel → Python 3.11 (vst .venv)**
+3. **Kernel → Restart Kernel**
+4. **File → Trust Notebook**
+
+### Full run (first time or clean retry)
+
+Run all code cells top to bottom:
+
+| Step | Cell | Pass |
+| :--- | :--- | :--- |
+| Setup | `kernel: .../vst/.venv/bin/python` | lists `best.pt`, `dataset.zip` |
+| Dataset | Python `zipfile` extract | `dataset ready: train=... val=...` |
+| Pins | TF 2.18 + opencv 4.10 | `tensorflow 2.18.0`, `opencv 4.10.0` |
+| Calibration | 500-image subset | `Train images sampled: 500` |
+| Ultralytics | kris-himax fork | `ultralytics OK` |
+| Export | `YOLO(...).export()` (not `!yolo`; same kernel as cv2) | `export success` (~10–20 min CPU) |
+| VELA | `vela ...` | network summary |
+| Size | size check | `SUCCESS: Model is within the 2.4MB limit` |
+| Upload | `gsutil cp` | `Uploaded to gs://pt-vela-gce/output/` |
+
+### Resume (dataset + calibration already done)
+
+Skip extract and calibration. After kernel restart run:
+
+1. Setup cell
+2. TF pins cell
+3. Ultralytics cell
+4. Export → VELA → size → upload
+
+---
+
+## 7) Verify artifact
+
+VM:
+
+```sh
+ls -lh ~/vst/best_saved_model/best_full_integer_quant_vela.tflite
+```
+
+Mac:
+
+```sh
+gsutil ls -lh gs://pt-vela-gce/output/
+```
+
+Lesson 8: copy to `gv2_firmware/model_zoo/tflm_yolo11_od/` then `@flash-gv2`.
+
+---
+
+## Known fixes (GCE vs Colab)
+
+| Issue | Fix |
+| :--- | :--- |
+| `unzip: command not found` | Notebook uses Python `zipfile` (no CLI unzip) |
+| `libGL.so.1` / `No module named cv2` | `pip install opencv-python-headless==4.10.0.84` in venv (not 4.13) |
+| `!pip` then `import cv2` fails | Wrong kernel; use **vst .venv** kernel; notebook uses `sys.executable -m pip` |
+| `import cv2` OK but `!yolo` no cv2 | Kernel != `yolo` CLI env; notebook uses `YOLO().export()` API |
+| TF `float8_e4m3b11fnuz` on export | Ultralytics upgraded TF; run TF pins cell; `YOLO_AUTOINSTALL=0`; **restart kernel** |
+| `ERR_CONNECTION_REFUSED` | T2 tunnel missing or Cursor browser; use Chrome + T2 |
+| `gcloud scp` on VM | Run `scp` on **Mac** only |
+| Zone typo `europe-west4-a--` | Single space before `--` |
+
+### Repair venv on VM (if export stack broken)
+
+```sh
+source ~/vst/.venv/bin/activate
+pip uninstall -y tf-keras tf_keras tensorflow tensorboard opencv-python-headless opencv-python
+pip install tensorflow==2.18.0 tensorboard==2.18.0 protobuf==5.29.6 ml-dtypes==0.4.1
+pip install tf-keras==2.18.0 onnx==1.17.0 onnxruntime==1.26.0
+pip install onnx2tf==1.22.3 onnxslim==0.1.94 sng4onnx onnx-graphsurgeon
+pip install opencv-python-headless==4.10.0.84
+python -c "import cv2, tensorflow as tf; print(cv2.__version__, tf.__version__)"
+# expect: 4.10.0 2.18.0
+```
+
+Then Jupyter: **Restart Kernel** → resume from TF pins cell.
+
+---
+
+## Teardown (save cost)
+
+```sh
+# Ctrl+C in T1, close T2
+gcloud compute instances stop vst-vela-01 --zone=europe-west4-a
+```
+
+---
+
+## Fresh-chat opener
+
+```text
+@gce-jupyter
+I closed all terminals. Walk me from step 0 (three terminals).
+Mode: teach. Stuck at: [step or error paste].
+```

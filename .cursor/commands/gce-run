@@ -1,0 +1,63 @@
+# GCE VELA remote run (agent operator mode)
+
+Invoke with `@gce-run`. **Agent runs terminal via Shell; never paste these commands for the user.**
+
+**Goal:** Run VELA pipeline on `vst-vela-01` via `scripts/gce_vela/remote.sh`; read streamed output and local logs; iterate on failures.
+
+**Judgment:** `.cursor/skills/gce-jupyter/SKILL.md` (browser Jupyter optional; terminal preferred for agent).
+
+| Name | Value |
+| :--- | :--- |
+| Project ID | `pt-vela` |
+| VM | `vst-vela-01` |
+| Zone | `europe-west4-a` |
+| Bucket | `pt-vela-gce` |
+
+---
+
+## Agent workflow (default)
+
+From repo root on **Mac**:
+
+```sh
+chmod +x scripts/gce_vela/remote.sh
+scripts/gce_vela/remote.sh status
+scripts/gce_vela/remote.sh run-resume   # if dataset + calibration already done
+# or step by step:
+scripts/gce_vela/remote.sh run preflight
+scripts/gce_vela/remote.sh run pins
+scripts/gce_vela/remote.sh run export    # 10-20 min; use long shell timeout
+scripts/gce_vela/remote.sh run vela
+scripts/gce_vela/remote.sh run size
+scripts/gce_vela/remote.sh run upload
+```
+
+**Logs:**
+
+- Stream: agent terminal (tee)
+- VM: `~/vst/logs/agent_run.log`
+- Mac: `scripts/gce_vela/outputs/<timestamp>/remote.log`
+
+After a failure:
+
+```sh
+scripts/gce_vela/remote.sh tail 120
+scripts/gce_vela/remote.sh pull-log
+```
+
+Fix `vm_run.py` or venv on VM, `remote.sh sync`, re-run failed step.
+
+---
+
+## When user still wants Jupyter
+
+Use `@gce-jupyter` (three terminals + Chrome). Terminal runner and Jupyter share the same `~/vst/.venv`.
+
+---
+
+## Fresh-chat opener
+
+```text
+@gce-run
+Resume VELA on vst-vela-01. Dataset already extracted. Run from pins through upload.
+```
