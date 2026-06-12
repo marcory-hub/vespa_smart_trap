@@ -19,6 +19,7 @@ alwaysApply: true
 # 3. SECURITY & REPRODUCIBILITY
 - **Secrets:** Env vars only; never hardcoded keys.
 - **Reproducibility:** Pin library versions; set random seeds.
+- **Git history:** Rebase forbidden. Never run `git rebase`, `git pull --rebase`, or `git config pull.rebase`. On divergent branches use `git pull --no-rebase` (merge). Applies to parent repo and submodules unless the user explicitly requests rebase in that chat.
 - **Data safety:** Prefix `esptool`, `flash`, `rm` with **"WARNING: Irreversible operation. Data loss/Overwrite risk."**
 - **Archives:** Never unzip or modify `archives/` unless asked.
 
