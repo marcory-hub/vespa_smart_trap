@@ -16,7 +16,7 @@ Before architecture or embedded suggestions, follow `.cursor/skills/read-notes/S
 - Models: `notes/_model_vst.md`
 - Layout: `notes/_project_layout_vst.md`
 - Training notebooks (public): GitHub `marcory-hub/Seeed_Grove_Vision_AI_Module_V2` (`main`); direct links in `README.md` only.
-- Training notebooks (agent local): run `@sync-colab-notebooks` → gitignored `notebooks/` (two `.ipynb`); cite cells from `notebooks/*.ipynb` or GitHub raw. Do not document local mirror in `README.md`.
+- Training notebooks (agent local): read-only `notebooks/*.ipynb` (gitignored; `.cursorignore` negation); cite cells from Read or GitHub raw. Do not document local mirror in `README.md`.
 - Scripts / utilities: `scripts/script-index.md`, then search `scripts/` before proposing a new tool
 
 ## 2. Source of Truth Matrix
@@ -26,15 +26,26 @@ Before architecture or embedded suggestions, follow `.cursor/skills/read-notes/S
 | Notes (mandatory Read) | `.cursor/skills/read-notes/SKILL.md` |
 | Datasets / labels | `.cursor/skills/dataset/SKILL.md` |
 | Colab train / VELA | `.cursor/skills/train-colab-vela/SKILL.md` |
+| GCE VELA run (agent terminal) | `.cursor/commands/gce-run` + `scripts/gce_vela/remote.sh` |
+| GCE Jupyter + tunnel | `.cursor/commands/gce-jupyter` + `.cursor/skills/gce-jupyter/SKILL.md` |
 | Flash GV2 (run) | `.cursor/commands/flash-gv2` |
 | Flash GV2 (when/verify) | `.cursor/skills/flash-gv2/SKILL.md` |
 | UART / serial debug | `.cursor/skills/uart-debug/SKILL.md` |
 | Model test / benchmark | `.cursor/skills/model-test/SKILL.md` |
 | Project pitch | `.cursor/skills/project-pitch/SKILL.md` |
+| Presentation deck | `.cursor/skills/presentation/SKILL.md` (`presentations/edge-ai-hornet-detector-2026-06.md`; hard gate) |
 | README voice | `.cursor/skills/update-readme/SKILL.md` |
 | Submodule push | `.cursor/commands/push-submodule` |
-| Notebook sync | `.cursor/commands/sync-colab-notebooks` → `notebooks/` |
+| Notebooks (local) | `notebooks/` + `notebooks/AGENTS.md` (read-only) |
 | Teach-me workspace | `docs/teaching/` + `.cursor/skills/teach-me/SKILL.md` |
+| Session handoff | `.cursor/skills/handoff/SKILL.md` → `sessions/latest.md` |
+| Research / build prompt | `.cursor/skills/research-gaps/`, `.cursor/skills/build-prompt/`, `@grill-me` |
+| Token efficiency | `.cursor/skills/less-tokens/SKILL.md` |
+| Make skill | `.cursor/skills/make-skill/SKILL.md` |
+| Shell safety hooks | `.cursor/hooks.json` → `guard-shell.sh` |
+| Dataset review subagent | `.cursor/agents/dataset-guard.md` |
+| Embedded review subagent | `.cursor/agents/gv2-embedded-reviewer.md` |
+| Presentation review subagent | `.cursor/agents/presentation-steward.md` |
 | Security audit | `.cursor/commands/security-audit` |
 
 ## 3. Sync

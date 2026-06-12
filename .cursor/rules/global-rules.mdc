@@ -7,6 +7,7 @@ alwaysApply: true
 - **Tone:** Academic, professional, concise; no filler or closing summaries. Use "Note:", "Warning:", "Yes/No".
 - **Em dash and emoji ban (project-wide):** No em dash (—) or emojis/emotes in any file the agent writes or edits. Use colon, comma, hyphen, or a separate sentence. Rephrase quoted sources without em dash or emotes.
 - **Ambiguity:** If unclear, show a logic flow and ask before coding.
+- **CLI in chat:** Do not output copy-paste shell for the user. Run CLI in the agent terminal; report outcome. Exception: `@teach-me` (user runs one step per turn) or agent shell unavailable.
 
 # 2. CODE QUALITY
 - **Naming:** Full names; no abbreviations (`detection_threshold` not `thresh`).
@@ -30,10 +31,11 @@ alwaysApply: true
 
 # 5. DIRECTORIES
 - **Notes:** Read-only for agent; user syncs Obsidian via `notes/_cli_vst.md`. If a note path from rules fails `Read`, tell the user; do not invent a substitute path.
-- **Notebooks (agent):** gitignored `notebooks/` (two `.ipynb`); sync `@sync-colab-notebooks`; un-ignore in `.cursorignore`. Public link: GitHub repo URLs in `README.md` only (see `rules-hygiene.mdc`).
+- **Notebooks (agent):** gitignored `notebooks/` (local read-only); un-ignore in `.cursorignore`. Cite `notebooks/*.ipynb` or GitHub URLs in `README.md` only (see `rules-hygiene.mdc`).
 - **Teaching:** user workspace `docs/teaching/` (gitignored under `docs/`); protocol `.cursor/skills/teach-me/SKILL.md`.
 - **Scripts:** `scripts/[task_name]/` only. Before a new util: read `scripts/script-index.md` and search `scripts/`; extend existing script if it fits.
 - **Root:** configs only (`.gitignore`, `.cursorrules`). **Root `README.md`:** public-facing; agent must not edit the local file without explicit user request (`agent-persona.mdc`). No automatic sync, revert, or cleanup on disk. Preserve original voice; baseline `c72a5e0` (2026-06-08).
+- **Presentations:** `presentations/edge-ai-hornet-detector-2026-06.md` is user-owned; agent must not edit without `@presentation` or explicit presentation-edit intent (`agent-persona.mdc`). Read for pitch context; suggest in chat only by default.
 - **Changes:** No renames or unrelated refactors unless asked.
 
 # 6. CONFLICT RESOLUTION

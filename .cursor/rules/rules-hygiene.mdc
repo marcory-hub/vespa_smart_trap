@@ -14,6 +14,8 @@ alwaysApply: true
 | `.cursor/rules/` | Recurring protocols, hard guardrails, SoT mapping |
 | `.cursor/skills/` | Auto-discovered workflows (e.g. `grill-me`) |
 | `.cursor/commands/` | `@`-invoked ops runbooks (e.g. `@push-submodule`, `@flash-gv2`); git-tracked |
+| `.cursor/hooks/` | Deterministic shell gates (flash, rebase); not optional for the model |
+| `.cursor/agents/` | Focused subagent prompts (dataset, embedded review) |
 | `notes/` | Dataset counts, run history, pinouts, daily-changing content |
 | `README.md` | Public GitHub voice only; **agent never edits local `README.md` on disk** without explicit user request (`agent-persona.mdc`). No sync/revert/cleanup. Baseline `c72a5e0` (2026-06-08). No gitignored dirs, `@commands`, or local mirror workflow |
 
@@ -21,6 +23,6 @@ alwaysApply: true
 
 | Public (README, GitHub) | Local (rules / commands / skills / notes) |
 | :--- | :--- |
-| Notebook repo + `.ipynb` blob URLs on GitHub | `@sync-colab-notebooks` → gitignored `notebooks/` |
+| Notebook repo + `.ipynb` blob URLs on GitHub | Local read-only `notebooks/` (gitignored; `.cursorignore` negation) |
 | Submodule clone URLs | `gv2_firmware/` branch pin, flash runbooks |
 | | `notes/`, `docs/teaching/`, `weights_dataset_for_GCE/` |
