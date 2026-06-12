@@ -36,6 +36,7 @@ __main__.py
 data/test/labels/
 notebooks/
 weights_dataset_for_GCE/
+docs/
 
 # binary model / firmware artifacts (ignored by default)
 # *.tflite
