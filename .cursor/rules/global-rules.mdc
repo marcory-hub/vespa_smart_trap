@@ -31,7 +31,7 @@ alwaysApply: true
 # 5. DIRECTORIES
 - **Notes:** Read-only for agent; user syncs Obsidian via `notes/_cli_vst.md`. If a note path from rules fails `Read`, tell the user; do not invent a substitute path.
 - **Notebooks (agent):** gitignored `notebooks/` (two `.ipynb`); sync `@sync-colab-notebooks`; un-ignore in `.cursorignore`. Public link: GitHub repo URLs in `README.md` only (see `rules-hygiene.mdc`).
-- **Teaching:** user workspace `teaching/`; protocol `.cursor/skills/teach-me/SKILL.md` (not under `teaching/`).
+- **Teaching:** user workspace `docs/teaching/` (gitignored under `docs/`); protocol `.cursor/skills/teach-me/SKILL.md`.
 - **Scripts:** `scripts/[task_name]/` only. Before a new util: read `scripts/script-index.md` and search `scripts/`; extend existing script if it fits.
 - **Root:** configs only (`.gitignore`, `.cursorrules`). **Root `README.md`:** public-facing; agent must not edit the local file without explicit user request (`agent-persona.mdc`). No automatic sync, revert, or cleanup on disk. Preserve original voice; baseline `c72a5e0` (2026-06-08).
 - **Changes:** No renames or unrelated refactors unless asked.

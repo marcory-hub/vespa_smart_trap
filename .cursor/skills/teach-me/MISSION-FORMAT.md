@@ -23,7 +23,7 @@ Every teaching decision traces back here.
 
 ## Rules
 
-- **One mission per `teaching/` workspace.** Unrelated topics: separate workspace or mission swap with user confirm.
+- **One mission per `docs/teaching/` workspace.** Unrelated topics: separate workspace or mission swap with user confirm.
 - **Concrete over abstract.** "Flash YOLO11n to GV2 without bricking the board" beats "understand embedded AI."
 - **Push back on vagueness.** Interview before writing; bad mission worse than none.
 - **Revise when reality shifts.** Update file; add learning record (see `LEARNING-RECORD-FORMAT.md`).

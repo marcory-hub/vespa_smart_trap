@@ -9,3 +9,5 @@ cv_vespcv_raspberry/
 !weights_dataset_for_GCE/**
 !colab-notebooks/
 !colab-notebooks/**
+!docs/teaching/
+!docs/teaching/**

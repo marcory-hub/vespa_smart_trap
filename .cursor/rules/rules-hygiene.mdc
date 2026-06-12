@@ -23,4 +23,4 @@ alwaysApply: true
 | :--- | :--- |
 | Notebook repo + `.ipynb` blob URLs on GitHub | `@sync-colab-notebooks` → gitignored `notebooks/` |
 | Submodule clone URLs | `gv2_firmware/` branch pin, flash runbooks |
-| | `notes/`, `teaching/`, `weights_dataset_for_GCE/` |
+| | `notes/`, `docs/teaching/`, `weights_dataset_for_GCE/` |

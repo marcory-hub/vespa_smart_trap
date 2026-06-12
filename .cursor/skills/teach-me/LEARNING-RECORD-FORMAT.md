@@ -18,7 +18,7 @@ Teaching equivalent of ADRs: steers zone of proximal development.
 
 ## Numbering
 
-Scan `teaching/learning-records/` for highest `NNNN`; increment.
+Scan `docs/teaching/learning-records/` for highest `NNNN`; increment.
 
 ## When to write
 

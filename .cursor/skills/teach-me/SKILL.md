@@ -1,6 +1,6 @@
 ---
 name: teach-me
-description: Teaches concepts over multiple sessions using a teaching/ workspace. Use when user says teach me, learn about, explain step by step to learn, or @teach-me.
+description: Teaches concepts over multiple sessions using docs/teaching/ workspace. Use when user says teach me, learn about, explain step by step to learn, or @teach-me.
 ---
 
 # Teach me
@@ -9,31 +9,31 @@ Adapted from [mattpocock/teach](https://github.com/mattpocock/skills/blob/main/s
 
 Stateful across sessions. Ground in mission, glossary, learning records, and resources.
 
-## Workspace (`teaching/`)
+## Workspace (`docs/teaching/`)
 
 | Path | Role | Format |
 | :--- | :--- | :--- |
-| `teaching/MISSION.md` | Why user learns | [MISSION-FORMAT.md](MISSION-FORMAT.md) |
-| `teaching/GLOSSARY.md` | Canonical terms | [GLOSSARY-FORMAT.md](GLOSSARY-FORMAT.md) |
-| `teaching/RESOURCES.md` | Trusted sources | [RESOURCES-FORMAT.md](RESOURCES-FORMAT.md) |
-| `teaching/NOTES.md` | User preferences | freeform |
-| `teaching/learning-records/` | ADR-style insight | [LEARNING-RECORD-FORMAT.md](LEARNING-RECORD-FORMAT.md) |
-| `teaching/lessons/` | One concept per file | `0001-slug.md`, increment |
-| `teaching/reference/` | Cheat sheets, pinouts | revisit often |
+| `docs/teaching/MISSION.md` | Why user learns | [MISSION-FORMAT.md](MISSION-FORMAT.md) |
+| `docs/teaching/GLOSSARY.md` | Canonical terms | [GLOSSARY-FORMAT.md](GLOSSARY-FORMAT.md) |
+| `docs/teaching/RESOURCES.md` | Trusted sources | [RESOURCES-FORMAT.md](RESOURCES-FORMAT.md) |
+| `docs/teaching/NOTES.md` | User preferences | freeform |
+| `docs/teaching/learning-records/` | ADR-style insight | [LEARNING-RECORD-FORMAT.md](LEARNING-RECORD-FORMAT.md) |
+| `docs/teaching/lessons/` | One concept per file | `0001-slug.md`, increment |
+| `docs/teaching/reference/` | Cheat sheets, pinouts | revisit often |
 
 Create on disk when user says apply to file or agrees to persist; else teach in chat.
 
 ## Start
 
-1. Read `teaching/MISSION.md` if present; else interview for why (one question at a time; use `MISSION-FORMAT.md`).
-2. Read `teaching/learning-records/` and `teaching/GLOSSARY.md` for zone of proximal development.
+1. Read `docs/teaching/MISSION.md` if present; else interview for why (one question at a time; use `MISSION-FORMAT.md`).
+2. Read `docs/teaching/learning-records/` and `docs/teaching/GLOSSARY.md` for zone of proximal development.
 3. **vespa_smart_trap facts:** `.cursor/skills/read-notes/SKILL.md` only; never invent hardware or model data.
 
 ## Lesson
 
-One tight concept; tied to mission; markdown in `teaching/lessons/`. Flow: minimal why → practice → check understanding. Cite `RESOURCES.md` entries. Use `GLOSSARY.md` terms in lessons once promoted. Hardware/flash: `safety-guardrails.mdc` warnings. No em dash or emojis in files.
+One tight concept; tied to mission; markdown in `docs/teaching/lessons/`. Flow: minimal why → practice → check understanding. Cite `RESOURCES.md` entries. Use `GLOSSARY.md` terms in lessons once promoted. Hardware/flash: `safety-guardrails.mdc` warnings. No em dash or emojis in files.
 
-**GCE / Jupyter:** Read `teaching/NOTES.md` (notebook host vs cell installs). Jupyter goes in the user venv from the shell before Lesson 6; export pip pins in shell too. One command block per turn; wait for user output.
+**GCE / Jupyter:** Read `docs/teaching/NOTES.md` (notebook host vs cell installs). Jupyter goes in the user venv from the shell before Lesson 6; export pip pins in shell too. One command block per turn; wait for user output.
 
 ## Feedback
 

@@ -34,7 +34,7 @@ Before architecture or embedded suggestions, follow `.cursor/skills/read-notes/S
 | README voice | `.cursor/skills/update-readme/SKILL.md` |
 | Submodule push | `.cursor/commands/push-submodule` |
 | Notebook sync | `.cursor/commands/sync-colab-notebooks` → `notebooks/` |
-| Teach-me workspace | `teaching/` + `.cursor/skills/teach-me/SKILL.md` |
+| Teach-me workspace | `docs/teaching/` + `.cursor/skills/teach-me/SKILL.md` |
 | Security audit | `.cursor/commands/security-audit` |
 
 ## 3. Sync
