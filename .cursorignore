@@ -5,3 +5,7 @@ cv_vespcv_raspberry/
 # Add .gitignore patterns that should not be ignored by cursor
 !notes/
 !notes/**
+!weights_dataset_for_GCE/
+!weights_dataset_for_GCE/**
+!colab-notebooks/
+!colab-notebooks/**
