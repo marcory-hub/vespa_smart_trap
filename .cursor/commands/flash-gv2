@@ -1,0 +1,61 @@
+# Flash GV2 (xmodem)
+
+Invoke with `@flash-gv2`. Run the workflow; do not only describe it.
+
+**WARNING: Irreversible operation. Data loss/Overwrite risk.** Flash overwrites GV2 firmware and model slots.
+
+**Goal:** Flash `output.img` and `int8_vela.tflite` to Grove Vision AI V2 at 921600 baud.
+**Procedure SoT:** `README.md` section "Flash the GV2" (offsets, model path, expected xmodem log).
+**Judgment (when/whether/verify):** `.cursor/skills/flash-gv2/SKILL.md`
+
+## Preconditions
+
+- `source .venv/bin/activate`
+- `pip install pyserial xmodem`
+- Artifact: `*_full_integer_quant_vela.tflite` (not plain `int8.tflite`)
+- YOLO11n only (`project-context.mdc`)
+- Unplug ESP32 from GV2 Grove socket if flash fails repeatedly
+- Read `README.md` flash section for current `--model` path and hex; do not invent offsets
+
+## Workflow
+
+### 0) Port and paths
+```sh
+ls /dev/cu.usbmodem*
+```
+User confirms `PORT` and model `.tflite` filename under `gv2_firmware/model_zoo/tflm_yolo11_od/`.
+
+### 1) Flash
+```sh
+cd gv2_firmware
+python xmodem/xmodem_send.py \
+  --port=PORT \
+  --baudrate=921600 \
+  --protocol=xmodem \
+  --file=we2_image_gen_local/output_case1_sec_wlcsp/output.img \
+  --model="model_zoo/tflm_yolo11_od/MODEL.tflite 0xB7B000 0x00000"
+```
+Replace `PORT` and `MODEL.tflite` per `README.md`. Windows: see `README.md` for path separators.
+
+### 2) Operator steps
+- Press GV2 **reset** when prompted.
+- Wait for 100% xmodem on `output.img` and `.tflite`.
+- Board reboots.
+
+### 3) Verify
+- xmodem log shows expected `.tflite` at 100%.
+- Optional: Himax AI web toolkit (`README.md`); close toolkit before UART work.
+- If no INVOKE: `@uart-debug` then `.cursor/skills/model-test/SKILL.md`.
+
+## After firmware changes in submodule
+
+Before git push: `@security-audit` (or user **skip audit** once), then `@push-submodule` with user-provided commit message.
+
+## Do not
+
+- Flash SenseCraft web swift-yolo models (`README.md`)
+- Push to upstream Himax org
+
+## Done when
+
+xmodem reports success for image and model; user confirms inference or accepts UART debug handoff.

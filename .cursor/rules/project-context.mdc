@@ -8,7 +8,7 @@ alwaysApply: true
 ## 1. Context loading
 `notes/` is gitignored (local Obsidian sync). Use the exact paths below; codebase search may not list them. If `Read` fails, stop and ask the user to sync (`notes/_cli_vst.md`); do not guess or invent a substitute path.
 
-Before architecture or embedded suggestions, read the relevant note first:
+Before architecture or embedded suggestions, follow `.cursor/skills/read-notes/SKILL.md` and read the relevant note:
 - Index: `notes/__vespa_smart_trap.md`
 - CLI / Obsidian sync: `notes/_cli_vst.md`
 - Hardware / pinouts / UART: `notes/_hardware_vst.md`
@@ -20,21 +20,23 @@ Before architecture or embedded suggestions, read the relevant note first:
 
 ## 2. Source of Truth Matrix
 
-| Topic | Read first |
+| Topic | Pointer |
 | :--- | :--- |
-| Note index | `notes/__vespa_smart_trap.md` |
-| CLI / Obsidian sync | `notes/_cli_vst.md` |
-| Roadmap | `notes/_timeline_vst.md` |
-| Hardware / GPIO / PCB | `notes/_hardware_vst.md` |
-| Data & YOLO pipeline | `notes/_datasets_vst.md`, `notes/swift-yolo documentation.md` |
-| Model evolution | `notes/_model_vst.md` |
-| Training notebooks (Colab) | `https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2` branch `main` (SoT; `@sync-colab-notebooks` → `colab-notebooks/`) |
-| Scripts / utilities | `scripts/script-index.md`; search `scripts/` before creating a new util |
-| Meetings | `notes/_meetings_vst.md`, `notes/meeting *.md` (no SoT) |
-| README voice | `readme.mdc` (README edits only) |
+| Notes (mandatory Read) | `.cursor/skills/read-notes/SKILL.md` |
+| Datasets / labels | `.cursor/skills/dataset/SKILL.md` |
+| Colab train / VELA | `.cursor/skills/train-colab-vela/SKILL.md` |
+| Flash GV2 (run) | `.cursor/commands/flash-gv2` |
+| Flash GV2 (when/verify) | `.cursor/skills/flash-gv2/SKILL.md` |
+| UART / serial debug | `.cursor/skills/uart-debug/SKILL.md` |
+| Model test / benchmark | `.cursor/skills/model-test/SKILL.md` |
+| Project pitch | `.cursor/skills/project-pitch/SKILL.md` |
+| README voice | `.cursor/skills/update-readme/SKILL.md` |
+| Submodule push | `.cursor/commands/push-submodule` |
+| Notebook sync | `.cursor/commands/sync-colab-notebooks` |
+| Security audit | `.cursor/commands/security-audit` |
 
 ## 3. Sync
-After confirmed teaching moment: ask user to update `notes/` or rules. Rules (how) > notes (what), unless user intent overrides outdated `_timeline_vst.md`.
+After a `@teach-me` session changes project facts: ask user to update `notes/` or rules. Rules (how) > notes (what), unless user intent overrides outdated `_timeline_vst.md`.
 
 ## 4. Pipeline
 GV2 inference → UART → T-SIM LTE. Pinouts, baud, SRAM limits: `notes/_hardware_vst.md`.
