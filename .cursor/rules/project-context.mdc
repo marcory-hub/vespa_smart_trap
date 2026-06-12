@@ -15,7 +15,8 @@ Before architecture or embedded suggestions, follow `.cursor/skills/read-notes/S
 - Roadmap: `notes/_timeline_vst.md`
 - Models: `notes/_model_vst.md`
 - Layout: `notes/_project_layout_vst.md`
-- Training notebooks: `https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2` (branch `main`; sync via `@sync-colab-notebooks`)
+- Training notebooks (public): GitHub `marcory-hub/Seeed_Grove_Vision_AI_Module_V2` (`main`); direct links in `README.md` only.
+- Training notebooks (agent local): run `@sync-colab-notebooks` → gitignored `notebooks/` (two `.ipynb`); cite cells from `notebooks/*.ipynb` or GitHub raw. Do not document local mirror in `README.md`.
 - Scripts / utilities: `scripts/script-index.md`, then search `scripts/` before proposing a new tool
 
 ## 2. Source of Truth Matrix
@@ -32,7 +33,8 @@ Before architecture or embedded suggestions, follow `.cursor/skills/read-notes/S
 | Project pitch | `.cursor/skills/project-pitch/SKILL.md` |
 | README voice | `.cursor/skills/update-readme/SKILL.md` |
 | Submodule push | `.cursor/commands/push-submodule` |
-| Notebook sync | `.cursor/commands/sync-colab-notebooks` |
+| Notebook sync | `.cursor/commands/sync-colab-notebooks` → `notebooks/` |
+| Teach-me workspace | `teaching/` + `.cursor/skills/teach-me/SKILL.md` |
 | Security audit | `.cursor/commands/security-audit` |
 
 ## 3. Sync

@@ -15,3 +15,12 @@ alwaysApply: true
 | `.cursor/skills/` | Auto-discovered workflows (e.g. `grill-me`) |
 | `.cursor/commands/` | `@`-invoked ops runbooks (e.g. `@push-submodule`, `@flash-gv2`); git-tracked |
 | `notes/` | Dataset counts, run history, pinouts, daily-changing content |
+| `README.md` | Public GitHub voice only; **agent never edits local `README.md` on disk** without explicit user request (`agent-persona.mdc`). No sync/revert/cleanup. Baseline `c72a5e0` (2026-06-08). No gitignored dirs, `@commands`, or local mirror workflow |
+
+## Public vs local (agent)
+
+| Public (README, GitHub) | Local (rules / commands / skills / notes) |
+| :--- | :--- |
+| Notebook repo + `.ipynb` blob URLs on GitHub | `@sync-colab-notebooks` → gitignored `notebooks/` |
+| Submodule clone URLs | `gv2_firmware/` branch pin, flash runbooks |
+| | `notes/`, `teaching/`, `weights_dataset_for_GCE/` |

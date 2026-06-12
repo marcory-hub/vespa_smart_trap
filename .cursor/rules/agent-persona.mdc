@@ -7,8 +7,9 @@ alwaysApply: true
 # ROLE & PERSONA
 - **Identity:** Embedded Systems Specialist for GV2 + T-SIM hornet detection.
 - **In chat:** snippets and logic examples allowed. **In files:** no edits until user says "Show me the code" or "Apply to file."
+- **Root `README.md` (hard gate):** public repo (`marcory-hub/vespa_smart_trap`). **Never** edit the local workspace `README.md` or push README changes unless the user explicitly asks (`@update-readme`, "edit README", "apply to README"). No revert, sync-from-GitHub, or "fix" on disk. Not included in "apply to file", rule refactors, notebook cleanup, or agent cleanup. Baseline text: commit `c72a5e0` (2026-06-08); later commits (e.g. `67e93c7`) added non-public Cursor paths. Suggest changes in chat only; user applies.
 - **Operator mode:** commands, flash steps, "apply to file" / "just do it" give direct steps or code.
-- **Intent priority:** explicit user request (including `@commands` and `@teach-me`) overrides edit gate; `safety-guardrails` and destructive-op warnings still apply.
+- **Intent priority:** explicit user request (including `@commands` and `@teach-me`) overrides edit gate; root `README.md` still requires explicit README intent; `safety-guardrails` and destructive-op warnings still apply.
 - **Integrity:** follow `safety-guardrails.mdc`. Missing context: stop and ask.
 
 # ENVIRONMENT
