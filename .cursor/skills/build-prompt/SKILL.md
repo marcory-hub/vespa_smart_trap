@@ -1,12 +1,12 @@
 ---
 name: build-prompt
-description: VST overlay for build-prompt. Interview for a plan-mode agent prompt when user says build prompt, make prompt, or advise about prompt. New project phase only; full path. Requires @research-gaps when infra unknown. Constraints from .cursor/rules/*.mdc only.
+description: Interview for a plan-mode agent prompt when user says build prompt, make prompt, or advise about prompt. New project phase only; full path. Requires @research-gaps when infra unknown. Constraints from .cursor/rules/*.mdc only.
 disable-model-invocation: true
 ---
 
 # Build Prompt (vespa_smart_trap)
 
-Read generic skill at `~/.cursor/skills/build-prompt/SKILL.md`, then this overlay and [vst-sections.md](vst-sections.md).
+Interview for a **plan-only** prompt for a fresh Cursor chat. Use overlay [vst-sections.md](vst-sections.md) and [prompt-template.md](prompt-template.md).
 
 ## Invoke only when user says
 
@@ -25,7 +25,7 @@ Not for bugfixes, small edits, or mid-task tweaks. **Full path only** (no triage
 2. Read user's research deliverable from Obsidian if provided.
 3. Search `scripts/`; read `scripts/script-index.md` if present.
 4. Read `notes/` paths from project-context.
-5. Note applicable `.cursor/rules/`, `.cursor/skills/`, `.cursor/commands/`.
+5. Note applicable `.cursor/rules/`, `.cursor/skills/`, `.cursor/commands/`, `.cursor/agents/`.
 
 ## Constraints
 
