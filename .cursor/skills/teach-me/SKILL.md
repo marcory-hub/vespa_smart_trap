@@ -33,6 +33,8 @@ Create on disk when user says apply to file or agrees to persist; else teach in 
 
 One tight concept; tied to mission; markdown in `teaching/lessons/`. Flow: minimal why → practice → check understanding. Cite `RESOURCES.md` entries. Use `GLOSSARY.md` terms in lessons once promoted. Hardware/flash: `safety-guardrails.mdc` warnings. No em dash or emojis in files.
 
+**GCE / Jupyter:** Read `teaching/NOTES.md` (notebook host vs cell installs). Jupyter goes in the user venv from the shell before Lesson 6; export pip pins in shell too. One command block per turn; wait for user output.
+
 ## Feedback
 
 User tries step or answers → specific feedback → next lesson. Prior knowledge or corrected misconception → learning record per `LEARNING-RECORD-FORMAT.md`.
