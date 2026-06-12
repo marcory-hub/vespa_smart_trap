@@ -1,6 +1,7 @@
 ---
 name: update-readme
 description: Make or update README files with project voice and GitHub conventions. Use when the user asks to improve README, write readme copy, polish README.md, or @update-readme.
+disable-model-invocation: true
 ---
 
 # Make README
