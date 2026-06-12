@@ -421,7 +421,7 @@ def main() -> int:
     parser.add_argument(
         "--display-min-score",
         type=float,
-        default=0.0,
+        default=0.75,
         help="Only draw boxes at or above this confidence in the display window.",
     )
     parser.add_argument(
