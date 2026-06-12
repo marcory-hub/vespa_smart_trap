@@ -1,0 +1,16 @@
+---
+description: Python scripts layout, venv, and dataset safety for scripts/
+globs: scripts/**/*.py
+alwaysApply: false
+---
+
+# Python scripts
+
+- Prefix: `source .venv/bin/activate`
+- Layout: `scripts/[task_name]/` only; read `scripts/script-index.md` before new tools
+- Naming: full words (`detection_threshold` not `thresh`)
+- PEP8; small functions; early returns
+- Secrets: env vars only
+- **Dataset safety:** never rename `.jpg` or `.txt` label files
+- No local train, quant, or VELA (Colab `2025.07`, Python 3.11; cite `notebooks/*.ipynb`)
+- Deploy artifact: `int8_vela.tflite` only (not plain `int8.tflite`)
