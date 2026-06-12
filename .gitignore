@@ -58,3 +58,9 @@ images/
 
 # Notes (local Obsidian vault, not versioned)
 notes/
+
+# Agent handoff snapshots (local; may contain VM URLs)
+.cursor/skills/handoff/sessions/*
+
+# GCE remote runner logs (local copies of VM output)
+scripts/gce_vela/outputs/
