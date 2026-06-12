@@ -86,7 +86,7 @@ Detects V. velutina, catches it and texts the beekeeper
 | Wrong hardware suggestions | RPi detector, cloud inference, YOLO on LilyGO ESP32-S3 (inference stays on GV2) |
 | Wrong model suggestions | plain `int8.tflite`, YOLO11s (SRAM overflow), SenseCraft swift-yolo, local train instead of Colab |
 | Missing documentation | pinouts, UART baud, flash addresses, boot/reset; agent cannot press buttons |
-| Hallucinated pipeline | training/quant steps not in synced notebooks (`@sync-colab-notebooks`) |
+| Hallucinated pipeline | training/quant steps not in `notebooks/*.ipynb` (read-only local SoT) |
 | Submodule / git | PR or push to upstream Himax instead of fork (`yolo11-vespa`) |
 
 ---
