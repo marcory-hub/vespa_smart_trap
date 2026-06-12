@@ -33,4 +33,4 @@ Curated trusted sources. Draw lesson facts from here and cited links, not parame
 - **Prune** wrong or shallow entries.
 - **Record opt-out** if user declines communities.
 
-For this repo: prefer `notes/`, `README.md`, `colab-notebooks/` after sync over generic web summaries.
+For this repo: prefer `notes/`, `README.md`, `notebooks/` after sync over generic web summaries.

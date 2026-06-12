@@ -42,7 +42,7 @@ Deliverable must include: parity checklist, bootstrap commands, cutover, rollbac
 ## Sources (check in order)
 
 1. `notes/` paths from `project-context.mdc`
-2. `scripts/`, `gv2_firmware/`, `colab-notebooks/` (if synced)
+2. `scripts/`, `gv2_firmware/`, `notebooks/` (if synced)
 3. `.cursor/rules/project-context.mdc`
 4. Official vendor / Google Cloud docs
 5. Web search with specific queries

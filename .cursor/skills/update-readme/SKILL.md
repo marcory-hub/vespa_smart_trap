@@ -16,8 +16,10 @@ Serve both: terse procedures, welcoming intro. No dumbing down steps or burying 
 
 ## Edits
 
+- **Invoke only when user asks.** This skill is the sole path to edit root `README.md` (`agent-persona.mdc`). No edits to the local workspace file during rule refactors, cleanup, GitHub sync, or "restore from history". User may apply suggested text themselves.
 - Operate on the user-specified path only (e.g. `gv2_firmware/README.md`).
 - Do not rewrite existing sections unless the user asks to polish or rewrite.
+- **Root `README.md` is public:** preserve original text and voice unless user requests a change. Baseline: git `c72a5e0` (2026-06-08). GitHub/Colab links and clone paths only. No gitignored paths (`notebooks/`, `notes/`), no `@`-commands, no local mirror workflow. Do **not** copy `Local mirror: @sync-colab-notebooks` from `origin/main` (commit `67e93c7`, 2026-06-09). Agent workflow lives in `.cursor/rules/`, `.cursor/commands/`, `.cursor/skills/`.
 - Insert new content at the requested anchor. User-edit authority: `.cursor/rules/global-rules.mdc`.
 - If path, anchor, or variable data (versions, URLs, hex) is missing, ask before writing.
 

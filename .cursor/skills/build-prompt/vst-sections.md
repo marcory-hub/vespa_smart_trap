@@ -27,7 +27,7 @@ From `notes/_hardware_vst.md` when available.
 Skip if N/A.
 
 - Notebooks on `marcory-hub/Seeed_Grove_Vision_AI_Module_V2` `main`
-- `@sync-colab-notebooks` → `colab-notebooks/`
+- `@sync-colab-notebooks` → `notebooks/`
 - `notes/_datasets_vst.md`, outputs (`.pt`, `int8_vela.tflite`)
 - Migration: which cells move off Colab
 
@@ -51,7 +51,7 @@ Skip if N/A. Requires `@research-gaps` deliverable unless user cites a note/runb
 
 - Notes: hardware, model, datasets, timeline, layout (paths from project-context)
 - Scripts to extend, `gv2_firmware/`, env var names (no secrets)
-- Gitignored artifacts agent must know: datasets, `colab-notebooks/`, weights
+- Gitignored artifacts agent must know: datasets, `notebooks/`, weights
 
 ## 8. Constraints
 

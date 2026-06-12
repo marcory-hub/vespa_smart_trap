@@ -9,7 +9,7 @@ description: Guides Colab train and PT to int8_vela quant for GV2. Use when Cola
 
 ## Before cells
 
-1. `@sync-colab-notebooks` so agent cites real notebook paths under `colab-notebooks/`
+1. `@sync-colab-notebooks` so agent cites real notebook paths under `notebooks/`
 2. `.cursor/skills/read-notes/SKILL.md` for `notes/_model_vst.md`, `notes/swift-yolo documentation.md`
 3. SoT repo: `https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2` branch `main`
 
@@ -29,7 +29,7 @@ description: Guides Colab train and PT to int8_vela quant for GV2. Use when Cola
 ## Agent role
 
 - Debug Colab errors from user paste or notebook Read after sync
-- Do not invent cell contents; read `colab-notebooks/*.ipynb` or linked GitHub
+- Do not invent cell contents; read `notebooks/*.ipynb` or linked GitHub
 - After new model: offer `@flash-gv2` and `@model-test`
 
 ## Out of scope
