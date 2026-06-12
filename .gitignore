@@ -34,8 +34,7 @@ __main__.py
 
 # Large data and model dirs
 data/test/labels/
-yolo11n-on-grove-vision-ai-v2
-colab-notebooks
+notebooks/
 weights_dataset_for_GCE/
 
 # binary model / firmware artifacts (ignored by default)
