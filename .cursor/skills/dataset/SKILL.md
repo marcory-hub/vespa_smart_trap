@@ -28,7 +28,7 @@ Search `scripts/dataset_*` and extend an existing tool if it fits. No new util w
 
 ## Out of scope
 
-- Local train, quant, or VELA (Colab `2025.07`, Python 3.11; `@sync-colab-notebooks`)
+- Local train, quant, or VELA (Colab `2025.07`, Python 3.11; cite `notebooks/*.ipynb`)
 - Plain `int8.tflite` (use `int8_vela.tflite` on GV2)
 - Inventing image counts, class IDs, or Roboflow project names
 

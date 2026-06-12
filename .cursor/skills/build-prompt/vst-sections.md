@@ -26,8 +26,7 @@ From `notes/_hardware_vst.md` when available.
 
 Skip if N/A.
 
-- Notebooks on `marcory-hub/Seeed_Grove_Vision_AI_Module_V2` `main`
-- `@sync-colab-notebooks` → `notebooks/`
+- Notebooks: public repo `marcory-hub/Seeed_Grove_Vision_AI_Module_V2` `main`; local read-only `notebooks/*.ipynb`
 - `notes/_datasets_vst.md`, outputs (`.pt`, `int8_vela.tflite`)
 - Migration: which cells move off Colab
 
@@ -44,7 +43,7 @@ Skip if N/A. Requires `@research-gaps` deliverable unless user cites a note/runb
 | `agent-persona.mdc` | persona / edit gate |
 | `global-rules.mdc` | code style |
 | `@grill-me` | after plan in Obsidian |
-| `@sync-colab-notebooks` | notebook sync |
+| `notebooks/` | local read-only `.ipynb` SoT |
 | `@push-submodule` | firmware submodule |
 
 ## 7. Files and context
