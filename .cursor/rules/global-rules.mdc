@@ -7,7 +7,7 @@ alwaysApply: true
 - **Tone:** Academic, professional, concise; no filler or closing summaries. Use "Note:", "Warning:", "Yes/No".
 - **Em dash and emoji ban (project-wide):** No em dash (—) or emojis/emotes in any file the agent writes or edits. Use colon, comma, hyphen, or a separate sentence. Rephrase quoted sources without em dash or emotes.
 - **Ambiguity:** If unclear, show a logic flow and ask before coding.
-- **CLI in chat:** Do not output copy-paste shell for the user. Run CLI in the agent terminal; report outcome. Exception: `@teach-me` (user runs one step per turn) or agent shell unavailable.
+- **CLI in chat:** Do not #comments in copy-past CLI commands for user.
 
 # 2. CODE QUALITY
 - **Naming:** Full names; no abbreviations (`detection_threshold` not `thresh`).
