@@ -91,5 +91,4 @@ Read attached SoT before proposing architecture. Step-by-step plan with risks an
 - {[to be verified]}
 
 ## After this chat
-
-Save plan to Obsidian → new chat → `@grill-me` on plan → use refined prompt/plan for implementation.
+Ask user: save the plan to Obsidian → new chat → `@grill-me` on plan → use refined prompt/plan for implementation.
