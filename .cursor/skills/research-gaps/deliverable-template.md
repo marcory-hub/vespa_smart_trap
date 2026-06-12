@@ -1,6 +1,6 @@
 # Research deliverable (paste into Obsidian)
 
-Use after `@research-gaps` chat. Generic shape; see `~/.cursor/skills/research-gaps/deliverable-template.md`.
+Use after `@research-gaps` chat. Copy this template into Obsidian.
 
 ---
 
