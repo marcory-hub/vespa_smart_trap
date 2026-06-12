@@ -12,7 +12,7 @@ Curated trusted sources. Draw lesson facts from here and cited links, not parame
 - [GV2 flashing — repo README](../../README.md)
   Operator steps for xmodem flash. Use for: flash workflow teaching.
 - [Seeed Colab notebooks](https://github.com/marcory-hub/Seeed_Grove_Vision_AI_Module_V2)
-  Train/quant SoT. Use for: Colab cell walkthroughs after `@sync-colab-notebooks`.
+  Train/quant SoT. Use for: Colab cell walkthroughs from `notebooks/*.ipynb` (read-only).
 
 ## Wisdom (Communities)
 
