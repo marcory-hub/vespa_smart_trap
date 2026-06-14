@@ -26,6 +26,8 @@ description: Start Jupyter on vst-vela-01, SSH tunnel from Mac, and verify VELA 
 
 **Terminal runner:** `@gce-run` → `.cursor/commands/gce-run` + `scripts/gce_vela/vm_run.py` (mirrors notebook steps).
 
+**Cost:** `@gce-stop` / `@gce-status` / `@gce-start` → `.cursor/skills/gce-ops/SKILL.md`. Always stop VM after run unless user keeps it running.
+
 ## Notebook checks (static, Mac)
 
 ```sh
@@ -38,8 +40,9 @@ grep -E 'google\.colab|drive\.mount|/content/|files\.download' notebooks/YOLO_pt
 
 | Issue | Action |
 | :--- | :--- |
-| VM STOPPED | `gcloud compute instances start` |
-| OOM on export | Plan addendum: `n1-standard-8` then `n1-highmem-8` |
+| VM STOPPED | `remote.sh start` or `@gce-start` |
+| VM RUNNING idle | `@gce-stop` |
+| OOM on export | Plan addendum: `n1-standard-8` then `n1-highmem-8`; stop + downsize after |
 | Quota / GPU | User checks Console; VELA export is mostly CPU |
 | Artifact | `gs://pt-vela-gce/output/` then `@flash-gv2` |
 
