@@ -28,6 +28,8 @@ Before architecture or embedded suggestions, follow `.cursor/skills/read-notes/S
 | Colab train / VELA | `.cursor/skills/train-colab-vela/SKILL.md` |
 | GCE VELA run (agent terminal) | `.cursor/commands/gce-run` + `scripts/gce_vela/remote.sh` |
 | GCE Jupyter + tunnel | `.cursor/commands/gce-jupyter` + `.cursor/skills/gce-jupyter/SKILL.md` |
+| GCE start / stop / cost audit | `.cursor/commands/gce-start`, `gce-stop`, `gce-status` + `.cursor/skills/gce-ops/SKILL.md` |
+| GCE budget auto-stop | `.cursor/commands/gce-budget-kill` + `scripts/gce_vela/budget_kill_switch/` |
 | Flash GV2 (run) | `.cursor/commands/flash-gv2` |
 | Flash GV2 (when/verify) | `.cursor/skills/flash-gv2/SKILL.md` |
 | UART / serial debug | `.cursor/skills/uart-debug/SKILL.md` |
