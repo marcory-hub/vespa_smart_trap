@@ -1,0 +1,47 @@
+# GCE cost and resource audit
+
+Invoke with `@gce-status`. **Agent runs terminal via Shell; never paste these commands for the user.**
+
+**Goal:** Audit what is billing on `pt-vela`: VM state, machine type, accelerators, disks, GCS bucket.
+
+**Judgment:** `.cursor/skills/gce-ops/SKILL.md`
+
+| Name | Value |
+| :--- | :--- |
+| Project ID | `pt-vela` |
+| VM | `vst-vela-01` |
+| Zone | `europe-west4-a` |
+| Bucket | `pt-vela-gce` |
+
+---
+
+## Agent workflow
+
+From repo root on **Mac**:
+
+```sh
+gcloud config get-value project
+gcloud projects list --format="table(projectId,name)"
+chmod +x scripts/gce_vela/remote.sh
+scripts/gce_vela/remote.sh billing-status
+```
+
+**Red flags (escalate to user):**
+
+| Finding | Action |
+| :--- | :--- |
+| `status: RUNNING` and user not actively working | `@gce-stop` |
+| `accelerators` not `none` | Stop VM; plan GPU removal (recreate without `--accelerator`) |
+| `machine_type` above `n1-standard-4` while idle | `remote.sh downsize` after stop |
+| Extra VMs in project list | Report names; stop unused instances |
+
+**Console cross-check (user):** Billing → Reports → Compute Engine → group by SKU (last 24h).
+
+---
+
+## Fresh-chat opener
+
+```text
+@gce-status
+Why is GCP still charging? Audit pt-vela instances, GPUs, and bucket.
+```

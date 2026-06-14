@@ -1,0 +1,61 @@
+# GCE stop
+
+Invoke with `@gce-stop`. **Agent runs terminal via Shell; never paste these commands for the user.**
+
+**Goal:** Stop `vst-vela-01` immediately and verify billing stops for compute.
+
+**Judgment:** `.cursor/skills/gce-ops/SKILL.md`
+
+| Name | Value |
+| :--- | :--- |
+| Project ID | `pt-vela` |
+| VM | `vst-vela-01` |
+| Zone | `europe-west4-a` |
+
+---
+
+## Agent workflow
+
+From repo root on **Mac**:
+
+```sh
+chmod +x scripts/gce_vela/remote.sh
+scripts/gce_vela/remote.sh stop
+scripts/gce_vela/remote.sh billing-status
+```
+
+**Pass:**
+
+- `status: TERMINATED`
+- `accelerators: none`
+- `cost_note: compute not billed when TERMINATED`
+
+If Jupyter or SSH tunnels were open, optional cleanup on Mac:
+
+```sh
+lsof -i :8080
+lsof -i :8888
+```
+
+Kill tunnel PIDs if listed (user approval if hook asks).
+
+---
+
+## After VELA work
+
+Default: always run `@gce-stop` after `@gce-run` or `@gce-jupyter` unless the user explicitly asks to keep the VM running.
+
+Optional downsize (CPU-only default shape):
+
+```sh
+scripts/gce_vela/remote.sh downsize
+```
+
+---
+
+## Fresh-chat opener
+
+```text
+@gce-stop
+VM may still be running. Stop vst-vela-01 and confirm TERMINATED.
+```

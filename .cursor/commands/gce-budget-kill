@@ -1,0 +1,58 @@
+# GCE budget kill switch (auto-stop at EUR 10)
+
+Invoke with `@gce-budget-kill`. **Agent runs terminal via Shell.**
+
+**Goal:** When monthly spend exceeds the EUR 10 budget, automatically stop `vst-vela-01`.
+
+**Judgment:** `.cursor/skills/gce-ops/SKILL.md`
+
+| Name | Value |
+| :--- | :--- |
+| Budget | `pt-vela` (EUR 10/month) |
+| Budget ID | `41e9b2e3-229a-4663-bb8c-40db5d00bbe9` |
+| Pub/Sub topic | `pt-vela-budget-alerts` |
+| Cloud Function | `pt-vela-budget-stop-vm` |
+
+---
+
+## One-time setup
+
+From repo root on **Mac**:
+
+```sh
+chmod +x scripts/gce_vela/budget_kill_switch/setup.sh
+scripts/gce_vela/budget_kill_switch/setup.sh
+```
+
+**Pass:** setup prints budget `notificationsRule` with Pub/Sub topic; function deploy succeeds.
+
+---
+
+## Limits
+
+| Limit | Detail |
+| :--- | :--- |
+| Not instant | Pub/Sub budget messages can lag billing by hours |
+| Alerts only until setup | Budget emails do not stop VMs by themselves |
+| Scope | Stops `vst-vela-01` only when `costAmount > budgetAmount` |
+| Disk + GCS | Still bill when VM is TERMINATED |
+
+Always use `@gce-stop` after VELA work; kill switch is a safety net.
+
+---
+
+## Verify
+
+```sh
+gcloud billing budgets describe billingAccounts/01C6E6-3979EC-357FD7/budgets/41e9b2e3-229a-4663-bb8c-40db5d00bbe9 --format=yaml
+gcloud functions describe pt-vela-budget-stop-vm --gen2 --region=europe-west4 --format="get(state)"
+```
+
+---
+
+## Fresh-chat opener
+
+```text
+@gce-budget-kill
+Deploy or verify auto-stop when pt-vela budget exceeds EUR 10.
+```

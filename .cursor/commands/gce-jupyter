@@ -6,7 +6,7 @@ Invoke with `@gce-jupyter`. Give the **complete** workflow from step 0; do not j
 
 **Goal:** Run `~/vst/YOLO_pt_to_vela_2026_02_24_gce.ipynb` in **Chrome** on the Mac; kernel `~/vst/.venv` (Python 3.11); artifact `best_full_integer_quant_vela.tflite` <= 2.4 MB.
 
-**Judgment:** `.cursor/skills/gce-jupyter/SKILL.md`
+**Judgment:** `.cursor/skills/gce-jupyter/SKILL.md`. **Cost:** `.cursor/skills/gce-ops/SKILL.md`.
 
 **IDs (do not swap):**
 
@@ -27,6 +27,20 @@ Invoke with `@gce-jupyter`. Give the **complete** workflow from step 0; do not j
 | `md@vst-vela-01` | **VM** | `jupyter`, `~/vst/.venv`, notebook cells |
 
 `~/vst/` exists **only on the VM**. Never run `source ~/vst/.venv` on the Mac.
+
+---
+
+## Cost gate (read first)
+
+RUNNING `vst-vela-01` bills hourly even with no Jupyter or SSH use.
+
+| When | Action |
+| :--- | :--- |
+| Before work | `@gce-start` or `scripts/gce_vela/remote.sh start` |
+| After work (always) | `@gce-stop` or `scripts/gce_vela/remote.sh stop` |
+| Audit spend | `@gce-status` or `scripts/gce_vela/remote.sh billing-status` |
+
+Default shape: CPU `n1-standard-4`, no GPU. Downsize after export: `remote.sh downsize`.
 
 ---
 
@@ -241,8 +255,11 @@ Then Jupyter: **Restart Kernel** → resume from TF pins cell.
 
 ```sh
 # Ctrl+C in T1, close T2
-gcloud compute instances stop vst-vela-01 --zone=europe-west4-a
+scripts/gce_vela/remote.sh stop
+scripts/gce_vela/remote.sh billing-status
 ```
+
+Or invoke `@gce-stop`.
 
 ---
 

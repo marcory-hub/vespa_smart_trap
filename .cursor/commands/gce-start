@@ -1,0 +1,48 @@
+# GCE start VM (before VELA work)
+
+Invoke with `@gce-start`. **Agent runs terminal via Shell; never paste these commands for the user.**
+
+**Goal:** Start `vst-vela-01` and wait until RUNNING before `@gce-run` or `@gce-jupyter`.
+
+**Judgment:** `.cursor/skills/gce-ops/SKILL.md`
+
+| Name | Value |
+| :--- | :--- |
+| Project ID | `pt-vela` |
+| VM | `vst-vela-01` |
+| Zone | `europe-west4-a` |
+| Default machine | `n1-standard-4` (CPU only, no GPU) |
+
+---
+
+## Agent workflow
+
+From repo root on **Mac**:
+
+```sh
+chmod +x scripts/gce_vela/remote.sh
+scripts/gce_vela/remote.sh billing-status
+scripts/gce_vela/remote.sh start
+scripts/gce_vela/remote.sh billing-status
+```
+
+**Pass:** `status: RUNNING`, `accelerators: none`.
+
+**Cost warning:** tell the user that RUNNING bills hourly until `@gce-stop`.
+
+If machine type is not `n1-standard-4` and no active export is planned:
+
+```sh
+scripts/gce_vela/remote.sh stop
+scripts/gce_vela/remote.sh downsize
+scripts/gce_vela/remote.sh start
+```
+
+---
+
+## Fresh-chat opener
+
+```text
+@gce-start
+Start vst-vela-01 for VELA work. Remind me to @gce-stop when done.
+```

@@ -4,7 +4,7 @@ Invoke with `@gce-run`. **Agent runs terminal via Shell; never paste these comma
 
 **Goal:** Run VELA pipeline on `vst-vela-01` via `scripts/gce_vela/remote.sh`; read streamed output and local logs; iterate on failures.
 
-**Judgment:** `.cursor/skills/gce-jupyter/SKILL.md` (browser Jupyter optional; terminal preferred for agent).
+**Judgment:** `.cursor/skills/gce-jupyter/SKILL.md` (browser Jupyter optional; terminal preferred for agent). **Cost:** `.cursor/skills/gce-ops/SKILL.md`.
 
 | Name | Value |
 | :--- | :--- |
@@ -15,12 +15,21 @@ Invoke with `@gce-run`. **Agent runs terminal via Shell; never paste these comma
 
 ---
 
+## Cost gate
+
+Before work: `@gce-start` or `scripts/gce_vela/remote.sh start`.
+
+After success or failure: `@gce-stop` (always, unless user keeps VM running).
+
+---
+
 ## Agent workflow (default)
 
 From repo root on **Mac**:
 
 ```sh
 chmod +x scripts/gce_vela/remote.sh
+scripts/gce_vela/remote.sh start
 scripts/gce_vela/remote.sh status
 scripts/gce_vela/remote.sh run-resume   # if dataset + calibration already done
 # or step by step:
@@ -46,6 +55,13 @@ scripts/gce_vela/remote.sh pull-log
 ```
 
 Fix `vm_run.py` or venv on VM, `remote.sh sync`, re-run failed step.
+
+When pipeline finishes or session ends:
+
+```sh
+scripts/gce_vela/remote.sh stop
+scripts/gce_vela/remote.sh billing-status
+```
 
 ---
 
