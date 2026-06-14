@@ -13,7 +13,8 @@ alwaysApply: true
 - **Naming:** Full names; no abbreviations (`detection_threshold` not `thresh`).
 - **Structure:** Small functions, early returns, explicit logic.
 - **SRAM:** GV2 < 2.4MB; flag overflow risk.
-- **Comments:** Why not what; `TODO` / `[to be verified]` for gaps. Do not restore user-deleted comments.
+- **Comments (lean):** Applies to all committed or shareable code: Python, C/C++, shell, notebooks (`.ipynb` markdown and code cells), and scripts. Keep comments minimal and operational: one line per pipeline step where needed; state inputs, pins, or non-obvious constraints only. Prefer `# Pin TF 2.18 and opencv 4.10 for export` over narrative setup prose. **Why not what** for non-obvious logic; `TODO` / `[to be verified]` for gaps. Do not restore user-deleted comments.
+- **No personal notes in code:** Never put session, teaching, or operator context in code or notebooks. Banned in `.py`, `.ipynb`, firmware, and `scripts/`: lesson or step numbers (`Lesson 5`), `@teach-me` / skill names, handoff text, "before Run All", Colab-parity essays, VM nicknames used as prose (`vst-vela-01` in a comment), chat/session references, or pointers to `notes/`. Put that material in `notes/`, `docs/teaching/`, `.cursor/skills/`, or chat only. Config paths and bucket names in code are fine when required to run; wrap them in lean operational comments, not runbooks.
 - **User edits are authoritative:** Do not reverse user doc or code changes. Change only what the new request requires; ask if something conflicts with a rule.
 - **Error handling:** Explicit `None`; validate YOLO tensor shapes.
 
