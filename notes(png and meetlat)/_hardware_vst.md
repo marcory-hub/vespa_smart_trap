@@ -1,0 +1,31 @@
+**One-line purpose**: index of types of traps and hardware components
+**Key info:** hardware features and documentation
+**Agent:** current hardware stack: grove vision AI v2, liligo's (4 versions) and ESP32-s3 for test purposes
+**SoT**: yes
+**Main Index:** [[__vespa_smart_trap]]
+
+---
+Versions of the vespa smart trap
+[[vespa smart trap - ONE]]
+# Hardware Stack
+- [[camera]]
+- [[_grove vision ai v2]]
+- 2026-03-11: for [[gv2_sd]]GV2 connected via Grove Base for XIAO (Seeed [Grove Shield for XIAO](https://www.seeedstudio.com/Grove-Shield-for-Seeeduino-XIAO-p-4621.html)) UART port; firmware uses Serial1 (UART1).
+- [[_lilygo boards]]
+- [[ESP32-S3]]
+##### Hardware archive
+- [[z_raspberry_prototype]]
+- [[z_flowchart 2025-06-11]]
+- [[hardware componenten]], november 2025
+	- [[zz base_station_instruction 2026-01-29]], Step-by-step deployment for the base station build. 
+
+---
+# Code env and sdk
+- [[esp-idf]]
+- [[_himax sdk]]
+- [[z_edge impuls]]
+
+---
+
+# Trap
+- [[bait]], diy, trappit, vespacatch

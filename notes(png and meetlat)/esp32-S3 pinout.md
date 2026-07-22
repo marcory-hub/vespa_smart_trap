@@ -1,0 +1,1 @@
+![[esp32-S3 pinout.png]]

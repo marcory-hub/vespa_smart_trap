@@ -1,5 +1,7 @@
 # GV2 YOLO11 Model Flashing Instructions
 
+> **Note:** Active development has relocated to [aggerritsen/VespaSmartTrap-BASE](https://github.com/aggerritsen/VespaSmartTrap-BASE). This repository is kept in archive status to maintain Git submodule updates from external providers if needed.
+
 **What:** Flash a custom YOLO11n hornet-detection model to Grove Vision AI V2 and validate UART inference on an ESP32-S3.
 
 **Version 2026-06-08**

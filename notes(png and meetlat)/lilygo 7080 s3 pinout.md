@@ -1,0 +1,1 @@
+![[lilygo 7080 s3 pinout.png]]
